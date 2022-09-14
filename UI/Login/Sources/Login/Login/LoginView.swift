@@ -14,6 +14,8 @@ public struct LoginView: View {
     public var body: some View {
         GeometryReader { geometry in
             VStack {
+                Spacer().frame(height: 24)
+                
                 InputMailAddress(
                     text: viewModel.$binding.email,
                     onSubmit: { viewModel.input.onEmailCommit.send() }
@@ -59,12 +61,6 @@ private struct InputMailAddress: View {
             TextField("メールアドレス", text: $text)
                 .frame(maxWidth: .infinity)
                 .frame(height: 36, alignment: .leading)
-                .background(
-                    RoundedRectangle(cornerRadius: 4)
-                        .foregroundColor(.black)
-                        .padding(.horizontal, -16)
-                )
-                .padding(.horizontal)
                 .submitLabel(.next)
                 .onSubmit {
                     onSubmit()
@@ -72,6 +68,7 @@ private struct InputMailAddress: View {
             
             Divider()
         }
+        .padding(.horizontal)
         .padding()
     }
 }
@@ -92,12 +89,6 @@ private struct InputPassword: View {
             SecureField("6~12文字のパスワード", text: $text)
                 .frame(maxWidth: .infinity)
                 .frame(height: 36, alignment: .leading)
-                .background(
-                    RoundedRectangle(cornerRadius: 4)
-                        .foregroundColor(.black)
-                        .padding(.horizontal, -16)
-                )
-                .padding(.horizontal)
                 .submitLabel(.done)
                 .onSubmit {
                     onSubmit()
@@ -105,6 +96,7 @@ private struct InputPassword: View {
             
             Divider()
         }
+        .padding(.horizontal)
         .padding()
     }
 }
