@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Home
 
 public struct LoginOrRegistrationScreen: View {
     
@@ -13,6 +14,33 @@ public struct LoginOrRegistrationScreen: View {
     @ObservedObject var loginViewModel: LoginViewModel
     
     public var body: some View {
+        if (loginViewModel.output.state == .suceess) {
+            HomeScreen()
+        } else {
+            LoginOrRegistrationView(
+                viewModel: viewModel,
+                loginViewModel: loginViewModel
+            )
+            .sheet(isPresented: viewModel.$binding.isShowingSheet) {
+                LoginView(loginViewModel)
+            }
+        }
+    }
+    
+    public init(
+        _ viewModel: LoginOrRegistrationViewModel = LoginOrRegistrationViewModel(),
+        _ loginViewModel: LoginViewModel = LoginViewModel()
+    ) {
+        self.viewModel = viewModel
+        self.loginViewModel = loginViewModel
+    }
+}
+
+private struct LoginOrRegistrationView: View {
+    var viewModel: LoginOrRegistrationViewModel
+    var loginViewModel: LoginViewModel
+    
+    var body: some View {
         GeometryReader { geometry in
             NavigationView {
                 VStack(spacing: 0) {
@@ -31,20 +59,9 @@ public struct LoginOrRegistrationScreen: View {
                     Spacer()
                         .frame(maxWidth: .infinity)
                         .frame(height: geometry.safeAreaInsets.bottom)
-                }    
-            }
-            .sheet(isPresented: viewModel.$binding.isShowingSheet) {
-                LoginView(loginViewModel)
+                }
             }
         }
-    }
-    
-    public init(
-        _ viewModel: LoginOrRegistrationViewModel = LoginOrRegistrationViewModel(),
-        _ loginViewModel: LoginViewModel = LoginViewModel()
-    ) {
-        self.viewModel = viewModel
-        self.loginViewModel = loginViewModel
     }
 }
 

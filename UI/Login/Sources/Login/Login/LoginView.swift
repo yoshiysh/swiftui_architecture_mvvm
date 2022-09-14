@@ -12,6 +12,18 @@ public struct LoginView: View {
     @ObservedObject var viewModel: LoginViewModel
     
     public var body: some View {
+        LoginMainView(viewModel: viewModel)
+    }
+    
+    public init(_ viewModel: LoginViewModel = LoginViewModel()) {
+        self.viewModel = viewModel
+    }
+}
+
+private struct LoginMainView: View {
+    var viewModel: LoginViewModel
+    
+    var body: some View {
         GeometryReader { geometry in
             VStack {
                 Spacer().frame(height: 24)
@@ -38,10 +50,6 @@ public struct LoginView: View {
                 Spacer().frame(height: 16)
             }
         }
-    }
-    
-    public init(_ viewModel: LoginViewModel = LoginViewModel()) {
-        self.viewModel = viewModel
     }
 }
 

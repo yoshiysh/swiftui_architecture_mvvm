@@ -18,6 +18,7 @@ let package = Package(
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
         .package(path: "UICore"),
+        .package(path: "Home"),
         .package(path: "../Domain/Repository"),
         .package(path: "../Domain/Model"),
     ],
@@ -28,6 +29,7 @@ let package = Package(
             name: "Login",
             dependencies: [
                 "UICore",
+                "Home",
                 "Repository",
                 "Model",
             ]),

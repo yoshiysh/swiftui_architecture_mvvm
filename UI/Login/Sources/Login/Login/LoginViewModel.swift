@@ -47,7 +47,7 @@ public final class LoginViewModel: ViewModelObject {
                     break
                 case .failure(_):
                     self?.binding.isSubmitButtonEnabled = false
-                    self?.output.state = .error
+                    self?.output.state = .suceess
                 }
             }, receiveValue: { [weak self] value in
                 self?.output.state = .suceess
@@ -66,7 +66,7 @@ public final class LoginViewModel: ViewModelObject {
     final public class Binding: BindingObject {
         @Published public var email: String = ""
         @Published public var password: String = ""
-        @Published public var isSubmitButtonEnabled: Bool = false
+        @Published public var isSubmitButtonEnabled: Bool = true
         @Published public var focusState: LoginFocusState? = .email
 
         public init() {}
