@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D365BDF28D16D8B0034C198 /* Model in Resources */ = {isa = PBXBuildFile; fileRef = 4D365BDE28D16D8B0034C198 /* Model */; };
 		4D62930228D169B900B65D08 /* Infra in Resources */ = {isa = PBXBuildFile; fileRef = 4D62930128D169B800B65D08 /* Infra */; };
 		4D7F6A8728D0A772000B959D /* Home in Resources */ = {isa = PBXBuildFile; fileRef = 4D7F6A8628D0A772000B959D /* Home */; };
 		4D9FB12D28D09F2A008C19C3 /* Root in Resources */ = {isa = PBXBuildFile; fileRef = 4D9FB12C28D09F29008C19C3 /* Root */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4D365BDE28D16D8B0034C198 /* Model */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Model; sourceTree = "<group>"; };
 		4D62930128D169B800B65D08 /* Infra */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Infra; sourceTree = "<group>"; };
 		4D7F6A8628D0A772000B959D /* Home */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Home; sourceTree = "<group>"; };
 		4D9FB12C28D09F29008C19C3 /* Root */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Root; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 		4DF0776B28D16616006CFD01 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				4D365BDE28D16D8B0034C198 /* Model */,
 				4DF0776C28D16616006CFD01 /* Repository */,
 			);
 			path = Domain;
@@ -191,6 +194,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D365BDF28D16D8B0034C198 /* Model in Resources */,
 				4D62930228D169B900B65D08 /* Infra in Resources */,
 				4DF0777128D166DB006CFD01 /* Local in Resources */,
 				4DDA0FA928D089D90021D6F3 /* Preview Assets.xcassets in Resources */,
