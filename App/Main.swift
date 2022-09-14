@@ -12,7 +12,7 @@ import Root
 struct Main: App {
     var body: some Scene {
         WindowGroup {
-            RootScreen(viewModel: RootViewModel())
+            RootScreen(RootViewModel())
         }
     }
 }

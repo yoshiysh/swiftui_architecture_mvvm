@@ -10,26 +10,26 @@ import Login
 import Home
 
 public struct RootScreen: View {
-    public init(viewModel: RootViewModel) {
-        self.viewModel = viewModel
-    }
-    
-    @ObservedObject var viewModel: RootViewModel
+    @ObservedObject var rootViewModel: RootViewModel
     
     public var body: some View {
-        switch(viewModel.state) {
+        switch(rootViewModel.state) {
         case .loading:
             SplashScreen()
         case .loggedOut:
-            LoginScreen()
+            LoginOrRegistrationScreen()
         case .loggedIn:
             HomeScreen()
         }
+    }
+    
+    public init(_ viewModel: RootViewModel = RootViewModel()) {
+        self.rootViewModel = viewModel
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        RootScreen(viewModel: RootViewModel())
+        RootScreen()
     }
 }

@@ -8,11 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		4D365BDF28D16D8B0034C198 /* Model in Resources */ = {isa = PBXBuildFile; fileRef = 4D365BDE28D16D8B0034C198 /* Model */; };
+		4D38600328D18A49007DDEA8 /* UICore in Resources */ = {isa = PBXBuildFile; fileRef = 4D38600228D18A49007DDEA8 /* UICore */; };
 		4D62930228D169B900B65D08 /* Infra in Resources */ = {isa = PBXBuildFile; fileRef = 4D62930128D169B800B65D08 /* Infra */; };
 		4D7F6A8728D0A772000B959D /* Home in Resources */ = {isa = PBXBuildFile; fileRef = 4D7F6A8628D0A772000B959D /* Home */; };
+		4D9C7D5428D1D61400573828 /* Login in Resources */ = {isa = PBXBuildFile; fileRef = 4D9C7D5328D1D61400573828 /* Login */; };
 		4D9FB12D28D09F2A008C19C3 /* Root in Resources */ = {isa = PBXBuildFile; fileRef = 4D9FB12C28D09F29008C19C3 /* Root */; };
 		4D9FB12F28D09F35008C19C3 /* Root in Frameworks */ = {isa = PBXBuildFile; productRef = 4D9FB12E28D09F35008C19C3 /* Root */; };
-		4D9FB13F28D0A573008C19C3 /* Login in Resources */ = {isa = PBXBuildFile; fileRef = 4D9FB13E28D0A573008C19C3 /* Login */; };
 		4DDA0FA228D089D80021D6F3 /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DDA0FA128D089D80021D6F3 /* Main.swift */; };
 		4DDA0FA428D089D80021D6F3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DDA0FA328D089D80021D6F3 /* ContentView.swift */; };
 		4DDA0FA628D089D90021D6F3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4DDA0FA528D089D90021D6F3 /* Assets.xcassets */; };
@@ -24,10 +25,11 @@
 
 /* Begin PBXFileReference section */
 		4D365BDE28D16D8B0034C198 /* Model */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Model; sourceTree = "<group>"; };
+		4D38600228D18A49007DDEA8 /* UICore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = UICore; sourceTree = "<group>"; };
 		4D62930128D169B800B65D08 /* Infra */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Infra; sourceTree = "<group>"; };
 		4D7F6A8628D0A772000B959D /* Home */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Home; sourceTree = "<group>"; };
+		4D9C7D5328D1D61400573828 /* Login */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Login; sourceTree = "<group>"; };
 		4D9FB12C28D09F29008C19C3 /* Root */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Root; sourceTree = "<group>"; };
-		4D9FB13E28D0A573008C19C3 /* Login */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Login; sourceTree = "<group>"; };
 		4DDA0F9E28D089D80021D6F3 /* SwiftUIArchitectureMVVM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftUIArchitectureMVVM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DDA0FA128D089D80021D6F3 /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
 		4DDA0FA328D089D80021D6F3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -69,8 +71,9 @@
 			isa = PBXGroup;
 			children = (
 				4D7F6A8628D0A772000B959D /* Home */,
-				4D9FB13E28D0A573008C19C3 /* Login */,
+				4D9C7D5328D1D61400573828 /* Login */,
 				4D9FB12C28D09F29008C19C3 /* Root */,
+				4D38600228D18A49007DDEA8 /* UICore */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -194,14 +197,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D9C7D5428D1D61400573828 /* Login in Resources */,
 				4D365BDF28D16D8B0034C198 /* Model in Resources */,
 				4D62930228D169B900B65D08 /* Infra in Resources */,
+				4D38600328D18A49007DDEA8 /* UICore in Resources */,
 				4DF0777128D166DB006CFD01 /* Local in Resources */,
 				4DDA0FA928D089D90021D6F3 /* Preview Assets.xcassets in Resources */,
 				4DF0777228D166DB006CFD01 /* Remote in Resources */,
 				4DDA0FA628D089D90021D6F3 /* Assets.xcassets in Resources */,
 				4DF0776D28D16616006CFD01 /* Repository in Resources */,
-				4D9FB13F28D0A573008C19C3 /* Login in Resources */,
 				4D7F6A8728D0A772000B959D /* Home in Resources */,
 				4D9FB12D28D09F2A008C19C3 /* Root in Resources */,
 			);
@@ -344,6 +348,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"App/Preview Content\"";
+				DEVELOPMENT_TEAM = JWP7XZ7BL9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -372,6 +377,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"App/Preview Content\"";
+				DEVELOPMENT_TEAM = JWP7XZ7BL9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
