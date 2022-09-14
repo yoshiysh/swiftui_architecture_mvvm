@@ -23,6 +23,8 @@ public final class LoginOrRegistrationViewModel: ViewModelObject {
         switch(output.state) {
         case .login:
             binding.isShowingSheet = true
+        case .registration:
+            binding.isShowingSheet = true
         default:
             binding.isShowingSheet = false
         }

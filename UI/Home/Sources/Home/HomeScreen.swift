@@ -8,13 +8,14 @@
 import SwiftUI
 
 public struct HomeScreen: View {
-    public init() {}
     
     public var body: some View {
         NavigationView {
             Text("Hello Home")
         }
     }
+    
+    public init() {}
 }
 
 struct HomeScreen_Previews: PreviewProvider {

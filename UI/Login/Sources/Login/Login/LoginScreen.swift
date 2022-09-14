@@ -1,5 +1,5 @@
 //
-//  SwiftUIView.swift
+//  LoginScreen.swift
 //  
 //
 //  Created by Yoshiki Hemmi on 2022/09/14.
@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-public struct LoginView: View {
+public struct LoginScreen: View {
     
     @ObservedObject var viewModel: LoginViewModel
     
     public var body: some View {
-        LoginMainView(viewModel: viewModel)
+        LoginView(viewModel: viewModel)
     }
     
     public init(_ viewModel: LoginViewModel = LoginViewModel()) {
@@ -20,7 +20,7 @@ public struct LoginView: View {
     }
 }
 
-private struct LoginMainView: View {
+private struct LoginView: View {
     var viewModel: LoginViewModel
     
     var body: some View {
@@ -130,8 +130,8 @@ private struct LoginButton: View {
     }
 }
 
-struct LoginView_Previews: PreviewProvider {
+struct LoginScreen_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView()
+        LoginScreen()
     }
 }

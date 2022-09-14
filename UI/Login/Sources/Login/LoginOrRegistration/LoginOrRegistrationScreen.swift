@@ -22,7 +22,14 @@ public struct LoginOrRegistrationScreen: View {
                 loginViewModel: loginViewModel
             )
             .sheet(isPresented: viewModel.$binding.isShowingSheet) {
-                LoginView(loginViewModel)
+                switch viewModel.output.state {
+                case .login:
+                    LoginScreen(loginViewModel)
+                case .registration:
+                    ResistrationScreen()
+                default:
+                    EmptyView()
+                }
             }
         }
     }
