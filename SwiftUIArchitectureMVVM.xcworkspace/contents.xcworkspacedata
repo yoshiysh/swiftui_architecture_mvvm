@@ -5,6 +5,6 @@
       location = "group:Package">
    </FileRef>
    <FileRef
-      location = "container:/Users/yoshiki.hemmi/github/yoshi991/swiftui_architecture_mvvm/Production.xcodeproj">
+      location = "group:App/Production.xcodeproj">
    </FileRef>
 </Workspace>
