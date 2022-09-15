@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Root
+import UI
 
 @main
 struct Main: App {
