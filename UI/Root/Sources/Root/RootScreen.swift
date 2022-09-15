@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Login
+import Auth
 import Home
 
 public struct RootScreen: View {
@@ -17,7 +17,7 @@ public struct RootScreen: View {
         case .loading:
             SplashScreen()
         case .loggedOut:
-            LoginOrRegistrationScreen()
+            SignUpOrInScreen()
         case .loggedIn:
             HomeScreen()
         }

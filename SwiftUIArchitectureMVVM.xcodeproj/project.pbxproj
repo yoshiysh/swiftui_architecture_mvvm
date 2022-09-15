@@ -11,9 +11,9 @@
 		4D38600328D18A49007DDEA8 /* UICore in Resources */ = {isa = PBXBuildFile; fileRef = 4D38600228D18A49007DDEA8 /* UICore */; };
 		4D62930228D169B900B65D08 /* Infra in Resources */ = {isa = PBXBuildFile; fileRef = 4D62930128D169B800B65D08 /* Infra */; };
 		4D7F6A8728D0A772000B959D /* Home in Resources */ = {isa = PBXBuildFile; fileRef = 4D7F6A8628D0A772000B959D /* Home */; };
-		4D9C7D5428D1D61400573828 /* Login in Resources */ = {isa = PBXBuildFile; fileRef = 4D9C7D5328D1D61400573828 /* Login */; };
 		4D9FB12D28D09F2A008C19C3 /* Root in Resources */ = {isa = PBXBuildFile; fileRef = 4D9FB12C28D09F29008C19C3 /* Root */; };
 		4D9FB12F28D09F35008C19C3 /* Root in Frameworks */ = {isa = PBXBuildFile; productRef = 4D9FB12E28D09F35008C19C3 /* Root */; };
+		4DB7555628D2BB4D00616EA4 /* Auth in Resources */ = {isa = PBXBuildFile; fileRef = 4DB7555528D2BB4D00616EA4 /* Auth */; };
 		4DDA0FA228D089D80021D6F3 /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DDA0FA128D089D80021D6F3 /* Main.swift */; };
 		4DDA0FA428D089D80021D6F3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DDA0FA328D089D80021D6F3 /* ContentView.swift */; };
 		4DDA0FA628D089D90021D6F3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4DDA0FA528D089D90021D6F3 /* Assets.xcassets */; };
@@ -28,8 +28,8 @@
 		4D38600228D18A49007DDEA8 /* UICore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = UICore; sourceTree = "<group>"; };
 		4D62930128D169B800B65D08 /* Infra */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Infra; sourceTree = "<group>"; };
 		4D7F6A8628D0A772000B959D /* Home */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Home; sourceTree = "<group>"; };
-		4D9C7D5328D1D61400573828 /* Login */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Login; sourceTree = "<group>"; };
 		4D9FB12C28D09F29008C19C3 /* Root */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Root; sourceTree = "<group>"; };
+		4DB7555528D2BB4D00616EA4 /* Auth */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Auth; sourceTree = "<group>"; };
 		4DDA0F9E28D089D80021D6F3 /* SwiftUIArchitectureMVVM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftUIArchitectureMVVM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DDA0FA128D089D80021D6F3 /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
 		4DDA0FA328D089D80021D6F3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -70,8 +70,8 @@
 		4D9FB12B28D09F29008C19C3 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				4DB7555528D2BB4D00616EA4 /* Auth */,
 				4D7F6A8628D0A772000B959D /* Home */,
-				4D9C7D5328D1D61400573828 /* Login */,
 				4D9FB12C28D09F29008C19C3 /* Root */,
 				4D38600228D18A49007DDEA8 /* UICore */,
 			);
@@ -197,7 +197,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D9C7D5428D1D61400573828 /* Login in Resources */,
 				4D365BDF28D16D8B0034C198 /* Model in Resources */,
 				4D62930228D169B900B65D08 /* Infra in Resources */,
 				4D38600328D18A49007DDEA8 /* UICore in Resources */,
@@ -207,6 +206,7 @@
 				4DDA0FA628D089D90021D6F3 /* Assets.xcassets in Resources */,
 				4DF0776D28D16616006CFD01 /* Repository in Resources */,
 				4D7F6A8728D0A772000B959D /* Home in Resources */,
+				4DB7555628D2BB4D00616EA4 /* Auth in Resources */,
 				4D9FB12D28D09F2A008C19C3 /* Root in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

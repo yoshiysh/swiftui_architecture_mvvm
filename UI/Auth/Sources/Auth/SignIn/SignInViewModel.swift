@@ -1,5 +1,5 @@
 //
-//  LoginViewModel.swift
+//  SignInViewModel.swift
 //  
 //
 //  Created by Yoshiki Hemmi on 2022/09/14.
@@ -10,7 +10,7 @@ import Combine
 import UICore
 import Repository
 
-public final class LoginViewModel: ViewModelObject {
+public final class SignInViewModel: ViewModelObject {
  
     public let input: Input
     @BindableObject public var binding: Binding
@@ -67,7 +67,7 @@ public final class LoginViewModel: ViewModelObject {
         @Published public var email: String = ""
         @Published public var password: String = ""
         @Published public var isSubmitButtonEnabled: Bool = true
-        @Published public var focusState: LoginFocusState? = .email
+        @Published public var focusState: SignInState? = .email
 
         public init() {}
     }

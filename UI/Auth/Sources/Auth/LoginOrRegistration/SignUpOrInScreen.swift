@@ -1,5 +1,5 @@
 //
-//  LoginOrRegistrationScreen.swift
+//  SignUpOrInScreen.swift
 //  swiftui_architecture_mvvm
 //
 //  Created by Yoshiki Hemmi on 2022/09/13.
@@ -8,25 +8,25 @@
 import SwiftUI
 import Home
 
-public struct LoginOrRegistrationScreen: View {
+public struct SignUpOrInScreen: View {
     
-    @ObservedObject var viewModel: LoginOrRegistrationViewModel
-    @ObservedObject var loginViewModel: LoginViewModel
+    @ObservedObject var viewModel: SignUpOrInViewModel
+    @ObservedObject var loginViewModel: SignInViewModel
     
     public var body: some View {
         if (loginViewModel.output.state == .suceess) {
             HomeScreen()
         } else {
-            LoginOrRegistrationView(
+            SignUpOrInView(
                 viewModel: viewModel,
                 loginViewModel: loginViewModel
             )
             .sheet(isPresented: viewModel.$binding.isShowingSheet) {
                 switch viewModel.output.state {
-                case .login:
-                    LoginScreen(loginViewModel)
-                case .registration:
-                    ResistrationScreen()
+                case .signIn:
+                    SignInScreen(loginViewModel)
+                case .signUp:
+                    SignUpScreen()
                 default:
                     EmptyView()
                 }
@@ -35,17 +35,17 @@ public struct LoginOrRegistrationScreen: View {
     }
     
     public init(
-        _ viewModel: LoginOrRegistrationViewModel = LoginOrRegistrationViewModel(),
-        _ loginViewModel: LoginViewModel = LoginViewModel()
+        _ viewModel: SignUpOrInViewModel = SignUpOrInViewModel(),
+        _ loginViewModel: SignInViewModel = SignInViewModel()
     ) {
         self.viewModel = viewModel
         self.loginViewModel = loginViewModel
     }
 }
 
-private struct LoginOrRegistrationView: View {
-    var viewModel: LoginOrRegistrationViewModel
-    var loginViewModel: LoginViewModel
+private struct SignUpOrInView: View {
+    var viewModel: SignUpOrInViewModel
+    var loginViewModel: SignInViewModel
     
     var body: some View {
         GeometryReader { geometry in
@@ -54,13 +54,13 @@ private struct LoginOrRegistrationView: View {
                     Spacer()
                     
                     LoginButton(
-                        action: { viewModel.updateState(.login) }
+                        action: { viewModel.updateState(.signIn) }
                     )
                     
                     Spacer().frame(height: 24)
                     
                     ResistrationButton(
-                        action: { viewModel.updateState(.registration) }
+                        action: { viewModel.updateState(.signUp) }
                     )
                     
                     Spacer()
@@ -112,8 +112,8 @@ private struct ResistrationButton: View {
     }
 }
 
-struct LoginOrRegistrationScreen_Previews: PreviewProvider {
+struct SignUpOrInScreen_Previews: PreviewProvider {
     static var previews: some View {
-        LoginOrRegistrationScreen()
+        SignUpOrInScreen()
     }
 }

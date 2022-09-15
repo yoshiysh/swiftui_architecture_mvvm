@@ -1,5 +1,5 @@
 //
-//  LoginScreen.swift
+//  SignInScreen.swift
 //  
 //
 //  Created by Yoshiki Hemmi on 2022/09/14.
@@ -7,21 +7,21 @@
 
 import SwiftUI
 
-public struct LoginScreen: View {
+public struct SignInScreen: View {
     
-    @ObservedObject var viewModel: LoginViewModel
+    @ObservedObject var viewModel: SignInViewModel
     
     public var body: some View {
-        LoginView(viewModel: viewModel)
+        SignInView(viewModel: viewModel)
     }
     
-    public init(_ viewModel: LoginViewModel = LoginViewModel()) {
+    public init(_ viewModel: SignInViewModel = SignInViewModel()) {
         self.viewModel = viewModel
     }
 }
 
-private struct LoginView: View {
-    var viewModel: LoginViewModel
+private struct SignInView: View {
+    var viewModel: SignInViewModel
     
     var body: some View {
         GeometryReader { geometry in
@@ -132,6 +132,6 @@ private struct LoginButton: View {
 
 struct LoginScreen_Previews: PreviewProvider {
     static var previews: some View {
-        LoginScreen()
+        SignInScreen()
     }
 }

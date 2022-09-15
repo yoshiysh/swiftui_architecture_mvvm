@@ -1,5 +1,5 @@
 //
-//  LoginOrRegistrationViewModel.swift
+//  SignUpOrInViewModel.swift
 //  
 //
 //  Created by Yoshiki Hemmi on 2022/09/14.
@@ -9,7 +9,7 @@ import Foundation
 import Combine
 import UICore
 
-public final class LoginOrRegistrationViewModel: ViewModelObject {
+public final class SignUpOrInViewModel: ViewModelObject {
     
     public let input: Input
     @BindableObject public var binding: Binding
@@ -17,13 +17,11 @@ public final class LoginOrRegistrationViewModel: ViewModelObject {
     
     private var cancellables = Set<AnyCancellable>()
     
-    public func updateState(_ state: LoginOrRegistrationState) {
+    public func updateState(_ state: SignUpOrInState) {
         output.state = state
         
         switch(output.state) {
-        case .login:
-            binding.isShowingSheet = true
-        case .registration:
+        case .signIn, .signUp:
             binding.isShowingSheet = true
         default:
             binding.isShowingSheet = false
@@ -43,7 +41,7 @@ public final class LoginOrRegistrationViewModel: ViewModelObject {
     }
 
     final public class Output: OutputObject {
-        @Published public var state: LoginOrRegistrationState? = nil
+        @Published public var state: SignUpOrInState? = nil
 
         public init() {}
     }

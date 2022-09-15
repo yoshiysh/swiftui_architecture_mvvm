@@ -1,5 +1,5 @@
 //
-//  ResistrationScreen.swift
+//  SignUpScreen.swift
 //  
 //
 //  Created by Yoshiki Hemmi on 2022/09/14.
@@ -7,22 +7,22 @@
 
 import SwiftUI
 
-public struct ResistrationScreen: View {
+public struct SignUpScreen: View {
     
     public var body: some View {
-        RegistrationView()
+        SignUpView()
     }
     
     public init() {}
 }
 
-private struct RegistrationView: View {
+private struct SignUpView: View {
     
     var body: some View {
         GeometryReader { geometry in
             NavigationView {
                 VStack {
-                    Text("Hello, Resistration")
+                    Text("Hello, Sign Up")
                 }
             }
         }
@@ -31,6 +31,6 @@ private struct RegistrationView: View {
 
 struct ResistrationScreen_Previews: PreviewProvider {
     static var previews: some View {
-        ResistrationScreen()
+        SignUpScreen()
     }
 }
