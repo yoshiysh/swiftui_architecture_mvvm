@@ -14,7 +14,7 @@ public struct SignUpOrInScreen: View {
     
     public var body: some View {
         if (loginViewModel.output.state == .suceess) {
-            HomeScreen()
+            TabHomeScreen()
         } else {
             SignUpOrInView(
                 viewModel: viewModel,

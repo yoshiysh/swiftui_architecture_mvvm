@@ -8,6 +8,7 @@
 import SwiftUI
 
 public struct RootScreen: View {
+    
     @ObservedObject var rootViewModel: RootViewModel
     
     public var body: some View {
@@ -17,7 +18,7 @@ public struct RootScreen: View {
         case .loggedOut:
             SignUpOrInScreen()
         case .loggedIn:
-            HomeScreen()
+            TabHomeScreen()
         }
     }
     
