@@ -14,7 +14,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4DDA0F9E28D089D80021D6F3 /* SwiftUIArchitectureMVVM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftUIArchitectureMVVM.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4DDA0F9E28D089D80021D6F3 /* Production.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Production.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DDA0FA128D089D80021D6F3 /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
 		4DDA0FA528D089D90021D6F3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4DDA0FA828D089D90021D6F3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -59,7 +59,7 @@
 		4DDA0F9F28D089D80021D6F3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4DDA0F9E28D089D80021D6F3 /* SwiftUIArchitectureMVVM.app */,
+				4DDA0F9E28D089D80021D6F3 /* Production.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -85,9 +85,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4DDA0F9D28D089D80021D6F3 /* SwiftUIArchitectureMVVM */ = {
+		4DDA0F9D28D089D80021D6F3 /* Production */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4DDA0FB228D089D90021D6F3 /* Build configuration list for PBXNativeTarget "SwiftUIArchitectureMVVM" */;
+			buildConfigurationList = 4DDA0FB228D089D90021D6F3 /* Build configuration list for PBXNativeTarget "Production" */;
 			buildPhases = (
 				4DDA0F9A28D089D80021D6F3 /* Sources */,
 				4DDA0F9B28D089D80021D6F3 /* Frameworks */,
@@ -97,12 +97,12 @@
 			);
 			dependencies = (
 			);
-			name = SwiftUIArchitectureMVVM;
+			name = Production;
 			packageProductDependencies = (
 				4D87B43528D2D3F8006BD311 /* UI */,
 			);
 			productName = swiftui_architecture_mvvm;
-			productReference = 4DDA0F9E28D089D80021D6F3 /* SwiftUIArchitectureMVVM.app */;
+			productReference = 4DDA0F9E28D089D80021D6F3 /* Production.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -120,7 +120,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 4DDA0F9928D089D80021D6F3 /* Build configuration list for PBXProject "SwiftUIArchitectureMVVM" */;
+			buildConfigurationList = 4DDA0F9928D089D80021D6F3 /* Build configuration list for PBXProject "Production" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -133,7 +133,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4DDA0F9D28D089D80021D6F3 /* SwiftUIArchitectureMVVM */,
+				4DDA0F9D28D089D80021D6F3 /* Production */,
 			);
 		};
 /* End PBXProject section */
@@ -337,7 +337,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4DDA0F9928D089D80021D6F3 /* Build configuration list for PBXProject "SwiftUIArchitectureMVVM" */ = {
+		4DDA0F9928D089D80021D6F3 /* Build configuration list for PBXProject "Production" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4DDA0FB028D089D90021D6F3 /* Debug */,
@@ -346,7 +346,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4DDA0FB228D089D90021D6F3 /* Build configuration list for PBXNativeTarget "SwiftUIArchitectureMVVM" */ = {
+		4DDA0FB228D089D90021D6F3 /* Build configuration list for PBXNativeTarget "Production" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4DDA0FB328D089D90021D6F3 /* Debug */,
