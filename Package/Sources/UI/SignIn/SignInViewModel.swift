@@ -72,7 +72,7 @@ public final class SignInViewModel: ViewModelObject {
     }
 
     final public class Output: OutputObject {
-        @Published public var state: LoginViewState = .initialzed
+        @Published public var state: SignInViewState = .initialzed
 
         public init() {}
     }
