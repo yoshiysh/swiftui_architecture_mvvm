@@ -9,12 +9,9 @@ import SwiftUI
 
 public struct SignInScreen: View {
     
-    public init(_ viewModel: SignInViewModel? = nil) {
-        let vm: SignInViewModel = viewModel != nil ? viewModel! : .shared
-        self._viewModel = StateObject(wrappedValue: vm)
-    }
+    public init() {}
     
-    @StateObject var viewModel: SignInViewModel
+    @StateObject var viewModel: SignInViewModel = .shared
     
     public var body: some View {
         SignInView(viewModel)

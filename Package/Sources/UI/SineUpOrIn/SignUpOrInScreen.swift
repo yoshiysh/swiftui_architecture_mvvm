@@ -9,40 +9,39 @@ import SwiftUI
 
 public struct SignUpOrInScreen: View {
     
-    public init(
-        _ viewModel: SignUpOrInViewModel = .init()
-    ) {
-        self.viewModel = viewModel
-    }
+    public init() {}
     
-    @ObservedObject var viewModel: SignUpOrInViewModel
+    @StateObject var viewModel: SignUpOrInViewModel = .shared
     @StateObject var signInViewModel: SignInViewModel = .shared
     
     public var body: some View {
         if (signInViewModel.state == .suceess) {
             TabHomeScreen()
         } else {
-            SignUpOrInView(
-                viewModel: viewModel,
-                signInViewModel: signInViewModel
-            )
-            .sheet(isPresented: $viewModel.isShowingSheet) {
-                switch viewModel.state {
-                case .signIn:
-                    SignInScreen()
-                case .signUp:
-                    SignUpScreen()
-                default:
-                    EmptyView()
+            SignUpOrInView(viewModel)
+                .sheet(isPresented: $viewModel.isShowingSheet) {
+                    switch viewModel.state {
+                    case .signIn:
+                        SignInScreen()
+                    case .signUp:
+                        SignUpScreen()
+                    default:
+                        EmptyView()
+                    }
                 }
-            }
+                .onAppear { viewModel.onAppear() }
+                .onDisappear { viewModel.onDisappear() }
         }
     }
 }
 
 private struct SignUpOrInView: View {
-    var viewModel: SignUpOrInViewModel
-    @ObservedObject var signInViewModel: SignInViewModel
+    
+    init(_ viewModel: SignUpOrInViewModel) {
+        self.viewModel = viewModel
+    }
+    
+    @ObservedObject var viewModel: SignUpOrInViewModel
     
     var body: some View {
         VStack(spacing: 0) {

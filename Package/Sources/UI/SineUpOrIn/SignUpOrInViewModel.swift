@@ -10,7 +10,16 @@ import Combine
 
 public final class SignUpOrInViewModel: ObservableObject {
     
-    public init() {        
+    static let shared: SignUpOrInViewModel = .init()
+    
+    public init() {}
+    
+    @Published private(set) var state: SignUpOrInState? = nil
+    @Published var isShowingSheet: Bool = false
+    
+    private var cancellables = Set<AnyCancellable>()
+    
+    func onAppear() {
         self.$state.sink(
             receiveCompletion: { _ in
             },
@@ -26,10 +35,9 @@ public final class SignUpOrInViewModel: ObservableObject {
         .store(in: &cancellables)
     }
     
-    @Published private(set) var state: SignUpOrInState? = nil
-    @Published var isShowingSheet: Bool = false
-    
-    private var cancellables = Set<AnyCancellable>()
+    func onDisappear() {
+        cancellables.forEach { $0.cancel() }
+    }
     
     func updateState(_ state: SignUpOrInState) {
         self.state = state
