@@ -9,16 +9,16 @@ import SwiftUI
 
 public struct RootScreen: View {
     
-    public init(_ viewModel: RootViewModel = RootViewModel()) {
-        self.rootViewModel = viewModel
-    }
+    public init() {}
     
-    @ObservedObject var rootViewModel: RootViewModel
+    @StateObject var viewModel: RootViewModel = .shared
     
     public var body: some View {
-        switch(rootViewModel.state) {
-        case .loading:
+        switch(viewModel.state) {
+        case .initialized:
             SplashScreen()
+                .onAppear { viewModel.onAppear() }
+                .onDisappear { viewModel.onDisappear() }
         case .loggedOut:
             SignUpOrInScreen()
         case .loggedIn:

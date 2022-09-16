@@ -8,5 +8,5 @@
 import Foundation
 
 public enum RootScreenState: String {
-    case loading, loggedOut, loggedIn
+    case initialized, loggedOut, loggedIn
 }
