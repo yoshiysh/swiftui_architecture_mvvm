@@ -1,6 +1,6 @@
 //
 //  TabHomeScreen.swift
-//  
+//  swiftui_architecture_mvvm
 //
 //  Created by Yoshiki Hemmi on 2022/09/15.
 //
@@ -9,11 +9,11 @@ import SwiftUI
 
 public struct TabHomeScreen: View {
     
+    public init() {}
+    
     public var body: some View {
         TabHomeView()
     }
-    
-    public init() {}
 }
 
 private struct TabHomeView: View {

@@ -1,6 +1,6 @@
 //
 //  SignInScreen.swift
-//  
+//  swiftui_architecture_mvvm
 //
 //  Created by Yoshiki Hemmi on 2022/09/14.
 //
@@ -9,46 +9,49 @@ import SwiftUI
 
 public struct SignInScreen: View {
     
-    @ObservedObject var viewModel: SignInViewModel
-    
-    public var body: some View {
-        SignInView(viewModel: viewModel)
+    public init(_ viewModel: SignInViewModel? = nil) {
+        let vm: SignInViewModel = viewModel != nil ? viewModel! : .shared
+        self._viewModel = StateObject(wrappedValue: vm)
     }
     
-    public init(_ viewModel: SignInViewModel = SignInViewModel()) {
-        self.viewModel = viewModel
+    @StateObject var viewModel: SignInViewModel
+    
+    public var body: some View {
+        SignInView(viewModel)
+            .onAppear { viewModel.onAppear() }
+            .onDisappear { viewModel.onDisappear() }
     }
 }
 
 private struct SignInView: View {
-    var viewModel: SignInViewModel
+    public init(_ viewModel: SignInViewModel) {
+        self.viewModel = viewModel
+    }
+    
+    @ObservedObject var viewModel: SignInViewModel
     
     var body: some View {
-        GeometryReader { geometry in
-            VStack {
-                Spacer().frame(height: 24)
-                
-                InputMailAddress(
-                    text: viewModel.$binding.email,
-                    onSubmit: { viewModel.input.onEmailCommit.send() }
-                )
-                
-                InputPassword(
-                    text: viewModel.$binding.password,
-                    onSubmit: { viewModel.input.onPasswordCommit.send() }
-                )
-                
-                Spacer()
-                
-                LoginButton(
-                    enabled: viewModel.$binding.isSubmitButtonEnabled,
-                    action: {
-                        viewModel.input.onCommit.send()
-                    }
-                )
-                
-                Spacer().frame(height: 16)
-            }
+        VStack {
+            Spacer().frame(height: 24)
+            
+            InputMailAddress(
+                text: $viewModel.email,
+                onSubmit: { viewModel.onEmailCommit.send() }
+            )
+            
+            InputPassword(
+                text: $viewModel.password,
+                onSubmit: { viewModel.onPasswordCommit.send() }
+            )
+            
+            Spacer()
+            
+            LoginButton(
+                enabled: $viewModel.isSubmitButtonEnabled,
+                action: { viewModel.onCommit.send() }
+            )
+            
+            Spacer().frame(height: 16)
         }
     }
 }

@@ -10,35 +10,30 @@ import SwiftUI
 public struct SignUpOrInScreen: View {
     
     public init(
-        _ viewModel: SignUpOrInViewModel = .init(),
-        _ loginViewModel: SignInViewModel = .init()
+        _ viewModel: SignUpOrInViewModel = .init()
     ) {
         self.viewModel = viewModel
-        self.loginViewModel = loginViewModel
     }
     
     @ObservedObject var viewModel: SignUpOrInViewModel
-    @ObservedObject var loginViewModel: SignInViewModel
+    @StateObject var signInViewModel: SignInViewModel = .shared
     
     public var body: some View {
-        if (loginViewModel.output.state == .suceess) {
+        if (signInViewModel.state == .suceess) {
             TabHomeScreen()
         } else {
-            GeometryReader { geometry in
-                SignUpOrInView(
-                    geometry: geometry,
-                    viewModel: viewModel,
-                    loginViewModel: loginViewModel
-                )
-                .sheet(isPresented: $viewModel.isShowingSheet) {
-                    switch viewModel.state {
-                    case .signIn:
-                        SignInScreen(loginViewModel)
-                    case .signUp:
-                        SignUpScreen()
-                    default:
-                        EmptyView()
-                    }
+            SignUpOrInView(
+                viewModel: viewModel,
+                signInViewModel: signInViewModel
+            )
+            .sheet(isPresented: $viewModel.isShowingSheet) {
+                switch viewModel.state {
+                case .signIn:
+                    SignInScreen()
+                case .signUp:
+                    SignUpScreen()
+                default:
+                    EmptyView()
                 }
             }
         }
@@ -46,9 +41,8 @@ public struct SignUpOrInScreen: View {
 }
 
 private struct SignUpOrInView: View {
-    var geometry: GeometryProxy
     var viewModel: SignUpOrInViewModel
-    var loginViewModel: SignInViewModel
+    @ObservedObject var signInViewModel: SignInViewModel
     
     var body: some View {
         VStack(spacing: 0) {
@@ -63,10 +57,6 @@ private struct SignUpOrInView: View {
             ResistrationButton(
                 action: { viewModel.updateState(.signUp) }
             )
-            
-            Spacer()
-                .frame(maxWidth: .infinity)
-                .frame(height: geometry.safeAreaInsets.bottom)
         }
     }
 }

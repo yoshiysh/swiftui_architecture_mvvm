@@ -1,6 +1,6 @@
 //
 //  SignInViewModel.swift
-//  
+//  swiftui_architecture_mvvm
 //
 //  Created by Yoshiki Hemmi on 2022/09/14.
 //
@@ -9,85 +9,71 @@ import Foundation
 import Combine
 import Domain
 
-public final class SignInViewModel: ViewModelObject {
- 
-    public let input: Input
-    @BindableObject public var binding: Binding
-    public let output: Output
+public final class SignInViewModel: ObservableObject {
+    
+    static let shared: SignInViewModel = .init()
+        
+    public init(
+        _ useCase: AuthUseCaseProtcol = AuthUseCase()
+    ) {
+        self.useCase = useCase
+    }
+    
+    @Published private(set) var state: SignInViewState = .initialzed
+    @Published var email: String = ""
+    @Published var password: String = ""
+    @Published var isSubmitButtonEnabled: Bool = true
+    @Published private(set) var focusState: SignInState? = .email
+    
     private let useCase: AuthUseCaseProtcol
     private var cancellables = Set<AnyCancellable>()
     
+    var onEmailCommit: PassthroughSubject<Void, Never> = .init()
+    var onPasswordCommit: PassthroughSubject<Void, Never> = .init()
+    var onCommit: PassthroughSubject<Void, Never> = .init()
+    
+    func onAppear() {
+        startObserver()
+    }
+    
+    func onDisappear() {
+        cancellables.forEach { $0.cancel() }
+    }
+
     private func startObserver() {
-        input.onEmailCommit
+        onEmailCommit
             .sink(receiveCompletion: { _ in
             }, receiveValue: { [weak self] value in
-                self?.binding.focusState = .password
+                self?.focusState = .password
             })
             .store(in: &cancellables)
         
-        input.onPasswordCommit
+        onPasswordCommit
             .sink(receiveCompletion: { _ in
             }, receiveValue: { [weak self] value in
-                self?.binding.focusState = nil
-                self?.binding.isSubmitButtonEnabled = true
+                self?.focusState = nil
+                self?.isSubmitButtonEnabled = true
             })
             .store(in: &cancellables)
         
-        input.onCommit
+        onCommit
             .handleEvents(receiveSubscription: { [weak self] value in
-                self?.output.state = .loading
+                self?.state = .loading
             })
             .flatMap { _ in
-                self.useCase.login(email: self.binding.email, password: self.binding.password)
+                self.useCase.login(email: self.email, password: self.password)
             }
             .sink(receiveCompletion: { [weak self] completion in
                 switch completion {
                 case .finished:
                     break
                 case .failure(_):
-                    self?.binding.isSubmitButtonEnabled = false
-                    self?.output.state = .suceess
+                    self?.isSubmitButtonEnabled = false
+                    self?.state = .suceess
                 }
             }, receiveValue: { [weak self] value in
-                self?.output.state = .suceess
+                self?.state = .suceess
             })
             .store(in: &cancellables)
-    }
-    
-    final public class Input: InputObject {
-        public var onEmailCommit: PassthroughSubject<Void, Never> = .init()
-        public var onPasswordCommit: PassthroughSubject<Void, Never> = .init()
-        public var onCommit: PassthroughSubject<Void, Never> = .init()
-
-        public init() {}
-    }
-
-    final public class Binding: BindingObject {
-        @Published public var email: String = ""
-        @Published public var password: String = ""
-        @Published public var isSubmitButtonEnabled: Bool = true
-        @Published public var focusState: SignInState? = .email
-
-        public init() {}
-    }
-
-    final public class Output: OutputObject {
-        @Published public var state: SignInViewState = .initialzed
-
-        public init() {}
-    }
-    
-    public init(
-        input: Input = .init(),
-        binding: BindableObject<Binding> = .init(.init()),
-        output: Output = .init(),
-        useCase: AuthUseCaseProtcol = AuthUseCase()
-    ) {
-        self.input = input
-        self._binding = binding
-        self.output = output
-        self.useCase = useCase
-        
-        startObserver()
     }
 }
