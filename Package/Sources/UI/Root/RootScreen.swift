@@ -9,6 +9,10 @@ import SwiftUI
 
 public struct RootScreen: View {
     
+    public init(_ viewModel: RootViewModel = RootViewModel()) {
+        self.rootViewModel = viewModel
+    }
+    
     @ObservedObject var rootViewModel: RootViewModel
     
     public var body: some View {
@@ -20,10 +24,6 @@ public struct RootScreen: View {
         case .loggedIn:
             TabHomeScreen()
         }
-    }
-    
-    public init(_ viewModel: RootViewModel = RootViewModel()) {
-        self.rootViewModel = viewModel
     }
 }
 
