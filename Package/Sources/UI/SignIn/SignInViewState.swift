@@ -1,6 +1,6 @@
 //
 //  SignInViewState.swift
-//  
+//  swiftui_architecture_mvvm
 //
 //  Created by Yoshiki Hemmi on 2022/09/14.
 //

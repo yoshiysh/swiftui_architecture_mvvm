@@ -15,14 +15,14 @@ public struct SignUpOrInScreen: View {
     @StateObject var signInViewModel: SignInViewModel = .shared
     
     public var body: some View {
-        if (signInViewModel.state == .suceess) {
+        if (viewModel.state == .loggedIn) {
             TabHomeScreen()
         } else {
             SignUpOrInView(viewModel)
                 .sheet(isPresented: $viewModel.isShowingSheet) {
                     switch viewModel.state {
                     case .signIn:
-                        SignInScreen()
+                        SignInScreen() { viewModel.updateState(.loggedIn) }
                     case .signUp:
                         SignUpScreen()
                     default:

@@ -8,5 +8,5 @@
 import Foundation
 
 public enum SignUpOrInState: String {
-    case signUp, signIn
+    case initialized, signUp, signIn, loggedIn
 }

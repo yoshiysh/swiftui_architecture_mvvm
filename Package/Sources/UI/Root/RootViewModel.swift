@@ -19,6 +19,7 @@ public final class RootViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     func onAppear() {
+        if state != .initialized { return }
         getUser()
     }
     
@@ -27,9 +28,6 @@ public final class RootViewModel: ObservableObject {
     }
     
     private func getUser() {
-        if state != .initialized { return }
-        Task { @MainActor in
-            state = .loggedOut
-        }
+        state = .loggedOut
     }
 }

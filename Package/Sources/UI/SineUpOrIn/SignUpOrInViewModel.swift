@@ -14,7 +14,7 @@ public final class SignUpOrInViewModel: ObservableObject {
     
     public init() {}
     
-    @Published private(set) var state: SignUpOrInState? = nil
+    @Published private(set) var state: SignUpOrInState = .initialized
     @Published var isShowingSheet: Bool = false
     
     private var cancellables = Set<AnyCancellable>()
