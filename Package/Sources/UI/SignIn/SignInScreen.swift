@@ -36,26 +36,26 @@ private struct SignInView: View {
     
     var body: some View {
         VStack {
-            Spacer().frame(height: 24)
-            
-            InputMailAddress(
-                text: $viewModel.email,
-                onSubmit: { viewModel.onEmailCommit.send() }
-            )
-            
-            InputPassword(
-                text: $viewModel.password,
-                onSubmit: { viewModel.onPasswordCommit.send() }
-            )
-            
-            Spacer()
+            VStack(spacing: 16) {
+                InputMailAddress(
+                    text: $viewModel.email,
+                    onSubmit: { viewModel.onEmailCommit.send() }
+                )
+                .padding(.horizontal)
+                
+                InputPassword(
+                    text: $viewModel.password,
+                    onSubmit: { viewModel.onPasswordCommit.send() }
+                )
+                .padding(.horizontal)
+            }
             
             LoginButton(
                 enabled: $viewModel.isSubmitButtonEnabled,
                 action: { viewModel.onCommit.send() }
             )
-            
-            Spacer().frame(height: 16)
+            .padding(.horizontal)
+            .frame(maxHeight: .infinity, alignment: .bottom)
         }
     }
 }
@@ -66,25 +66,23 @@ private struct InputMailAddress: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            Text("メールアドレス")
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .font(.system(size: 14))
-                .foregroundColor(.blue)
-            
-            Spacer().frame(height: 8)
-            
-            TextField("メールアドレス", text: $text)
-                .frame(maxWidth: .infinity)
-                .frame(height: 36, alignment: .leading)
-                .submitLabel(.next)
-                .onSubmit {
-                    onSubmit()
-                }
+            VStack(spacing: 8) {
+                Text("メールアドレス")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .font(.footnote)
+                    .foregroundColor(.blue)
+                
+                TextField("メールアドレス", text: $text)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .frame(height: 36)
+                    .submitLabel(.next)
+                    .onSubmit {
+                        onSubmit()
+                    }
+            }
             
             Divider()
         }
-        .padding(.horizontal)
-        .padding()
     }
 }
 
@@ -93,26 +91,24 @@ private struct InputPassword: View {
     var onSubmit: (() -> Void)
     
     var body: some View {
-        VStack(spacing: 0) {
-            Text("パスワード")
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .font(.system(size: 14))
-                .foregroundColor(.blue)
-            
-            Spacer().frame(height: 8)
-            
-            SecureField("6~12文字のパスワード", text: $text)
-                .frame(maxWidth: .infinity)
-                .frame(height: 36, alignment: .leading)
-                .submitLabel(.done)
-                .onSubmit {
-                    onSubmit()
-                }
+        VStack(spacing: 8) {
+            VStack(spacing: 8) {
+                Text("パスワード")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .font(.footnote)
+                    .foregroundColor(.blue)
+                
+                SecureField("6~12文字のパスワード", text: $text)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .frame(height: 36)
+                    .submitLabel(.done)
+                    .onSubmit {
+                        onSubmit()
+                    }
+            }
             
             Divider()
         }
-        .padding(.horizontal)
-        .padding()
     }
 }
 
@@ -128,11 +124,9 @@ private struct LoginButton: View {
                 .fontWeight(.bold)
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
-                .padding(.all)
-                .background(enabled ? .blue : Color(UIColor.lightGray))
-                .cornerRadius(8)
-                .padding(.horizontal)
+                .padding()
         }
+        .buttonStyle(.borderedProminent)
         .disabled(!enabled)
     }
 }

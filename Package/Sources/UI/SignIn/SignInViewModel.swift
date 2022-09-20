@@ -42,37 +42,43 @@ public final class SignInViewModel: ObservableObject {
 
     private func startObserver() {
         onEmailCommit
-            .sink(receiveCompletion: { _ in
-            }, receiveValue: { [weak self] value in
+            .sink(receiveValue: { [weak self] value in
                 self?.focusState = .password
             })
             .store(in: &cancellables)
         
         onPasswordCommit
-            .sink(receiveCompletion: { _ in
-            }, receiveValue: { [weak self] value in
+            .sink(receiveValue: { [weak self] value in
                 self?.focusState = nil
                 self?.isSubmitButtonEnabled = true
             })
             .store(in: &cancellables)
         
         onCommit
-            .handleEvents(receiveSubscription: { [weak self] value in
-                self?.state = .loading
+            .sink(receiveValue: { [weak self] value in
+                self?.fetch()
             })
-            .flatMap { _ in
-                self.useCase.login(email: self.email, password: self.password)
-            }
+            .store(in: &cancellables)
+    }
+    
+    private func updateState(_ state: SignInViewState) {
+        Task { @MainActor in
+            self.state = state
+        }
+    }
+    
+    private func fetch() {
+        updateState(.loading)
+        useCase.login(email: self.email, password: self.password)
             .sink(receiveCompletion: { [weak self] completion in
                 switch completion {
                 case .finished:
                     break
                 case .failure(_):
-                    self?.isSubmitButtonEnabled = false
-                    self?.state = .suceess
+                    self?.updateState(.error)
                 }
             }, receiveValue: { [weak self] value in
-                self?.state = .suceess
+                self?.updateState(.suceess)
             })
             .store(in: &cancellables)
     }

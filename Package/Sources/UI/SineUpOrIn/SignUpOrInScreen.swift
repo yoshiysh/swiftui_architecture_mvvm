@@ -44,19 +44,18 @@ private struct SignUpOrInView: View {
     @ObservedObject var viewModel: SignUpOrInViewModel
     
     var body: some View {
-        VStack(spacing: 0) {
-            Spacer()
-            
+        VStack(spacing: 24) {
             LoginButton(
                 action: { viewModel.updateState(.signIn) }
             )
-            
-            Spacer().frame(height: 24)
+            .padding(.horizontal)
             
             ResistrationButton(
                 action: { viewModel.updateState(.signUp) }
             )
+            .padding(.horizontal)
         }
+        .frame(maxHeight: .infinity, alignment: .bottom)
     }
 }
 
@@ -71,13 +70,14 @@ private struct LoginButton: View {
                 .fontWeight(.bold)
                 .foregroundColor(.accentColor)
                 .frame(maxWidth: .infinity)
-                .padding(.all)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(.primary, lineWidth: 2)
-                )
-                .padding(.horizontal)
+                .padding()
         }
+        .buttonStyle(.bordered)
+        .tint(.white)
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(.blue, lineWidth: 2)
+        )
     }
 }
 
@@ -90,13 +90,10 @@ private struct ResistrationButton: View {
         } label: {
             Text("新規登録")
                 .fontWeight(.bold)
-                .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
-                .padding(.all)
-                .background(.primary)
-                .cornerRadius(8)
-                .padding(.horizontal)
+                .padding()
         }
+        .buttonStyle(.borderedProminent)
     }
 }
 
