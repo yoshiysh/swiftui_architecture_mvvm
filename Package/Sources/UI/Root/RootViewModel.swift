@@ -8,26 +8,26 @@
 import Foundation
 import Combine
 
+@MainActor
 public final class RootViewModel: ObservableObject {
-    
-    static let shared: RootViewModel = .init()
-    
-    public init() {}
     
     @Published var state: RootScreenState = .initialized
     
     private var cancellables = Set<AnyCancellable>()
     
-    func onAppear() {
-        if state != .initialized { return }
-        getUser()
-    }
-    
-    func onDisappear() {
-        cancellables.forEach { $0.cancel() }
+    func updateState(_ state: RootScreenState) {
+        self.state = state
     }
     
     private func getUser() {
         state = .loggedOut
+    }
+    
+    public init() {
+        getUser()
+    }
+    
+    deinit {
+        cancellables.forEach { $0.cancel() }
     }
 }

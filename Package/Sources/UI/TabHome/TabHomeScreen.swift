@@ -9,15 +9,9 @@ import SwiftUI
 
 public struct TabHomeScreen: View {
     
-    public init() {}
+    @StateObject var viewModel: TabHomeViewModel
     
     public var body: some View {
-        TabHomeView()
-    }
-}
-
-private struct TabHomeView: View {
-    var body: some View {
         TabView {
             HomeScreen()
                 .tabItem {
@@ -30,6 +24,10 @@ private struct TabHomeView: View {
                     Text("Search")
                 }
         }
+    }
+    
+    public init(_ viewModel: TabHomeViewModel? = nil) {
+        _viewModel = StateObject(wrappedValue: viewModel ?? .init())
     }
 }
 

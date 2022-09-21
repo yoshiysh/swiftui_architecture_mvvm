@@ -9,15 +9,8 @@ import Foundation
 import Combine
 import Domain
 
+@MainActor
 public final class SignInViewModel: ObservableObject {
-    
-    static let shared: SignInViewModel = .init()
-        
-    public init(
-        _ useCase: AuthUseCaseProtcol = AuthUseCase()
-    ) {
-        self.useCase = useCase
-    }
     
     @Published private(set) var state: SignInViewState = .initialzed
     @Published var email: String = ""
@@ -31,14 +24,6 @@ public final class SignInViewModel: ObservableObject {
     var onEmailCommit: PassthroughSubject<Void, Never> = .init()
     var onPasswordCommit: PassthroughSubject<Void, Never> = .init()
     var onCommit: PassthroughSubject<Void, Never> = .init()
-    
-    func onAppear() {
-        startObserver()
-    }
-    
-    func onDisappear() {
-        cancellables.forEach { $0.cancel() }
-    }
 
     private func startObserver() {
         onEmailCommit
@@ -56,15 +41,14 @@ public final class SignInViewModel: ObservableObject {
         
         onCommit
             .sink(receiveValue: { [weak self] value in
-                self?.fetch()
+//                self?.fetch()
+                self?.updateState(.suceess)
             })
             .store(in: &cancellables)
     }
     
     private func updateState(_ state: SignInViewState) {
-        Task { @MainActor in
-            self.state = state
-        }
+        self.state = state
     }
     
     private func fetch() {
@@ -81,5 +65,14 @@ public final class SignInViewModel: ObservableObject {
                 self?.updateState(.suceess)
             })
             .store(in: &cancellables)
+    }
+    
+    public init(_ useCase: AuthUseCaseProtcol = AuthUseCase()) {
+        self.useCase = useCase
+        startObserver()
+    }
+    
+    deinit {
+        cancellables.forEach { $0.cancel() }
     }
 }

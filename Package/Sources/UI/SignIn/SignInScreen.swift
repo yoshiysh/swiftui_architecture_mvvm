@@ -9,11 +9,7 @@ import SwiftUI
 
 public struct SignInScreen: View {
     
-    public init(_ onComplete: @escaping (() -> Void)) {
-        self.onComplete = onComplete
-    }
-    
-    @StateObject var viewModel: SignInViewModel = .shared
+    @StateObject private var viewModel: SignInViewModel
     var onComplete: (() -> Void)
     
     public var body: some View {
@@ -21,42 +17,48 @@ public struct SignInScreen: View {
             .onChange(of: viewModel.state) { state in
                 if state == .suceess { onComplete() }
             }
-            .onAppear { viewModel.onAppear() }
-            .onDisappear { viewModel.onDisappear() }
+    }
+    
+    public init(
+        _ viewModel: SignInViewModel? = nil,
+        _ onComplete: @escaping (() -> Void)
+    ) {
+        _viewModel = StateObject(wrappedValue: viewModel ?? .init())
+        self.onComplete = onComplete
     }
 }
 
 private struct SignInView: View {
     
-    public init(_ viewModel: SignInViewModel) {
-        self.viewModel = viewModel
-    }
-    
     @ObservedObject var viewModel: SignInViewModel
     
     var body: some View {
         VStack {
-            VStack(spacing: 16) {
+            VStack {
                 InputMailAddress(
                     text: $viewModel.email,
                     onSubmit: { viewModel.onEmailCommit.send() }
                 )
-                .padding(.horizontal)
+                .padding(.bottom)
                 
                 InputPassword(
                     text: $viewModel.password,
                     onSubmit: { viewModel.onPasswordCommit.send() }
                 )
-                .padding(.horizontal)
             }
+            .padding(.vertical)
             
             LoginButton(
                 enabled: $viewModel.isSubmitButtonEnabled,
                 action: { viewModel.onCommit.send() }
             )
-            .padding(.horizontal)
             .frame(maxHeight: .infinity, alignment: .bottom)
         }
+        .padding(.horizontal)
+    }
+    
+    public init(_ viewModel: SignInViewModel) {
+        self.viewModel = viewModel
     }
 }
 
@@ -65,20 +67,16 @@ private struct InputMailAddress: View {
     var onSubmit: (() -> Void)
     
     var body: some View {
-        VStack(spacing: 0) {
-            VStack(spacing: 8) {
+        VStack {
+            VStack(alignment: .leading) {
                 Text("メールアドレス")
-                    .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.footnote)
-                    .foregroundColor(.blue)
+                    .foregroundColor(.accentColor)
                 
                 TextField("メールアドレス", text: $text)
-                    .frame(maxWidth: .infinity, alignment: .leading)
                     .frame(height: 36)
                     .submitLabel(.next)
-                    .onSubmit {
-                        onSubmit()
-                    }
+                    .onSubmit { onSubmit() }
             }
             
             Divider()
@@ -91,20 +89,16 @@ private struct InputPassword: View {
     var onSubmit: (() -> Void)
     
     var body: some View {
-        VStack(spacing: 8) {
-            VStack(spacing: 8) {
+        VStack {
+            VStack(alignment: .leading) {
                 Text("パスワード")
-                    .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.footnote)
-                    .foregroundColor(.blue)
+                    .foregroundColor(.accentColor)
                 
                 SecureField("6~12文字のパスワード", text: $text)
-                    .frame(maxWidth: .infinity, alignment: .leading)
                     .frame(height: 36)
                     .submitLabel(.done)
-                    .onSubmit {
-                        onSubmit()
-                    }
+                    .onSubmit { onSubmit() }
             }
             
             Divider()
@@ -122,7 +116,6 @@ private struct LoginButton: View {
         } label: {
             Text("ログイン")
                 .fontWeight(.bold)
-                .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
                 .padding()
         }

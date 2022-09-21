@@ -1,6 +1,6 @@
 //
 //  SignUpScreen.swift
-//  
+//  swiftui_architecture_mvvm
 //
 //  Created by Yoshiki Hemmi on 2022/09/14.
 //
@@ -19,17 +19,13 @@ public struct SignUpScreen: View {
 private struct SignUpView: View {
     
     var body: some View {
-        GeometryReader { geometry in
-            NavigationView {
-                VStack {
-                    Text("Hello, Sign Up")
-                }
-            }
+        VStack {
+            Text("Hello, Sign Up")
         }
     }
 }
 
-struct ResistrationScreen_Previews: PreviewProvider {
+struct SignUpScreen_Previews: PreviewProvider {
     static var previews: some View {
         SignUpScreen()
     }

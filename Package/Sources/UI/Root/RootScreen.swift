@@ -9,21 +9,22 @@ import SwiftUI
 
 public struct RootScreen: View {
     
-    public init() {}
-    
-    @StateObject var viewModel: RootViewModel = .shared
+    @StateObject var viewModel: RootViewModel
     
     public var body: some View {
         switch(viewModel.state) {
         case .initialized:
             SplashScreen()
-                .onAppear { viewModel.onAppear() }
-                .onDisappear { viewModel.onDisappear() }
         case .loggedOut:
-            SignUpOrInScreen()
+            SignUpHomeScreen() { viewModel.updateState(.loggedIn) }
         case .loggedIn:
             TabHomeScreen()
         }
+    }
+    
+    
+    public init(_ viewModel: RootViewModel? = nil) {
+        _viewModel = StateObject(wrappedValue: viewModel ?? .init())
     }
 }
 
