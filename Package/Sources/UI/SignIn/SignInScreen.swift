@@ -9,7 +9,7 @@ import SwiftUI
 
 public struct SignInScreen: View {
     
-    @StateObject private var viewModel: SignInViewModel
+    @StateObject private var viewModel: SignInViewModel = .init()
     var onComplete: (() -> Void)
     
     public var body: some View {
@@ -19,11 +19,7 @@ public struct SignInScreen: View {
             }
     }
     
-    public init(
-        _ viewModel: SignInViewModel? = nil,
-        _ onComplete: @escaping (() -> Void)
-    ) {
-        _viewModel = StateObject(wrappedValue: viewModel ?? .init())
+    public init(_ onComplete: @escaping (() -> Void)) {
         self.onComplete = onComplete
     }
 }

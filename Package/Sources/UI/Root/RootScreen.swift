@@ -9,7 +9,7 @@ import SwiftUI
 
 public struct RootScreen: View {
     
-    @StateObject var viewModel: RootViewModel
+    @StateObject private var viewModel: RootViewModel = .init()
     
     public var body: some View {
         switch(viewModel.state) {
@@ -23,9 +23,7 @@ public struct RootScreen: View {
     }
     
     
-    public init(_ viewModel: RootViewModel? = nil) {
-        _viewModel = StateObject(wrappedValue: viewModel ?? .init())
-    }
+    public init() {}
 }
 
 struct ContentView_Previews: PreviewProvider {

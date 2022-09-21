@@ -9,7 +9,7 @@ import SwiftUI
 
 public struct SignUpHomeScreen: View {
     
-    @StateObject private var viewModel: SignUpHomeViewModel
+    @StateObject private var viewModel: SignUpHomeViewModel = .init()
     private var onLoggedIn: (() -> Void)
     
     public var body: some View {
@@ -29,11 +29,7 @@ public struct SignUpHomeScreen: View {
             }
     }
     
-    public init(
-        _ signUpHomeViewModel: SignUpHomeViewModel? = nil,
-        onLoggedIn: @escaping (() -> Void)
-    ) {
-        _viewModel = StateObject(wrappedValue: signUpHomeViewModel ?? .init())
+    public init(onLoggedIn: @escaping (() -> Void)) {
         self.onLoggedIn = onLoggedIn
     }
 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 public struct TabHomeScreen: View {
     
-    @StateObject var viewModel: TabHomeViewModel
+    @StateObject private var viewModel: TabHomeViewModel = .init()
     
     public var body: some View {
         TabView {
@@ -26,9 +26,7 @@ public struct TabHomeScreen: View {
         }
     }
     
-    public init(_ viewModel: TabHomeViewModel? = nil) {
-        _viewModel = StateObject(wrappedValue: viewModel ?? .init())
-    }
+    public init() {}
 }
 
 struct TabHome_Previews: PreviewProvider {
