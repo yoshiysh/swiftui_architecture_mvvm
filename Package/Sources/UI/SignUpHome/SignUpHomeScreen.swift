@@ -76,7 +76,7 @@ private struct SignInButton: View {
                 .padding()
         }
         .buttonStyle(.bordered)
-        .tint(.white.opacity(0))
+        .tint(.white.opacity(0.001))
         .overlay(
             RoundedRectangle(cornerRadius: 12)
                 .stroke(.blue, lineWidth: 2)
