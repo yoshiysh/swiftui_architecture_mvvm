@@ -10,12 +10,22 @@ import SwiftUI
 public struct SignInScreen: View {
     
     @StateObject private var viewModel: SignInViewModel = .init()
+    @FocusState var focusState: SignInFocusState?
+    
     var onComplete: (() -> Void)
     
     public var body: some View {
-        SignInView(viewModel)
+        SignInView(viewModel: viewModel, focusState: _focusState)
             .onChange(of: viewModel.state) { state in
                 if state == .suceess { onComplete() }
+            }
+            .onChange(of: viewModel.focusState) { state in
+                focusState = state
+            }
+            .onAppear {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    self.viewModel.updateFocusState(.email)
+                }
             }
     }
     
@@ -27,18 +37,20 @@ public struct SignInScreen: View {
 private struct SignInView: View {
     
     @ObservedObject var viewModel: SignInViewModel
+    @FocusState var focusState: SignInFocusState?
     
     var body: some View {
         VStack {
-            VStack {
+            VStack(spacing: 32) {
                 InputMailAddress(
                     text: $viewModel.email,
+                    focusState: _focusState,
                     onSubmit: { viewModel.onEmailCommit.send() }
                 )
-                .padding(.bottom)
                 
                 InputPassword(
                     text: $viewModel.password,
+                    focusState: _focusState,
                     onSubmit: { viewModel.onPasswordCommit.send() }
                 )
             }
@@ -50,16 +62,13 @@ private struct SignInView: View {
             )
             .frame(maxHeight: .infinity, alignment: .bottom)
         }
-        .padding(.horizontal)
-    }
-    
-    public init(_ viewModel: SignInViewModel) {
-        self.viewModel = viewModel
+        .padding()
     }
 }
 
 private struct InputMailAddress: View {
     @Binding var text: String
+    @FocusState var focusState: SignInFocusState?
     var onSubmit: (() -> Void)
     
     var body: some View {
@@ -71,6 +80,7 @@ private struct InputMailAddress: View {
                 
                 TextField("メールアドレス", text: $text)
                     .frame(height: 36)
+                    .focused($focusState, equals: .email)
                     .submitLabel(.next)
                     .onSubmit { onSubmit() }
             }
@@ -82,6 +92,7 @@ private struct InputMailAddress: View {
 
 private struct InputPassword: View {
     @Binding var text: String
+    @FocusState var focusState: SignInFocusState?
     var onSubmit: (() -> Void)
     
     var body: some View {
@@ -93,6 +104,7 @@ private struct InputPassword: View {
                 
                 SecureField("6~12文字のパスワード", text: $text)
                     .frame(height: 36)
+                    .focused($focusState, equals: .password)
                     .submitLabel(.done)
                     .onSubmit { onSubmit() }
             }

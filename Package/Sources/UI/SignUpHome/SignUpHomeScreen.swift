@@ -39,11 +39,10 @@ private struct SignUpOrInView: View {
     @ObservedObject var viewModel: SignUpHomeViewModel
     
     var body: some View {
-        VStack {
+        VStack(spacing: 32) {
             SignInButton(
                 action: { viewModel.updateState(.signIn) }
             )
-            .padding(.bottom)
             
             SignUpButton(
                 action: { viewModel.updateState(.signUp) }

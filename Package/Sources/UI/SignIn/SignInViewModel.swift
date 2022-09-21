@@ -16,7 +16,7 @@ public final class SignInViewModel: ObservableObject {
     @Published var email: String = ""
     @Published var password: String = ""
     @Published var isSubmitButtonEnabled: Bool = true
-    @Published private(set) var focusState: SignInState? = .email
+    @Published private(set) var focusState: SignInFocusState? = nil
     
     private let useCase: AuthUseCaseProtcol
     private var cancellables = Set<AnyCancellable>()
@@ -25,16 +25,24 @@ public final class SignInViewModel: ObservableObject {
     var onPasswordCommit: PassthroughSubject<Void, Never> = .init()
     var onCommit: PassthroughSubject<Void, Never> = .init()
 
+    func updateFocusState(_ state: SignInFocusState?) {
+        focusState = state
+    }
+    
+    private func updateViewState(_ state: SignInViewState) {
+        self.state = state
+    }
+    
     private func startObserver() {
         onEmailCommit
             .sink(receiveValue: { [weak self] value in
-                self?.focusState = .password
+                self?.updateFocusState(.password)
             })
             .store(in: &cancellables)
         
         onPasswordCommit
             .sink(receiveValue: { [weak self] value in
-                self?.focusState = nil
+                self?.updateFocusState(nil)
                 self?.isSubmitButtonEnabled = true
             })
             .store(in: &cancellables)
@@ -42,27 +50,23 @@ public final class SignInViewModel: ObservableObject {
         onCommit
             .sink(receiveValue: { [weak self] value in
 //                self?.fetch()
-                self?.updateState(.suceess)
+                self?.updateViewState(.suceess)
             })
             .store(in: &cancellables)
     }
     
-    private func updateState(_ state: SignInViewState) {
-        self.state = state
-    }
-    
     private func fetch() {
-        updateState(.loading)
+        updateViewState(.loading)
         useCase.login(email: self.email, password: self.password)
             .sink(receiveCompletion: { [weak self] completion in
                 switch completion {
                 case .finished:
                     break
                 case .failure(_):
-                    self?.updateState(.error)
+                    self?.updateViewState(.error)
                 }
             }, receiveValue: { [weak self] value in
-                self?.updateState(.suceess)
+                self?.updateViewState(.suceess)
             })
             .store(in: &cancellables)
     }
