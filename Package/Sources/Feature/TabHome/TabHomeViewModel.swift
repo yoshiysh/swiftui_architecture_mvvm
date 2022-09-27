@@ -22,8 +22,10 @@ public final class TabHomeViewModel: ObservableObject {
     
     func getUser() async {
         do {
-            try await repository.fetchUser(userName: "yoshi991")
-        } catch { error
+            let user = try await repository.fetchUser(userName: "yoshi991")
+            debugPrint("user: \(user)")
+        } catch {
+            debugPrint("error: \(error)")
         }
     }
     
