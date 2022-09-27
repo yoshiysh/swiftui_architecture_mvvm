@@ -8,6 +8,7 @@
 import Foundation
 
 protocol BaseRequestProtocol: BaseAPIProtocol {
+    var body: String { get }
     var queryItems: [URLQueryItem] { get }
 }
 
@@ -21,7 +22,6 @@ extension BaseRequestProtocol {
         urlRequest.url = components?.url
         urlRequest.httpMethod = method.rawValue
         urlRequest.allHTTPHeaderFields = headers
-        urlRequest.timeoutInterval = TimeInterval(30)
         return urlRequest
     }
 }

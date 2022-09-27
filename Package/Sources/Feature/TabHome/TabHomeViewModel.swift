@@ -18,12 +18,25 @@ public final class TabHomeViewModel: ObservableObject {
     
     private var cancellables = Set<AnyCancellable>()
     
-    public init() {}
+    public init() {
+        Task {
+            await getUserAsync()
+        }
+    }
     
-    func getUser() async {
+    func getUserAsync() async {
         do {
-            let user = try await repository.fetchUser(userName: "yoshi991")
+            let user = try await repository.fetchUserAsync(userName: "yoshi991")
             debugPrint("user: \(user)")
+        } catch {
+            debugPrint("error: \(error)")
+        }
+    }
+   
+    func searchAsync() async {
+        do {
+            let repositories = try await repository.searchRepositoryAsync(keyword: "swift", language: nil, hasStars: nil, topic: nil)
+            debugPrint("repositories: \(repositories)")
         } catch {
             debugPrint("error: \(error)")
         }

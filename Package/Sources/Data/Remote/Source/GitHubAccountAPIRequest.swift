@@ -13,6 +13,7 @@ struct GitHubAccountAPIRequest: BaseRequestProtocol {
     
     var method: HTTPMethod = .get
     var path: String = "/users"
+    var body: String = ""
     var queryItems: [URLQueryItem] = []
     
     init(userName: String) {

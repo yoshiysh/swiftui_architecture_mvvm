@@ -9,4 +9,5 @@ public enum NetworkErrorType: Error {
     case networkError(code: Int, description: String)
     case decodeError(reason: String)
     case irregularError(info: String)
+    case finishedWithoutValue
 }

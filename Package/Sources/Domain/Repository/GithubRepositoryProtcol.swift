@@ -5,6 +5,15 @@
 //  Created by Yoshiki Hemmi on 2022/09/27.
 //
 
+import Combine
+
 public protocol GithubRepositoryProtcol {
-    func fetchUser(userName: String) async throws -> UserEntity
+    func fetchUserAsync(userName: String) async throws -> UserEntity
+    
+    func searchRepositoryAsync(
+        keyword: String?,
+        language: String?,
+        hasStars: Int?,
+        topic: String?
+    ) async throws -> SearchResponseEntity
 }
