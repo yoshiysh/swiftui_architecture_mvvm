@@ -12,7 +12,7 @@ public final class GithubRepository {
 }
 
 extension GithubRepository: GithubRepositoryProtcol {
-    public func fetchUser(userName: String) async throws -> UserResponse {
+    public func fetchUser(userName: String) async throws -> UserModel {
         let request = GitHubAccountAPIRequest(userName: userName)
         return try await ApiClient.call(request)
     }

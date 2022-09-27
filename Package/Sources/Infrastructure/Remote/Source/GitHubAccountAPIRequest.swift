@@ -9,10 +9,10 @@ import Foundation
 import Domain
 
 struct GitHubAccountAPIRequest: BaseRequestProtocol {
-    typealias ResponseType = UserResponse
+    typealias ResponseType = UserModel
     
     var method: HTTPMethod = .get
-    var path: String = ""
+    var path: String = "/users"
     var queryItems: [URLQueryItem] = []
     
     init(userName: String) {

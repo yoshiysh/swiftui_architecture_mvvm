@@ -8,7 +8,7 @@
 import Foundation
 
 protocol BaseAPIProtocol {
-    associatedtype ResponseType: Codable
+    associatedtype ResponseType: Decodable
 
     var method: HTTPMethod { get }
     var baseUrl: URL { get }

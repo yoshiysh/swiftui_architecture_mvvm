@@ -6,6 +6,11 @@
 //
 
 public struct UserModel: Codable {
-    let name: String
-    let id: Int
+    public let login: String
+    public let id: Int
+    public let avatarUrl: String
+    public let url: String
+    public let reposUrl: String
+    public let followers: Int
+    public let following: Int
 }

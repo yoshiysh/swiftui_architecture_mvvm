@@ -6,9 +6,5 @@
 //
 
 public struct UserResponse: Codable {
-    var data: [UserModel]
-    
-    public init(from decoder: Decoder) throws {
-        data = try decoder.singleValueContainer().decode([UserModel].self)
-    }
+    public let data: [UserModel]
 }
