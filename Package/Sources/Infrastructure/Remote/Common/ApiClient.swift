@@ -18,10 +18,13 @@ struct ApiClient {
     }()
     
     static func call<T, V>(_ request: T) async throws -> V
-        where T: BaseRequestProtocol, V: Codable, T.ResponseType == V {
+    where T: BaseRequestProtocol, V: Codable, T.ResponseType == V {
+//        debugPrint("[ApiClient] request: \(request.asURLRequest())")
         
-        let result = try await session.data(for: request.asURLRequest())
-        let data = try validate(data: result.0, response: result.1)
+        let response = try await session.data(for: request.asURLRequest())
+//        debugPrint("[ApiClient] response: \(response)")
+        
+        let data = try validate(data: response.0, response: response.1)
         return try decoder.decode(V.self, from: data)
     }
     
