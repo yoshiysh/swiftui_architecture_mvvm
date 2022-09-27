@@ -7,13 +7,25 @@
 
 import Foundation
 import Combine
+import DI
+import Domain
 
 @MainActor
 public final class TabHomeViewModel: ObservableObject {
     
+    @Inject(.githubRepository)
+    private var repository: GithubRepositoryProtcol
+    
     private var cancellables = Set<AnyCancellable>()
     
     public init() {}
+    
+    func getUser() async {
+        do {
+            try await repository.fetchUser(userName: "yoshi991")
+        } catch { error
+        }
+    }
     
     deinit {
         cancellables.forEach { $0.cancel() }
