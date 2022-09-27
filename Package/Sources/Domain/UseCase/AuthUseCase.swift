@@ -23,9 +23,9 @@ public final class AuthUseCase: AuthUseCaseProtcol {
 
     public func login(email: String, password: String) -> AnyPublisher<Void, Error> {
         if (emailValidater(email: email)) {
-            return Fail(error: AuthError.invalid).eraseToAnyPublisher()
+            return Fail(error: AuthErrorType.invalid).eraseToAnyPublisher()
         }
-        return Fail(error: AuthError.invalid).eraseToAnyPublisher()
+        return Fail(error: AuthErrorType.invalid).eraseToAnyPublisher()
     }
     
     public init() {}

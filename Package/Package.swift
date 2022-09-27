@@ -13,8 +13,8 @@ let package = Package(
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(name: "DI", targets: ["DI"]),
         .library(name: "Domain", targets: ["Domain"]),
-        .library(name: "Infrastructure", targets: ["Infrastructure"]),
-        .library(name: "UI", targets: ["UI"]),
+        .library(name: "Data", targets: ["Data"]),
+        .library(name: "Feature", targets: ["Feature"]),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -27,10 +27,10 @@ let package = Package(
             name: "DI",
             dependencies: [
                 "Domain",
-                "Infrastructure"
+                "Data"
             ]),
         .target(
-            name: "UI",
+            name: "Feature",
             dependencies: [
                 "DI",
                 "Domain"
@@ -39,7 +39,7 @@ let package = Package(
             name: "Domain",
             dependencies: []),
         .target(
-            name: "Infrastructure",
+            name: "Data",
             dependencies: [
                 "Domain"
             ]),

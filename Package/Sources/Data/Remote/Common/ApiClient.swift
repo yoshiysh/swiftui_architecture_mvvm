@@ -30,10 +30,10 @@ struct ApiClient {
     
     static func validate(data: Data, response: URLResponse) throws -> Data {
         guard let code = (response as? HTTPURLResponse)?.statusCode else {
-            throw NetworkError.networkError(code: -1, description: String(data: data, encoding: .utf8) ?? "Network Error")
+            throw NetworkErrorType.networkError(code: -1, description: String(data: data, encoding: .utf8) ?? "Network Error")
         }
         guard successRange.contains(code) else {
-            throw NetworkError.networkError(code: code, description: "out of statusCode range")
+            throw NetworkErrorType.networkError(code: code, description: "out of statusCode range")
         }
         return data
     }
@@ -41,11 +41,11 @@ struct ApiClient {
     static func validateCode(data: Data, response: URLResponse) throws -> Data {
         switch (response as? HTTPURLResponse)?.statusCode {
         case .some(let code) where code == 401:
-            throw NetworkError.networkError(code: code, description: "Unauthorized")
+            throw NetworkErrorType.networkError(code: code, description: "Unauthorized")
         case .some(let code) where code == 404:
-            throw NetworkError.networkError(code: code, description: "Not Found")
+            throw NetworkErrorType.networkError(code: code, description: "Not Found")
         case .none:
-            throw NetworkError.irregularError(info: "Irregular Error")
+            throw NetworkErrorType.irregularError(info: "Irregular Error")
         case .some:
             return data
         }

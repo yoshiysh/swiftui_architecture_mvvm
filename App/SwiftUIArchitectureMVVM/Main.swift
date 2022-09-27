@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import UI
+import Feature
 
 @main
 struct Main: App {

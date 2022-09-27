@@ -1,11 +1,11 @@
 //
-//  NetworkError.swift
+//  NetworkErrorType.swift
 //  
 //
 //  Created by Yoshiki Hemmi on 2022/09/27.
 //
 
-public enum NetworkError: Error {
+public enum NetworkErrorType: Error {
     case networkError(code: Int, description: String)
     case decodeError(reason: String)
     case irregularError(info: String)

@@ -6,7 +6,7 @@
 //
 
 import Domain
-import Infrastructure
+import Data
 
 public extension DependencyObjects {
     static let githubRepository = DependencyObject<GithubRepositoryProtcol> {

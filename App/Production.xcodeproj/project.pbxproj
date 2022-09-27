@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4D87B43628D2D3F8006BD311 /* UI in Frameworks */ = {isa = PBXBuildFile; productRef = 4D87B43528D2D3F8006BD311 /* UI */; };
+		4D2B83F228E2E522007BA6B3 /* Feature in Frameworks */ = {isa = PBXBuildFile; productRef = 4D2B83F128E2E522007BA6B3 /* Feature */; };
 		4DB4328528D2DCE000A2F053 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4DB4328328D2DCE000A2F053 /* Assets.xcassets */; };
 		4DB4328728D2DD1200A2F053 /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DB4328428D2DCE000A2F053 /* Main.swift */; };
 /* End PBXBuildFile section */
@@ -23,7 +23,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D87B43628D2D3F8006BD311 /* UI in Frameworks */,
+				4D2B83F228E2E522007BA6B3 /* Feature in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,7 +88,7 @@
 			);
 			name = Production;
 			packageProductDependencies = (
-				4D87B43528D2D3F8006BD311 /* UI */,
+				4D2B83F128E2E522007BA6B3 /* Feature */,
 			);
 			productName = swiftui_architecture_mvvm;
 			productReference = 4DDA0F9E28D089D80021D6F3 /* Production.app */;
@@ -346,9 +346,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		4D87B43528D2D3F8006BD311 /* UI */ = {
+		4D2B83F128E2E522007BA6B3 /* Feature */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = UI;
+			productName = Feature;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

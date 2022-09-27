@@ -6,5 +6,5 @@
 //
 
 public protocol GithubRepositoryProtcol {
-    func fetchUser(userName: String) async throws -> UserModel
+    func fetchUser(userName: String) async throws -> UserEntity
 }

@@ -6,7 +6,7 @@
 //
 
 import Domain
-import Infrastructure
+import Data
 
 public class DependencyObjects {
     init() {}
