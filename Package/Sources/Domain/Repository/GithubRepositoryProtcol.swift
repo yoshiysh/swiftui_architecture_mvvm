@@ -16,4 +16,11 @@ public protocol GithubRepositoryProtcol {
         hasStars: Int?,
         topic: String?
     ) async throws -> SearchResponseEntity
+    
+    func searchRepositoryPublisher(
+        keyword: String?,
+        language: String?,
+        hasStars: Int?,
+        topic: String?
+    ) -> AnyPublisher<SearchResponseEntity, NetworkErrorType>
 }

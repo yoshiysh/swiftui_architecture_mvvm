@@ -47,7 +47,7 @@ struct ApiClient {
             throw NetworkErrorType.networkError(code: -1, description: String(data: data, encoding: .utf8) ?? "Network Error")
         }
         guard successRange.contains(code) else {
-            throw NetworkErrorType.networkError(code: code, description: "out of statusCode range")
+            throw NetworkErrorType.networkError(code: code, description: "Out of status code range")
         }
         return data
     }

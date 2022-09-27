@@ -13,10 +13,10 @@ extension Publisher {
     func validate<T>(statusCode range: T) -> Publishers.TryMap<Self, Data> where T:Sequence, T.Iterator.Element == Int {
         tryMap {
             guard let output = $0 as? (Data, HTTPURLResponse) else {
-                throw NetworkErrorType.irregularError(info: "irregular error")
+                throw NetworkErrorType.irregularError(info: "Irregular error")
             }
             guard range.contains(output.1.statusCode) else {
-                throw NetworkErrorType.networkError(code: output.1.statusCode, description: "out of status code range")
+                throw NetworkErrorType.networkError(code: output.1.statusCode, description: "Out of status code range")
             }
             return output.0
         }

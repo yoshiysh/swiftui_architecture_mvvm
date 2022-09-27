@@ -13,6 +13,9 @@ public final class GithubRepository {
 }
 
 extension GithubRepository: GithubRepositoryProtcol {
+    
+    // MARK: api w/ async
+    
     public func fetchUserAsync(userName: String) async throws -> UserEntity {
         let request = GitHubAccountAPIRequest(userName: userName)
         return try await ApiClient.call(request)
@@ -26,5 +29,17 @@ extension GithubRepository: GithubRepositoryProtcol {
     ) async throws -> SearchResponseEntity {
         let request = GitHubSearchAPIRequest(keyword: keyword, language: language, hasStars: hasStars, topic: topic)
         return try await ApiClient.publish(request).async()
+    }
+    
+    // MARK: api w/ AnyPublisher
+    
+    public func searchRepositoryPublisher(
+        keyword: String?,
+        language: String?,
+        hasStars: Int?,
+        topic: String?
+    ) -> AnyPublisher<SearchResponseEntity, NetworkErrorType> {
+        let request = GitHubSearchAPIRequest(keyword: keyword, language: language, hasStars: hasStars, topic: topic)
+        return ApiClient.publish(request)
     }
 }

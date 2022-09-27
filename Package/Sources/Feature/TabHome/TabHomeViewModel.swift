@@ -19,9 +19,11 @@ public final class TabHomeViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     public init() {
-        Task {
-            await getUserAsync()
-        }
+//        Task {
+//            await getUserAsync()
+//        }
+        
+        searchPublisher()
     }
     
     func getUserAsync() async {
@@ -40,6 +42,21 @@ public final class TabHomeViewModel: ObservableObject {
         } catch {
             debugPrint("error: \(error)")
         }
+    }
+    
+    func searchPublisher() {
+        repository.searchRepositoryPublisher(keyword: "swift", language: nil, hasStars: nil, topic: nil)
+            .sink(receiveCompletion: { [weak self] result in
+                switch result {
+                case .finished:
+                    debugPrint("result: \(result)")
+                case .failure(let error):
+                    debugPrint("error: \(error)")
+                }
+            }, receiveValue: { value in
+                debugPrint("result: \(value)")
+            })
+            .store(in: &cancellables)
     }
     
     deinit {
