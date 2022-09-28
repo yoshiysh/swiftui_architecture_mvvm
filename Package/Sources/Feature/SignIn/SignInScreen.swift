@@ -15,18 +15,22 @@ public struct SignInScreen: View {
     var onComplete: (() -> Void)
     
     public var body: some View {
-        SignInView(viewModel: viewModel, focusState: _focusState)
-            .onChange(of: viewModel.state) { state in
-                if state == .suceess { onComplete() }
+        NavigationView {
+            SignInView(viewModel: viewModel, focusState: _focusState)
+                .navigationTitle("Sign In")
+        }
+        .onChange(of: viewModel.state) { state in
+            if state == .suceess { onComplete() }
+        }
+        .onChange(of: viewModel.focusState) { state in
+            focusState = state
+        }
+        .onAppear {
+            Task {
+                try await Task.sleep(nanoseconds: 200_000_000)
+                self.viewModel.updateFocusState(.email)
             }
-            .onChange(of: viewModel.focusState) { state in
-                focusState = state
-            }
-            .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                    self.viewModel.updateFocusState(.email)
-                }
-            }
+        }
     }
     
     public init(_ onComplete: @escaping (() -> Void)) {
@@ -54,7 +58,6 @@ private struct SignInView: View {
                     onSubmit: { viewModel.onPasswordCommit.send() }
                 )
             }
-            .padding(.vertical)
             
             LoginButton(
                 enabled: $viewModel.isSubmitButtonEnabled,

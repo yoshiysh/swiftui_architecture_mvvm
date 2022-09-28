@@ -11,7 +11,7 @@ public struct RepositoryEntity: Codable {
     public let id: Int
     public let name: String
     public let fullName: String
-    public let owner: OwnerEntity
+    public let owner: UserEntity
     public let htmlUrl: URL
     public let description: String?
     public let language: String?

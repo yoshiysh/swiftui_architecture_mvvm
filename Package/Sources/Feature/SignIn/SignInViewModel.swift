@@ -75,3 +75,4 @@ public final class SignInViewModel: ObservableObject {
         self.useCase = useCase
         startObserver()
     }
+}

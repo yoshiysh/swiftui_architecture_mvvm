@@ -18,14 +18,10 @@ public final class TabHomeViewModel: ObservableObject {
     
     private var cancellables = Set<AnyCancellable>()
     
-    public init() {
-//        Task {
-//            await getUserAsync()
-//        }
-        
-        searchPublisher()
-    }
+    public init() {}
     
+    /// Usage:
+    /// Task { await getUserAsync() }
     func getUserAsync() async {
         do {
             let user = try await repository.fetchUserAsync(userName: "yoshi991")
@@ -35,6 +31,8 @@ public final class TabHomeViewModel: ObservableObject {
         }
     }
    
+    /// Usage:
+    /// Task { await searchAsync() }
     func searchAsync() async {
         do {
             let repositories = try await repository.searchRepositoryAsync(keyword: "swift", language: nil, hasStars: nil, topic: nil)
@@ -44,6 +42,8 @@ public final class TabHomeViewModel: ObservableObject {
         }
     }
     
+    /// Usage:
+    /// searchPublisher()
     func searchPublisher() {
         repository.searchRepositoryPublisher(keyword: "swift", language: nil, hasStars: nil, topic: nil)
             .sink(success: { [weak self] result in

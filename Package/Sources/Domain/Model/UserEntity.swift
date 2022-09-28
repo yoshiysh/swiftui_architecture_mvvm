@@ -13,6 +13,6 @@ public struct UserEntity: Codable {
     public let avatarUrl: URL
     public let url: URL
     public let reposUrl: String
-    public let followers: Int
-    public let following: Int
+    public let followers: Int?
+    public let following: Int?
 }
