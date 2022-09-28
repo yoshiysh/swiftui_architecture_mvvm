@@ -46,20 +46,13 @@ public final class TabHomeViewModel: ObservableObject {
     
     func searchPublisher() {
         repository.searchRepositoryPublisher(keyword: "swift", language: nil, hasStars: nil, topic: nil)
-            .sink(receiveCompletion: { [weak self] result in
-                switch result {
-                case .finished:
-                    debugPrint("result: \(result)")
-                case .failure(let error):
-                    debugPrint("error: \(error)")
-                }
-            }, receiveValue: { value in
-                debugPrint("result: \(value)")
+            .sink(success: { [weak self] result in
+                debugPrint("result: \(result)")
+            }, failure: { [weak self] error in
+                debugPrint("error: \(error)")
+            }, completion: {
+                debugPrint("completion")
             })
             .store(in: &cancellables)
-    }
-    
-    deinit {
-        cancellables.forEach { $0.cancel() }
     }
 }

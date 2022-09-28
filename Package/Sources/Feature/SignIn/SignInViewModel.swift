@@ -75,8 +75,3 @@ public final class SignInViewModel: ObservableObject {
         self.useCase = useCase
         startObserver()
     }
-    
-    deinit {
-        cancellables.forEach { $0.cancel() }
-    }
-}

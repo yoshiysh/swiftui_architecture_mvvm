@@ -30,8 +30,4 @@ public final class SignUpHomeViewModel: ObservableObject {
     public init() {
         startObserver()
     }
-    
-    deinit {
-        cancellables.forEach { $0.cancel() }
-    }
 }

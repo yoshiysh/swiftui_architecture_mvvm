@@ -26,8 +26,4 @@ public final class RootViewModel: ObservableObject {
     public init() {
         getUser()
     }
-    
-    deinit {
-        cancellables.forEach { $0.cancel() }
-    }
 }
