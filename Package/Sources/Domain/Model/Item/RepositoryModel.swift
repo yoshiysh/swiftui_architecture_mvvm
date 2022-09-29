@@ -16,6 +16,7 @@ public struct RepositoryModel: Identifiable, Equatable {
     public let description: String?
     public let language: String?
     public let stargazersCount: Int
+    public let updateAt: Date
     
     public init(
         id: Int,
@@ -25,7 +26,8 @@ public struct RepositoryModel: Identifiable, Equatable {
         htmlUrl: URL,
         description: String?,
         language: String?,
-        stargazersCount: Int
+        stargazersCount: Int,
+        updatedAt: Date
     ) {
         self.id = id
         self.name = name
@@ -35,18 +37,20 @@ public struct RepositoryModel: Identifiable, Equatable {
         self.description = description
         self.language = language
         self.stargazersCount = stargazersCount
+        self.updateAt = updatedAt
     }
 }
 
 public extension RepositoryModel {
     static let preview = RepositoryModel(
         id: 0,
-        name: "yoshi991",
-        fullName: "yoshi",
+        name: "GLSample4iOS",
+        fullName: "yoshi991/GLSample4iOS",
         owner: .preview,
-        htmlUrl: URL(string: "https://api.github.com/users/yoshi991")!,
+        htmlUrl: URL(string: "https://github.com/yoshi991/GLSample4iOS")!,
         description: "decription",
         language: "Swift",
-        stargazersCount: 1000
+        stargazersCount: 1000,
+        updatedAt: Date()
     )
 }

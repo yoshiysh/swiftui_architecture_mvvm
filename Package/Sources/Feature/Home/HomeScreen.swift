@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Domain
 
 public struct HomeScreen: View {
    
@@ -14,7 +15,7 @@ public struct HomeScreen: View {
     public var body: some View {
         NavigationView {
             HomeView(viewModel: viewModel)
-                .navigationTitle("Repositories")
+                .navigationTitle("Repository")
         }
         .onAppear {
             Task {
@@ -36,18 +37,41 @@ private struct HomeView: View {
             if data.isEmpty {
                 HomeEmptyView()
             } else {
-                HomeContentsView()
+                HomeContentsView(items: data)
             }
         default:
-            HomeEmptyView()
+            EmptyView()
         }
     }
 }
 
 private struct HomeContentsView: View {
     
+    @State var items: [RepositoryModel]
+    
     var body: some View {
-        Text("Contents")
+        ScrollView(.vertical) {
+            LazyVStack {
+                ForEach(items) { item in
+                    RepositoryCardView(item: binding(for: item))
+                }
+            }
+            .padding()
+        }
+    }
+    
+    private func binding(for model: RepositoryModel) -> Binding<RepositoryModel> {
+        Binding<RepositoryModel> {
+            guard let index = items.firstIndex(where: { $0.id == model.id }) else {
+                fatalError()
+            }
+            return items[index]
+        } set: { newValue in
+            guard let index = items.firstIndex(where: { $0.id == model.id }) else {
+                fatalError()
+            }
+            return items[index] = newValue
+        }
     }
 }
 
@@ -59,7 +83,18 @@ private struct HomeEmptyView: View {
 }
 
 struct HomeScreen_Previews: PreviewProvider {
+    private struct HomeContentsPreview: View {
+        @State private var model = [RepositoryModel.preview]
+        
+        var body: some View {
+            HomeContentsView(items: model)
+        }
+    }
+    
     static var previews: some View {
-        HomeScreen()
+        Group {
+            HomeContentsPreview()
+            HomeEmptyView()
+        }
     }
 }

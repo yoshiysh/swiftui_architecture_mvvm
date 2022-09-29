@@ -9,11 +9,95 @@ import SwiftUI
 import Domain
 
 public struct RepositoryCardView: View {
-    
     @Binding var item: RepositoryModel
     
     public var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        RepositoryCardContentView(item: $item)
+            .padding()
+            .overlay(
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(Color.gray, lineWidth: 1)
+            )
+    }
+}
+
+private struct RepositoryCardContentView: View {
+    @Binding var item: RepositoryModel
+    
+    var body: some View {
+        HStack(alignment: .top, spacing: 16) {
+            AsyncImage(url: item.owner.avatarUrl) { image in
+                image.resizable()
+            } placeholder: {
+                Color.gray
+            }
+            .frame(width: 48, height: 48)
+            .clipShape(Circle())
+            .shadow(color: .gray, radius: 4, x: 0, y: 0)
+            
+            RepositoryInfoView(item: $item)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+}
+
+private struct RepositoryInfoView: View {
+    @Binding var item: RepositoryModel
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(item.owner.login)
+                .font(.title3)
+                .fontWeight(.bold)
+            
+            Text(item.name)
+                .font(.headline)
+            
+            Text(item.description ?? "")
+                .foregroundColor(.gray)
+                .font(.subheadline)
+                .lineLimit(3)
+            
+            Text("Updated At: \(DateUtil.shared.formatDate(from: item.updateAt, format: .YYYYMMDD))")
+                .font(.caption)
+                .foregroundColor(.gray)
+                .font(.subheadline)
+                .lineLimit(1)
+            
+            RepositoryTagsView(item: $item)
+        }
+    }
+}
+
+private struct RepositoryTagsView: View {
+    @Binding var item: RepositoryModel
+    private let raduis: CGFloat = 16
+    
+    var body: some View {
+        HStack {
+            if item.language != nil {
+                Text(item.language!)
+                    .foregroundColor(.white)
+                    .font(.subheadline)
+                    .lineLimit(1)
+                    .padding(8)
+                    .background(.blue)
+                    .clipShape(RoundedRectangle(cornerRadius: raduis))
+            }
+            
+            Label(title: {
+                Text("\(item.stargazersCount)")
+                    .foregroundColor(.white)
+                    .font(.subheadline)
+                    .lineLimit(1)
+            }, icon: {
+                Image(systemName: "star")
+                    .foregroundColor(.white)
+            })
+            .padding(8)
+            .background(.yellow)
+            .clipShape(RoundedRectangle(cornerRadius: raduis))
+        }
     }
 }
 
@@ -28,5 +112,6 @@ struct RepositoryCardView_Previews: PreviewProvider {
     
     static var previews: some View {
         Preview()
+            .previewLayout(.sizeThatFits)
     }
 }

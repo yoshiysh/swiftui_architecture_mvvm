@@ -22,7 +22,14 @@ public final class HomeViewModel: ObservableObject {
     public init() {}
     
     func fetch() async {
-        if state == .loading { return }
+        switch state {
+        case .loading:
+            return
+        case .suceess(let items):
+            if !items.isEmpty { return }
+        default:
+            break
+        }
         state = .loading
         
         await searchRepositories(keyword: "swift")
@@ -36,14 +43,15 @@ public final class HomeViewModel: ObservableObject {
     ) async {
         do {
             let result = try await repository.searchRepositoryAsync(keyword: keyword, language: language, hasStars: hasStars, topic: topic)
-            handleSuccessResponse(items: result)
+            handleSuccessResponse(result: result)
         } catch {
+            debugPrint("error: \(error)")
             state = .error(NetworkErrorType.irregularError(info: error.localizedDescription.description))
         }
     }
     
     private func handleSuccessResponse(
-        items: [RepositoryModel],
+        result: [RepositoryModel],
         isRefresh: Bool = false
     ) {
         var items: [RepositoryModel]
@@ -55,7 +63,7 @@ public final class HomeViewModel: ObservableObject {
             items = []
         }
         
-        items.forEach { items.append($0) }
+        result.forEach { items.append($0) }
         state = .suceess(items)
     }
 }

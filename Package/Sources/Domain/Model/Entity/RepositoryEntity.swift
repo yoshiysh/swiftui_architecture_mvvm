@@ -16,6 +16,7 @@ public struct RepositoryEntity: Codable {
     let description: String?
     let language: String?
     let stargazersCount: Int
+    let updatedAt: Date
     
     public func convertItem() -> RepositoryModel {
         RepositoryModel(
@@ -26,6 +27,8 @@ public struct RepositoryEntity: Codable {
             htmlUrl: htmlUrl,
             description: description,
             language: language,
-            stargazersCount: stargazersCount)
+            stargazersCount: stargazersCount,
+            updatedAt: updatedAt
+        )
     }
 }

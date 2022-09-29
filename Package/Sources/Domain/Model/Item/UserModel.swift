@@ -38,7 +38,7 @@ public struct UserModel: Identifiable, Equatable {
 public extension UserModel {
     static let preview = UserModel(
         login: "yoshi991",
-        id: 0,
+        id: 22577999,
         avatarUrl: URL(string: "https://avatars.githubusercontent.com/u/22577999?v=4")!,
         url: URL(string: "https://api.github.com/users/yoshi991")!,
         reposUrl: URL(string: "https://api.github.com/users/yoshi991/repos")!,

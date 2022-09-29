@@ -17,12 +17,13 @@ struct ApiClient {
     private static let decoder: JSONDecoder = {
         let jsonDecoder = JSONDecoder()
         jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+        jsonDecoder.dateDecodingStrategy = .iso8601
         return jsonDecoder
     }()
     
     static func call<T, V>(_ request: T) async throws -> V where T: BaseRequestProtocol, V: Codable, T.ResponseType == V {
         var req = request.asURLRequest()
-        req.timeoutInterval = TimeInterval(timeout)
+//        req.timeoutInterval = TimeInterval(timeout)
 //        debugPrint("[ApiClient] request: \(req)")
         let response = try await session.data(for: req)
 //        debugPrint("[ApiClient] response: \(response)")
