@@ -10,19 +10,7 @@ import Combine
 public protocol GithubRepositoryProtcol {
     func fetchUserAsync(userName: String) async throws -> UserEntity
     
-    func searchRepositoryAsync(
-        keyword: String?,
-        language: String?,
-        hasStars: Int?,
-        topic: String?,
-        page: Int?
-    ) async throws -> [RepositoryEntity]
+    func searchRepositoryAsync(forQuery query: QueryDto) async throws -> [RepositoryEntity]
     
-    func searchRepositoryPublisher(
-        keyword: String?,
-        language: String?,
-        hasStars: Int?,
-        topic: String?,
-        page: Int?
-    ) -> AnyPublisher<[RepositoryEntity], NetworkErrorType>
+    func searchRepositoryPublisher(forQuery query: QueryDto) -> AnyPublisher<[RepositoryEntity], NetworkErrorType>
 }

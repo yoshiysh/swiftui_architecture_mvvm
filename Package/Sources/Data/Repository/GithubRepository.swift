@@ -8,9 +8,7 @@
 import Combine
 import Domain
 
-public final class GithubRepository {
-    private let perPage: Int = 10
-    
+public final class GithubRepository {    
     public init() {}
 }
 
@@ -23,42 +21,16 @@ extension GithubRepository: GithubRepositoryProtcol {
         return try await ApiClient.call(request)
     }
     
-    public func searchRepositoryAsync(
-        keyword: String?,
-        language: String?,
-        hasStars: Int?,
-        topic: String?,
-        page: Int?
-    ) async throws -> [RepositoryEntity] {
-        let request = GitHubSearchAPIRequest(
-            keyword: keyword,
-            language: language,
-            hasStars: hasStars,
-            topic: topic,
-            perPage: perPage,
-            page: page
-        )
+    public func searchRepositoryAsync(forQuery query: QueryDto) async throws -> [RepositoryEntity] {
+        let request = GitHubSearchAPIRequest(query: query)
         let response = try await ApiClient.publish(request).async()
         return response.items
     }
     
     // MARK: api w/ AnyPublisher
     
-    public func searchRepositoryPublisher(
-        keyword: String?,
-        language: String?,
-        hasStars: Int?,
-        topic: String?,
-        page: Int?
-    ) -> AnyPublisher<[RepositoryEntity], NetworkErrorType> {
-        let request = GitHubSearchAPIRequest(
-            keyword: keyword,
-            language: language,
-            hasStars: hasStars,
-            topic: topic,
-            perPage: perPage,
-            page: page
-        )
+    public func searchRepositoryPublisher(forQuery query: QueryDto) -> AnyPublisher<[RepositoryEntity], NetworkErrorType> {
+        let request = GitHubSearchAPIRequest(query: query)
         return ApiClient.publish(request).map { $0.items }
             .eraseToAnyPublisher()
     }

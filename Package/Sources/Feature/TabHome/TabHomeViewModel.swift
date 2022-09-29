@@ -17,6 +17,7 @@ public final class TabHomeViewModel: ObservableObject {
     private var repository: GithubRepositoryProtcol
     
     private var cancellables = Set<AnyCancellable>()
+    private var query = QueryDto(keyword: "ios", language: "swift")
     
     public init() {}
     
@@ -35,13 +36,7 @@ public final class TabHomeViewModel: ObservableObject {
     /// Task { await searchAsync() }
     func searchAsync() async {
         do {
-            let repositories = try await repository.searchRepositoryAsync(
-                keyword: "swift",
-                language: nil,
-                hasStars: nil,
-                topic: nil,
-                page: 1
-            )
+            let repositories = try await repository.searchRepositoryAsync(forQuery: query)
             debugPrint("repositories: \(repositories)")
         } catch {
             debugPrint("error: \(error)")
@@ -51,13 +46,7 @@ public final class TabHomeViewModel: ObservableObject {
     /// Usage:
     /// searchPublisher()
     func searchPublisher() {
-        repository.searchRepositoryPublisher(
-            keyword: "swift",
-            language: nil,
-            hasStars: nil,
-            topic: nil,
-            page: 1
-        )
+        repository.searchRepositoryPublisher(forQuery: query)
         .sink(success: { [weak self] result in
             debugPrint("result: \(result)")
         }, failure: { [weak self] error in

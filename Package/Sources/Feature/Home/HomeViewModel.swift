@@ -18,6 +18,7 @@ public final class HomeViewModel: ObservableObject {
     
     @Published private(set) var state: HomeViewState = .initialzed
     private var cancellables = Set<AnyCancellable>()
+    private var query = QueryDto(language: "swift")
     
     public init() {}
     
@@ -32,23 +33,12 @@ public final class HomeViewModel: ObservableObject {
         }
         state = .loading
         
-        await searchRepositories(keyword: "swift")
+        await search(query: query)
     }
     
-    private func searchRepositories(
-        keyword: String? = nil,
-        language: String? = nil,
-        hasStars: Int? = nil,
-        topic: String? = nil
-    ) async {
+    private func search(query: QueryDto) async {
         do {
-            let result = try await repository.searchRepositoryAsync(
-                keyword: keyword,
-                language: language,
-                hasStars: hasStars,
-                topic: topic,
-                page: 1
-            )
+            let result = try await repository.searchRepositoryAsync(forQuery: query)
             handleSuccessResponse(result: result)
         } catch {
             debugPrint("error: \(error)")
