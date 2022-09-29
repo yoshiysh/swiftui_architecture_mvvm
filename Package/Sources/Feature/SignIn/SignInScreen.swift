@@ -10,7 +10,7 @@ import SwiftUI
 public struct SignInScreen: View {
     
     @StateObject private var viewModel: SignInViewModel = .init()
-    @FocusState var focusState: SignInFocusState?
+    @FocusState private var focusState: SignInFocusState?
     
     var onComplete: (() -> Void)
     
