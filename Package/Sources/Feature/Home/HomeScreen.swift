@@ -32,20 +32,16 @@ private struct HomeView: View {
     @ObservedObject var viewModel: HomeViewModel
     
     var body: some View {
-        if case .suceess = viewModel.state {
-            if viewModel.data.isEmpty {
-                HomeEmptyView()
-            } else {
-                HomeContentsView(items: $viewModel.data.items) { item in
-                    if viewModel.shouldFecthNextPage(item: item) {
-                        Task {
-                            await viewModel.next()
-                        }
+        if viewModel.data.isEmpty {
+            EmptyView()
+        } else {
+            HomeContentsView(items: $viewModel.data.items) { item in
+                if viewModel.shouldFecthNextPage(item: item) {
+                    Task {
+                        await viewModel.next()
                     }
                 }
             }
-        } else {
-            EmptyView()
         }
     }
 }
@@ -58,7 +54,7 @@ private struct HomeContentsView: View {
     var body: some View {
         ScrollView(.vertical) {
             LazyVStack {
-                ForEach(items) { item in
+                ForEach(items, id: \.id) { item in
                     RepositoryCardView(item: binding(for: item))
                         .onAppear { onAppearItem(item)}
                 }

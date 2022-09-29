@@ -21,7 +21,7 @@ public final class HomeViewModel: ObservableObject {
     
     private var cancellables = Set<AnyCancellable>()
     private var defaultQuery = QueryDto(language: "swift")
-    private let offset = 2
+    private let offset = 1
     
     public init() {}
     
