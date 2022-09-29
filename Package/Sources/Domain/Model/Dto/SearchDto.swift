@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct QueryDto: Equatable {
+public struct QueryDto {
     public var keyword: String?
     public var language: String?
     public var sortType: SortType?

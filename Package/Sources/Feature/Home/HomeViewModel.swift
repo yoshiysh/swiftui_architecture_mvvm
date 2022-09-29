@@ -17,18 +17,41 @@ public final class HomeViewModel: ObservableObject {
     private var repository: GithubRepositoryProtcol
     
     @Published private(set) var state: HomeViewState = .initialzed
+    @Published var data: HomeDataModel = .init()
+    
     private var cancellables = Set<AnyCancellable>()
-    private var query = QueryDto(language: "swift")
+    private var defaultQuery = QueryDto(language: "swift")
+    private let offset = 2
     
     public init() {}
     
+    func shouldFecthNextPage(item: RepositoryEntity) -> Bool {
+        if case .suceess = state {
+            let current = data.findIndex(item: item)
+            let last = data.items.count - 1
+            return last - current == offset
+        } else { return false }
+    }
+    
     func fetch() async {
+        await fetch(forQuery: defaultQuery)
+    }
+    
+    func next() async {
+        data.query.page += 1
+        await fetch(forQuery: data.query, isForce: true)
+    }
+    
+    private func fetch(
+        forQuery query: QueryDto,
+        isForce force: Bool = false
+    ) async {
         switch state {
         case .loading:
             return
-        case .suceess(let data):
-            if !data.isEmpty { return }
-        default:
+        case .suceess:
+            if !force && (!data.isEmpty || !data.hasNextPage) { return }
+        case .initialzed, .error(_):
             break
         }
         state = .loading
@@ -38,8 +61,8 @@ public final class HomeViewModel: ObservableObject {
     
     private func search(query: QueryDto) async {
         do {
-            let result = try await repository.searchRepositoryAsync(forQuery: query)
-            handleSuccessResponse(result: result)
+            let response = try await repository.searchRepositoryAsync(forQuery: query)
+            handleSuccessResponse(response: response)
         } catch {
             debugPrint("error: \(error)")
             state = .error(NetworkErrorType.irregularError(info: error.localizedDescription.description))
@@ -47,19 +70,11 @@ public final class HomeViewModel: ObservableObject {
     }
     
     private func handleSuccessResponse(
-        result: [RepositoryEntity],
+        response: SearchResponseEntity,
         isRefresh: Bool = false
     ) {
-        var model: HomeDataModel
-        switch state {
-        case .suceess(let data):
-            model = data
-            if isRefresh { model.refresh() }
-        default:
-            model = .init()
-        }
-        
-        model.append(items: result)
-        state = .suceess(model)
+        if isRefresh { data.refresh() }
+        data.update(data: response)
+        state = .suceess
     }
 }

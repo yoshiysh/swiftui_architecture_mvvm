@@ -21,17 +21,15 @@ extension GithubRepository: GithubRepositoryProtcol {
         return try await ApiClient.call(request)
     }
     
-    public func searchRepositoryAsync(forQuery query: QueryDto) async throws -> [RepositoryEntity] {
+    public func searchRepositoryAsync(forQuery query: QueryDto) async throws -> SearchResponseEntity {
         let request = GitHubSearchAPIRequest(query: query)
-        let response = try await ApiClient.publish(request).async()
-        return response.items
+        return try await ApiClient.publish(request).async()
     }
     
     // MARK: api w/ AnyPublisher
     
-    public func searchRepositoryPublisher(forQuery query: QueryDto) -> AnyPublisher<[RepositoryEntity], NetworkErrorType> {
+    public func searchRepositoryPublisher(forQuery query: QueryDto) -> AnyPublisher<SearchResponseEntity, NetworkErrorType> {
         let request = GitHubSearchAPIRequest(query: query)
-        return ApiClient.publish(request).map { $0.items }
-            .eraseToAnyPublisher()
+        return ApiClient.publish(request)
     }
 }

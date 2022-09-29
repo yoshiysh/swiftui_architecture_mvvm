@@ -7,8 +7,7 @@
 
 import Domain
 
-public enum HomeViewState: Equatable {
-    case initialzed, loading
-    case suceess(HomeDataModel)
-    case error(NetworkErrorType)
+public enum HomeViewState {
+    case initialzed, loading, suceess
+    case error(Error)
 }
