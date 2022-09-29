@@ -47,7 +47,7 @@ private struct HomeView: View {
 
 private struct HomeContentsView: View {
     
-    @State var items: [RepositoryModel]
+    @State var items: [RepositoryEntity]
     
     var body: some View {
         ScrollView(.vertical) {
@@ -60,8 +60,8 @@ private struct HomeContentsView: View {
         }
     }
     
-    private func binding(for model: RepositoryModel) -> Binding<RepositoryModel> {
-        Binding<RepositoryModel> {
+    private func binding(for model: RepositoryEntity) -> Binding<RepositoryEntity> {
+        Binding<RepositoryEntity> {
             guard let index = items.firstIndex(where: { $0.id == model.id }) else {
                 fatalError()
             }
@@ -84,7 +84,7 @@ private struct HomeEmptyView: View {
 
 struct HomeScreen_Previews: PreviewProvider {
     private struct HomeContentsPreview: View {
-        @State private var model = [RepositoryModel.preview]
+        @State private var model = [RepositoryEntity.preview]
         
         var body: some View {
             HomeContentsView(items: model)

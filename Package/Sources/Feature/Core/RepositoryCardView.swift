@@ -9,7 +9,7 @@ import SwiftUI
 import Domain
 
 public struct RepositoryCardView: View {
-    @Binding var item: RepositoryModel
+    @Binding var item: RepositoryEntity
     
     public var body: some View {
         RepositoryCardContentView(item: $item)
@@ -22,7 +22,7 @@ public struct RepositoryCardView: View {
 }
 
 private struct RepositoryCardContentView: View {
-    @Binding var item: RepositoryModel
+    @Binding var item: RepositoryEntity
     
     var body: some View {
         HStack(alignment: .top, spacing: 16) {
@@ -42,7 +42,7 @@ private struct RepositoryCardContentView: View {
 }
 
 private struct RepositoryInfoView: View {
-    @Binding var item: RepositoryModel
+    @Binding var item: RepositoryEntity
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -58,7 +58,7 @@ private struct RepositoryInfoView: View {
                 .font(.subheadline)
                 .lineLimit(3)
             
-            Text("Updated At: \(DateUtil.shared.formatDate(from: item.updateAt, format: .YYYYMMDD))")
+            Text("Updated At: \(DateUtil.shared.formatDate(from: item.updatedAt, format: .YYYYMMDD))")
                 .font(.caption)
                 .foregroundColor(.gray)
                 .font(.subheadline)
@@ -70,7 +70,7 @@ private struct RepositoryInfoView: View {
 }
 
 private struct RepositoryTagsView: View {
-    @Binding var item: RepositoryModel
+    @Binding var item: RepositoryEntity
     private let raduis: CGFloat = 16
     
     var body: some View {
@@ -103,7 +103,7 @@ private struct RepositoryTagsView: View {
 
 struct RepositoryCardView_Previews: PreviewProvider {
     private struct Preview: View {
-        @State private var model = RepositoryModel.preview
+        @State private var model = RepositoryEntity.preview
         
         var body: some View {
             RepositoryCardView(item: $model)

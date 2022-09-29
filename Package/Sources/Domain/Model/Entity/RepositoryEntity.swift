@@ -7,28 +7,30 @@
 
 import Foundation
 
-public struct RepositoryEntity: Codable {
-    let id: Int
-    let name: String
-    let fullName: String
-    let owner: UserEntity
-    let htmlUrl: URL
-    let description: String?
-    let language: String?
-    let stargazersCount: Int
-    let updatedAt: Date
-    
-    public func convertItem() -> RepositoryModel {
-        RepositoryModel(
-            id: id,
-            name: name,
-            fullName: fullName,
-            owner: owner.convertItem(),
-            htmlUrl: htmlUrl,
-            description: description,
-            language: language,
-            stargazersCount: stargazersCount,
-            updatedAt: updatedAt
-        )
-    }
+public struct RepositoryEntity: Equatable, Identifiable {
+    public let id: Int
+    public let name: String
+    public let fullName: String
+    public let owner: UserEntity
+    public let htmlUrl: URL
+    public let description: String?
+    public let language: String?
+    public let stargazersCount: Int
+    public let updatedAt: Date
+}
+
+extension RepositoryEntity: Codable {}
+
+public extension RepositoryEntity {
+    static let preview = RepositoryEntity(
+        id: 0,
+        name: "GLSample4iOS",
+        fullName: "yoshi991/GLSample4iOS",
+        owner: .preview,
+        htmlUrl: URL(string: "https://github.com/yoshi991/GLSample4iOS")!,
+        description: "decription",
+        language: "Swift",
+        stargazersCount: 1000,
+        updatedAt: Date()
+    )
 }

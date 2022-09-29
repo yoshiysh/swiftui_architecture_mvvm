@@ -10,7 +10,7 @@ import Combine
 import Domain
 
 struct ApiClient {
-    private static let timeout: Int = 30
+    private static let timeout: Double = 30
     private static let successRange = 200..<300
     private static let retryCount: Int = 1
     private static let session = URLSession.shared
@@ -23,7 +23,7 @@ struct ApiClient {
     
     static func call<T, V>(_ request: T) async throws -> V where T: BaseRequestProtocol, V: Codable, T.ResponseType == V {
         var req = request.asURLRequest()
-//        req.timeoutInterval = TimeInterval(timeout)
+        req.timeoutInterval = TimeInterval(timeout)
 //        debugPrint("[ApiClient] request: \(req)")
         let response = try await session.data(for: req)
 //        debugPrint("[ApiClient] response: \(response)")

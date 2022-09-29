@@ -51,10 +51,10 @@ public final class HomeViewModel: ObservableObject {
     }
     
     private func handleSuccessResponse(
-        result: [RepositoryModel],
+        result: [RepositoryEntity],
         isRefresh: Bool = false
     ) {
-        var items: [RepositoryModel]
+        var items: [RepositoryEntity]
         switch state {
         case .suceess(let data):
             if isRefresh { items = [] }

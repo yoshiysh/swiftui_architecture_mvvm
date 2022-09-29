@@ -7,10 +7,8 @@
 
 import Foundation
 
-public struct SearchResponseEntity: Codable {
+public struct SearchResponseEntity: Equatable {
     public let items: [RepositoryEntity]
-    
-    public func convertItem() -> [RepositoryModel] {
-        items.map { $0.convertItem() }
-    }
 }
+
+extension SearchResponseEntity: Codable {}

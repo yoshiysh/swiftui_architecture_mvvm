@@ -8,19 +8,19 @@
 import Combine
 
 public protocol GithubRepositoryProtcol {
-    func fetchUserAsync(userName: String) async throws -> UserModel
+    func fetchUserAsync(userName: String) async throws -> UserEntity
     
     func searchRepositoryAsync(
         keyword: String?,
         language: String?,
         hasStars: Int?,
         topic: String?
-    ) async throws -> [RepositoryModel]
+    ) async throws -> [RepositoryEntity]
     
     func searchRepositoryPublisher(
         keyword: String?,
         language: String?,
         hasStars: Int?,
         topic: String?
-    ) -> AnyPublisher<[RepositoryModel], NetworkErrorType>
+    ) -> AnyPublisher<[RepositoryEntity], NetworkErrorType>
 }
