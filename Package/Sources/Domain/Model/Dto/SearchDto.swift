@@ -8,10 +8,11 @@
 import Foundation
 
 public struct QueryDto {
-    public var keyword: String? = nil
-    public var language: String? = nil
-    public var sortType: SortType? = nil
+    public var keyword: String?
+    public var language: String?
+    public var sortType: SortType?
     public var orderType: OrderType
+    public var hasStars: Bool
     public var perPage: Int
     public var page: Int
     
@@ -20,6 +21,7 @@ public struct QueryDto {
         language: String? = nil,
         sortType: SortType? = nil,
         orderType: OrderType = .desc,
+        hasStars: Bool = true,
         perPage: Int = 10,
         page: Int = 1
     ) {
@@ -27,6 +29,7 @@ public struct QueryDto {
         self.language = language
         self.sortType = sortType
         self.orderType = orderType
+        self.hasStars = hasStars
         self.perPage = perPage
         self.page = page
     }
@@ -47,6 +50,10 @@ public extension QueryDto {
         
         if let language = language, !language.isEmpty {
             params.append("language:\(language)")
+        }
+        
+        if hasStars {
+            params.append("stars:>=0")
         }
         
         let joinedParams = params.joined(separator: "+")
