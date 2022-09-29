@@ -35,11 +35,12 @@ private struct HomeView: View {
         if viewModel.data.isEmpty {
             EmptyView()
         } else {
-            HomeContentsView(items: $viewModel.data.items) { item in
-                if viewModel.shouldFecthNextPage(item: item) {
-                    Task {
-                        await viewModel.next()
-                    }
+            HomeContentsView(
+                items: $viewModel.data.items,
+                hasNextPage: viewModel.data.hasNextPage
+            ) {
+                Task {
+                    await viewModel.next()
                 }
             }
         }
@@ -49,14 +50,21 @@ private struct HomeView: View {
 private struct HomeContentsView: View {
     
     @Binding var items: [RepositoryEntity]
-    var onAppearItem: ((RepositoryEntity) -> Void)
+    @State var hasNextPage: Bool = true
+    var onAppearLoadingItem: (() -> Void)
     
     var body: some View {
         ScrollView(.vertical) {
             LazyVStack {
                 ForEach(items, id: \.id) { item in
                     RepositoryCardView(item: binding(for: item))
-                        .onAppear { onAppearItem(item)}
+                        .frame(maxWidth: .infinity)
+                }
+                
+                if hasNextPage {
+                    LoadingView()
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .onAppear { onAppearLoadingItem() }
                 }
             }
             .padding()
@@ -90,8 +98,7 @@ struct HomeScreen_Previews: PreviewProvider {
         @State private var model = [RepositoryEntity.preview]
         
         var body: some View {
-            HomeContentsView(items: $model) { _ in
-            }
+            HomeContentsView(items: $model) {}
         }
     }
     

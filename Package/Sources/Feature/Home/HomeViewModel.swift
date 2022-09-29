@@ -25,14 +25,6 @@ public final class HomeViewModel: ObservableObject {
     
     public init() {}
     
-    func shouldFecthNextPage(item: RepositoryEntity) -> Bool {
-        if case .suceess = state {
-            let current = data.findIndex(item: item)
-            let last = data.items.count - 1
-            return last - current == offset
-        } else { return false }
-    }
-    
     func fetch() async {
         await fetch(forQuery: defaultQuery)
     }
@@ -50,7 +42,7 @@ public final class HomeViewModel: ObservableObject {
         case .loading:
             return
         case .suceess:
-            if !force && (!data.isEmpty || !data.hasNextPage) { return }
+            if !force && !data.isEmpty { return }
         case .initialzed, .error(_):
             break
         }

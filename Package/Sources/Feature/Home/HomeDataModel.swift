@@ -13,7 +13,7 @@ public struct HomeDataModel {
     public var query: QueryDto = QueryDto(keyword: "swift")
     public var totalCount: Int = -1
     public var hasNextPage: Bool {
-        items.count >= totalCount
+        items.count < totalCount
     }
     
     public init(items: [RepositoryEntity] = []) {
