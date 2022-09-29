@@ -22,7 +22,7 @@ private struct SearchView: View {
     }
 }
 
-struct SwiftUIView_Previews: PreviewProvider {
+struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
         SearchScreen()
     }

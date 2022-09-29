@@ -16,9 +16,10 @@ extension GithubRepository: GithubRepositoryProtcol {
     
     // MARK: api w/ async
     
-    public func fetchUserAsync(userName: String) async throws -> UserEntity {
+    public func fetchUserAsync(userName: String) async throws -> UserModel {
         let request = GitHubAccountAPIRequest(userName: userName)
-        return try await ApiClient.call(request)
+        let response = try await ApiClient.call(request)
+        return response.convertItem()
     }
     
     public func searchRepositoryAsync(
@@ -26,9 +27,10 @@ extension GithubRepository: GithubRepositoryProtcol {
         language: String?,
         hasStars: Int?,
         topic: String?
-    ) async throws -> SearchResponseEntity {
+    ) async throws -> [RepositoryModel] {
         let request = GitHubSearchAPIRequest(keyword: keyword, language: language, hasStars: hasStars, topic: topic)
-        return try await ApiClient.publish(request).async()
+        let response = try await ApiClient.publish(request).async()
+        return response.convertItem()
     }
     
     // MARK: api w/ AnyPublisher
@@ -38,8 +40,11 @@ extension GithubRepository: GithubRepositoryProtcol {
         language: String?,
         hasStars: Int?,
         topic: String?
-    ) -> AnyPublisher<SearchResponseEntity, NetworkErrorType> {
+    ) -> AnyPublisher<[RepositoryModel], NetworkErrorType> {
         let request = GitHubSearchAPIRequest(keyword: keyword, language: language, hasStars: hasStars, topic: topic)
-        return ApiClient.publish(request)
+        return ApiClient.publish(request).map {
+            $0.convertItem()
+        }
+        .eraseToAnyPublisher()
     }
 }
