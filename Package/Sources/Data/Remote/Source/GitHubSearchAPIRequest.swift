@@ -17,7 +17,9 @@ struct GitHubSearchAPIRequest: BaseRequestProtocol {
     var queryItems: [URLQueryItem] {
         var items = [URLQueryItem]([
             .init(name: "sort", value: "stars"),
-            .init(name: "order", value: "desc")
+            .init(name: "order", value: "desc"),
+            .init(name: "per_page", value: "\(perPage)"),
+            .init(name: "page", value: "\(page)"),
         ])
         var params: [String] = []
 
@@ -50,16 +52,22 @@ struct GitHubSearchAPIRequest: BaseRequestProtocol {
     private let language: String?
     private let hasStars: Int?
     private let topic: String?
+    private let perPage: Int
+    private let page: Int
 
     public init(
         keyword: String? = nil,
         language: String? = nil,
         hasStars: Int? = nil,
-        topic: String? = nil
+        topic: String? = nil,
+        perPage: Int? = nil,
+        page: Int? = nil
     ) {
         self.language = language
         self.keyword = (keyword?.isEmpty ?? true) ? "" : keyword
         self.hasStars = hasStars
         self.topic = (topic?.isEmpty ?? true) ? "" : topic
+        self.perPage = perPage ?? 10
+        self.page = page ?? 1
     }
 }

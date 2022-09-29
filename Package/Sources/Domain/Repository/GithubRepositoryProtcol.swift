@@ -14,13 +14,15 @@ public protocol GithubRepositoryProtcol {
         keyword: String?,
         language: String?,
         hasStars: Int?,
-        topic: String?
+        topic: String?,
+        page: Int?
     ) async throws -> [RepositoryEntity]
     
     func searchRepositoryPublisher(
         keyword: String?,
         language: String?,
         hasStars: Int?,
-        topic: String?
+        topic: String?,
+        page: Int?
     ) -> AnyPublisher<[RepositoryEntity], NetworkErrorType>
 }

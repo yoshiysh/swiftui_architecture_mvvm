@@ -35,7 +35,13 @@ public final class TabHomeViewModel: ObservableObject {
     /// Task { await searchAsync() }
     func searchAsync() async {
         do {
-            let repositories = try await repository.searchRepositoryAsync(keyword: "swift", language: nil, hasStars: nil, topic: nil)
+            let repositories = try await repository.searchRepositoryAsync(
+                keyword: "swift",
+                language: nil,
+                hasStars: nil,
+                topic: nil,
+                page: 1
+            )
             debugPrint("repositories: \(repositories)")
         } catch {
             debugPrint("error: \(error)")
@@ -45,14 +51,20 @@ public final class TabHomeViewModel: ObservableObject {
     /// Usage:
     /// searchPublisher()
     func searchPublisher() {
-        repository.searchRepositoryPublisher(keyword: "swift", language: nil, hasStars: nil, topic: nil)
-            .sink(success: { [weak self] result in
-                debugPrint("result: \(result)")
-            }, failure: { [weak self] error in
-                debugPrint("error: \(error)")
-            }, completion: {
-                debugPrint("completion")
-            })
-            .store(in: &cancellables)
+        repository.searchRepositoryPublisher(
+            keyword: "swift",
+            language: nil,
+            hasStars: nil,
+            topic: nil,
+            page: 1
+        )
+        .sink(success: { [weak self] result in
+            debugPrint("result: \(result)")
+        }, failure: { [weak self] error in
+            debugPrint("error: \(error)")
+        }, completion: {
+            debugPrint("completion")
+        })
+        .store(in: &cancellables)
     }
 }

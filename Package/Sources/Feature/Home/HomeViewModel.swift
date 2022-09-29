@@ -42,7 +42,13 @@ public final class HomeViewModel: ObservableObject {
         topic: String? = nil
     ) async {
         do {
-            let result = try await repository.searchRepositoryAsync(keyword: keyword, language: language, hasStars: hasStars, topic: topic)
+            let result = try await repository.searchRepositoryAsync(
+                keyword: keyword,
+                language: language,
+                hasStars: hasStars,
+                topic: topic,
+                page: 1
+            )
             handleSuccessResponse(result: result)
         } catch {
             debugPrint("error: \(error)")
