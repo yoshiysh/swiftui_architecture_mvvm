@@ -8,6 +8,7 @@
 import Foundation
 
 public struct SearchResponseEntity: Equatable {
+    public let totalCount: Int
     public let items: [RepositoryEntity]
 }
 
