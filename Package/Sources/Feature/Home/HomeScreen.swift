@@ -37,7 +37,7 @@ private struct HomeView: View {
             if data.isEmpty {
                 HomeEmptyView()
             } else {
-                HomeContentsView(items: data)
+                HomeContentsView(items: data.items)
             }
         default:
             EmptyView()

@@ -9,6 +9,6 @@ import Domain
 
 public enum HomeViewState: Equatable {
     case initialzed, loading
-    case suceess([RepositoryEntity])
+    case suceess(HomeDataModel)
     case error(NetworkErrorType)
 }

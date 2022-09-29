@@ -26,8 +26,8 @@ public final class HomeViewModel: ObservableObject {
         switch state {
         case .loading:
             return
-        case .suceess(let items):
-            if !items.isEmpty { return }
+        case .suceess(let data):
+            if !data.isEmpty { return }
         default:
             break
         }
@@ -50,16 +50,16 @@ public final class HomeViewModel: ObservableObject {
         result: [RepositoryEntity],
         isRefresh: Bool = false
     ) {
-        var items: [RepositoryEntity]
+        var model: HomeDataModel
         switch state {
         case .suceess(let data):
-            if isRefresh { items = [] }
-            else { items = data }
+            model = data
+            if isRefresh { model.refresh() }
         default:
-            items = []
+            model = .init()
         }
         
-        result.forEach { items.append($0) }
-        state = .suceess(items)
+        model.append(items: result)
+        state = .suceess(model)
     }
 }
