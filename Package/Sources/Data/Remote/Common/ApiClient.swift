@@ -9,7 +9,7 @@ import Combine
 import Domain
 import Foundation
 
-struct ApiClient {
+enum ApiClient {
     private static let timeout: Double = 30
     private static let successRange = 200..<300
     private static let retryCount: Int = 1
