@@ -9,15 +9,15 @@ import Combine
 import Domain
 
 public struct HomeDataModel {
-    public var items: [RepositoryEntity]
-    public var query = QueryDto(keyword: "swift")
+    public var query: QueryDto
+    public var items: [RepositoryEntity] = []
     public var totalCount: Int = -1
     public var hasNextPage: Bool {
         items.count < totalCount
     }
 
-    public init(items: [RepositoryEntity] = []) {
-        self.items = items
+    public init(query: QueryDto) {
+        self.query = query
     }
 }
 

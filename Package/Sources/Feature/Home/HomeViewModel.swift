@@ -17,26 +17,36 @@ public final class HomeViewModel: ObservableObject {
     private var repository: GithubRepositoryProtcol
 
     @Published private(set) var state: HomeViewState = .initialzed
-    @Published var data: HomeDataModel = .init()
+    @Published var data: HomeDataModel
 
     private var cancellables = Set<AnyCancellable>()
     private var defaultQuery = QueryDto(language: "swift")
-    private let offset = 1
 
-    public init() {}
+    public init() {
+        self.data = .init(query: defaultQuery)
+    }
 
     func fetch() async {
         await fetch(forQuery: defaultQuery)
     }
 
     func next() async {
+        if !data.hasNextPage {
+            return
+        }
         data.query.page += 1
         await fetch(forQuery: data.query, isForce: true)
     }
 
+    func refresh() async {
+        data.query.page = 1
+        await fetch(forQuery: data.query, isForce: true, isRefresh: true)
+    }
+
     private func fetch(
         forQuery query: QueryDto,
-        isForce force: Bool = false
+        isForce force: Bool = false,
+        isRefresh: Bool = false
     ) async {
         switch state {
         case .loading:
@@ -50,16 +60,19 @@ public final class HomeViewModel: ObservableObject {
         }
         state = .loading
 
-        await search(query: query)
+        await search(query: query, isRefresh: isRefresh)
     }
 
-    private func search(query: QueryDto) async {
+    private func search(
+        query: QueryDto,
+        isRefresh: Bool
+    ) async {
         do {
             let response = try await repository.searchRepositoryAsync(forQuery: query)
-            handleSuccessResponse(response: response)
+            handleSuccessResponse(response: response, isRefresh: isRefresh)
         } catch {
             debugPrint("error: \(error)")
-            state = .error(NetworkErrorType.irregularError(info: error.localizedDescription.description))
+            state = .error(error)
         }
     }
 

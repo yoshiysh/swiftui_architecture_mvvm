@@ -17,6 +17,11 @@ public struct HomeScreen: View { // swiftlint:disable:this file_types_order
             HomeView(viewModel: viewModel)
                 .navigationTitle("Repository")
         }
+        .refreshable {
+            Task {
+                await viewModel.refresh()
+            }
+        }
         .onAppear {
             Task {
                 await viewModel.fetch()
