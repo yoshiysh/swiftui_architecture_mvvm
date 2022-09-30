@@ -19,9 +19,7 @@ public struct SignUpScreen: View { // swiftlint:disable:this file_types_order
 private struct SignUpView: View {
 
     var body: some View {
-        VStack {
-            Text("Hello, Sign Up")
-        }
+        WebScreen(url: "https://github.com/signup")
     }
 }
 

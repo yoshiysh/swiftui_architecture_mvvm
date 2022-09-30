@@ -78,8 +78,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4DDA0FB228D089D90021D6F3 /* Build configuration list for PBXNativeTarget "Production" */;
 			buildPhases = (
-				4D12F44A28E692480072CCBD /* Run SwiftLint */,
 				4DDA0F9A28D089D80021D6F3 /* Sources */,
+				4D12F44A28E692480072CCBD /* Run SwiftLint */,
 				4DDA0F9B28D089D80021D6F3 /* Frameworks */,
 				4DDA0F9C28D089D80021D6F3 /* Resources */,
 			);
