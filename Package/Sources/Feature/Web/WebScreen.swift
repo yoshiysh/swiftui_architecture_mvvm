@@ -9,17 +9,27 @@ import SwiftUI
 
 public struct WebScreen: View { // swiftlint:disable:this file_types_order
 
-    @ObservedObject var viewModel: WebViewModel
+    @ObservedObject private var viewModel: WebViewModel = .init()
     private let webView: WebView
+    private let url: URL
 
     public var body: some View {
         WebContentView(viewModel: viewModel, webView: webView)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .onAppear {
+                webView.load(url: url)
+            }
     }
 
-    public init(url: String) {
-        webView = .init(url: url)
-        viewModel = webView.viewModel
+    public init(_ urlString: String) {
+        if let url = URL(string: urlString) {
+            self.url = url
+        } else {
+            fatalError("Invalid URL.")
+        }
+
+        webView = .init()
+        viewModel.wkWebView = webView.wkWebView
     }
 }
 
@@ -28,10 +38,8 @@ private struct WebContentView: View {
     var webView: WebView
 
     var body: some View {
-        ZStack(alignment: .bottom) {
-            webView.onAppear {
-                webView.load(url: viewModel.url)
-            }
+        ZStack(alignment: .top) {
+            webView
 
             ProgressView(value: viewModel.estimatedProgress)
                 .opacity(viewModel.isLoadCompleted ? 0 : 1)
@@ -67,6 +75,6 @@ private struct WebContentView: View {
 
 struct WebContentScreen_Previews: PreviewProvider {
     static var previews: some View {
-        WebScreen(url: "https://github.com/signup")
+        WebScreen("https://github.com/signup")
     }
 }
