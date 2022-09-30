@@ -5,8 +5,8 @@
 //  Created by Yoshiki Hemmi on 2022/09/13.
 //
 
-import SwiftUI
 import Feature
+import SwiftUI
 
 @main
 struct Main: App {

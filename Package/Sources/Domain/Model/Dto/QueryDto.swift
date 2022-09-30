@@ -1,6 +1,6 @@
 //
-//  SearchDto.swift
-//  
+//  QueryDto.swift
+//
 //
 //  Created by Yoshiki Hemmi on 2022/09/30.
 //
@@ -15,7 +15,7 @@ public struct QueryDto {
     public var hasStars: Bool
     public var perPage: Int
     public var page: Int
-    
+
     public init(
         keyword: String? = nil,
         language: String? = nil,
@@ -47,15 +47,15 @@ public extension QueryDto {
         if let sort = sortType {
             params.append("sort:\(sort.rawValue)")
         }
-        
+
         if let language = language, !language.isEmpty {
             params.append("language:\(language)")
         }
-        
+
         if hasStars {
             params.append("stars:>=0")
         }
-        
+
         let joinedParams = params.joined(separator: "+")
 
         var q: String
@@ -64,7 +64,7 @@ public extension QueryDto {
         } else {
             q = "\(joinedParams)"
         }
-        
+
         items.append(.init(name: "q", value: q))
         return items
     }

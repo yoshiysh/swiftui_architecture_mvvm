@@ -7,17 +7,17 @@
 
 import SwiftUI
 
-public struct SignUpScreen: View {
-    
+public struct SignUpScreen: View { // swiftlint:disable:this file_types_order
+
     public var body: some View {
         SignUpView()
     }
-    
+
     public init() {}
 }
 
 private struct SignUpView: View {
-    
+
     var body: some View {
         VStack {
             Text("Hello, Sign Up")

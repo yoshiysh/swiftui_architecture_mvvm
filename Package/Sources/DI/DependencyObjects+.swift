@@ -1,12 +1,12 @@
 //
-//  Injection.swift
-//  
+//  DependencyObjects+.swift
+//
 //
 //  Created by Yoshiki Hemmi on 2022/09/27.
 //
 
-import Domain
 import Data
+import Domain
 
 public extension DependencyObjects {
     static let githubRepository = DependencyObject<GithubRepositoryProtcol> {

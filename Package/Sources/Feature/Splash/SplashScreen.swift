@@ -1,6 +1,6 @@
 //
 //  SplashScreen.swift
-//  
+//
 //
 //  Created by Yoshiki Hemmi on 2022/09/14.
 //
@@ -13,7 +13,7 @@ public struct SplashScreen: View {
             .foregroundColor(.primary)
             .statusBarHidden()
     }
-    
+
     public init() {}
 }
 

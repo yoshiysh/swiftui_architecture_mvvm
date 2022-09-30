@@ -1,16 +1,16 @@
 //
-//  DependencyInjection.swift
+//  DependencyObjects.swift
 //  ref.) https://www.avanderlee.com/swift/dependency-injection/
 //
 //  Created by Yoshiki Hemmi on 2022/09/27.
 //
 
-import Domain
 import Data
+import Domain
 
-public class DependencyObjects {
+public class DependencyObjects { // swiftlint:disable:this file_types_order
     init() {}
-    
+
     public static subscript<T>(_ dependency: DependencyObject<T>) -> T {
         get { dependency.object }
         set { dependency.object = newValue }
@@ -18,9 +18,9 @@ public class DependencyObjects {
 }
 
 public final class DependencyObject<T>: DependencyObjects {
-    fileprivate lazy var object = builder()
+    lazy var object = builder()
     private let builder: () -> T
-    
+
     public init(_ builder: @escaping () -> T) {
         self.builder = builder
         super.init()
@@ -29,11 +29,10 @@ public final class DependencyObject<T>: DependencyObjects {
 
 @propertyWrapper
 public struct Inject<T> {
+    public var wrappedValue: T { object }
     private let object: T
-    
+
     public init(_ dependency: DependencyObject<T>) {
         self.object = DependencyObjects[dependency]
     }
-
-    public var wrappedValue: T { object }
 }

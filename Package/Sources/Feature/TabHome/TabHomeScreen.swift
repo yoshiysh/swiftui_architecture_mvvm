@@ -8,9 +8,9 @@
 import SwiftUI
 
 public struct TabHomeScreen: View {
-    
+
     @StateObject private var viewModel: TabHomeViewModel = .init()
-    
+
     public var body: some View {
         TabView {
             HomeScreen()
@@ -25,7 +25,7 @@ public struct TabHomeScreen: View {
                 }
         }
     }
-    
+
     public init() {}
 }
 

@@ -1,6 +1,6 @@
 //
 //  BaseAPIProtocol.swift
-//  
+//
 //
 //  Created by Yoshiki Hemmi on 2022/09/27.
 //
@@ -13,16 +13,20 @@ protocol BaseAPIProtocol {
     var method: HTTPMethod { get }
     var baseUrl: URL { get }
     var path: String { get }
-    var headers: [String : String] { get }
+    var headers: [String: String] { get }
 }
 
 extension BaseAPIProtocol {
     var baseUrl: URL {
-        return URL(string: "https://api.github.com")!
+        if let url = URL(string: "https://api.github.com") {
+            return url
+        } else {
+            fatalError("Invalid URL.")
+        }
     }
-    
-    var headers: [String : String] {
-        return [
+
+    var headers: [String: String] {
+        [
             "Content-Type": "application/json; charset=utf-8"
         ]
     }

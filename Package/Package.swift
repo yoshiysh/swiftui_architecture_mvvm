@@ -7,11 +7,11 @@ let package = Package(
     name: "Package",
     defaultLocalization: "ja",
     platforms: [
-        .iOS(.v15),
+        .iOS(.v15)
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
-        .library(name: "Feature", targets: ["Feature"]),
+        .library(name: "Feature", targets: ["Feature"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -42,6 +42,6 @@ let package = Package(
             ]),
         .testTarget(
             name: "PackageTests",
-            dependencies: []),
+            dependencies: [])
     ]
 )

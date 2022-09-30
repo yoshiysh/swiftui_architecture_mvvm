@@ -5,74 +5,79 @@
 //  Created by Yoshiki Hemmi on 2022/09/14.
 //
 
-import Foundation
 import Combine
 import Domain
+import Foundation
 
 @MainActor
 public final class SignInViewModel: ObservableObject {
-    
+
     @Published private(set) var state: SignInViewState = .initialzed
     @Published var email: String = ""
     @Published var password: String = ""
-    @Published var isSubmitButtonEnabled: Bool = true
-    @Published private(set) var focusState: SignInFocusState? = nil
-    
+    @Published var isSubmitButtonEnabled = true
+    @Published private(set) var focusState: SignInFocusState?
+
     private let useCase: AuthUseCaseProtcol
     private var cancellables = Set<AnyCancellable>()
-    
-    var onEmailCommit: PassthroughSubject<Void, Never> = .init()
-    var onPasswordCommit: PassthroughSubject<Void, Never> = .init()
-    var onCommit: PassthroughSubject<Void, Never> = .init()
 
-    func updateFocusState(_ state: SignInFocusState?) {
-        focusState = state
+    public init(_ useCase: AuthUseCaseProtcol = AuthUseCase()) {
+        self.useCase = useCase
+        startObserver()
     }
-    
+
+    func initializeFocusState() {
+        focusState = .email
+    }
+
+    public func didTapSubmitButton() {
+        switch focusState {
+        case .email:
+            focusState = .password
+        case .password:
+            focusState = nil
+        case nil:
+            break
+        }
+    }
+
+    public func onCommit() {
+        fetch()
+    }
+
     private func updateViewState(_ state: SignInViewState) {
         self.state = state
     }
-    
+
     private func startObserver() {
-        onEmailCommit
-            .sink(receiveValue: { [weak self] value in
-                self?.updateFocusState(.password)
-            })
-            .store(in: &cancellables)
-        
-        onPasswordCommit
-            .sink(receiveValue: { [weak self] value in
-                self?.updateFocusState(nil)
-                self?.isSubmitButtonEnabled = true
-            })
-            .store(in: &cancellables)
-        
-        onCommit
-            .sink(receiveValue: { [weak self] value in
-//                self?.fetch()
-                self?.updateViewState(.suceess)
-            })
-            .store(in: &cancellables)
+        $email.sink { [weak self] _ in
+            self?.updateSubmitButton()
+        }
+        .store(in: &cancellables)
+
+        $password.sink { [weak self] _ in
+            self?.updateSubmitButton()
+        }
+        .store(in: &cancellables)
     }
-    
+
     private func fetch() {
         updateViewState(.loading)
-        useCase.login(email: self.email, password: self.password)
+        useCase.signIn(email: self.email, password: self.password)
             .sink(receiveCompletion: { [weak self] completion in
                 switch completion {
                 case .finished:
                     break
-                case .failure(_):
-                    self?.updateViewState(.error)
+                case .failure:
+                    self?.updateViewState(.suceess) // FIXME:
                 }
-            }, receiveValue: { [weak self] value in
+            }, receiveValue: { [weak self] _ in
                 self?.updateViewState(.suceess)
             })
             .store(in: &cancellables)
     }
-    
-    public init(_ useCase: AuthUseCaseProtcol = AuthUseCase()) {
-        self.useCase = useCase
-        startObserver()
+
+    private func updateSubmitButton() {
+        isSubmitButtonEnabled = useCase.validate(email: email, password: password)
     }
 }

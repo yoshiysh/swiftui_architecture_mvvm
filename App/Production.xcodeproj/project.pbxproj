@@ -78,6 +78,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4DDA0FB228D089D90021D6F3 /* Build configuration list for PBXNativeTarget "Production" */;
 			buildPhases = (
+				4D12F44A28E692480072CCBD /* Run SwiftLint */,
 				4DDA0F9A28D089D80021D6F3 /* Sources */,
 				4DDA0F9B28D089D80021D6F3 /* Frameworks */,
 				4DDA0F9C28D089D80021D6F3 /* Resources */,
@@ -137,6 +138,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4D12F44A28E692480072CCBD /* Run SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run SwiftLint";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "SDKROOT=$(xcrun --sdk macosx --show-sdk-path)\nSWIFTLINT_PATH=$SRCROOT/../Tools/.build/release/swiftlint\nSWIFTLING_YML_PATH=$SRCROOT/../.swiftlint.yml\nif [ -f $SWIFTLINT_PATH ]; then\n  $SWIFTLINT_PATH --config $SWIFTLING_YML_PATH --fix --format\n  $SWIFTLINT_PATH --config $SWIFTLING_YML_PATH\nelse\n  echo \"error: SwiftLint not installed, please run \\`make setup\\` .\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		4DDA0F9A28D089D80021D6F3 /* Sources */ = {

@@ -1,6 +1,6 @@
 //
 //  BaseRequestProtocol.swift
-//  
+//
 //
 //  Created by Yoshiki Hemmi on 2022/09/27.
 //
@@ -17,7 +17,7 @@ extension BaseRequestProtocol {
         let url = baseUrl.appendingPathComponent(path)
         var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
         components?.queryItems = queryItems
-        
+
         var urlRequest = URLRequest(url: baseUrl.appendingPathComponent(path))
         urlRequest.url = components?.url
         urlRequest.httpMethod = method.rawValue

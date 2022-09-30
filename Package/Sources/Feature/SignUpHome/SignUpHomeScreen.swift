@@ -7,17 +7,17 @@
 
 import SwiftUI
 
-public struct SignUpHomeScreen: View {
-    
+public struct SignUpHomeScreen: View { // swiftlint:disable:this file_types_order
+
     @StateObject private var viewModel: SignUpHomeViewModel = .init()
     private var onLoggedIn: (() -> Void)
-    
+
     public var body: some View {
         SignUpOrInView(viewModel)
             .sheet(isPresented: $viewModel.isShowingSheet) {
                 switch viewModel.state {
                 case .signIn:
-                    SignInScreen() { viewModel.updateState(.loggedIn) }
+                    SignInScreen { viewModel.updateState(.loggedIn) }
                 case .signUp:
                     SignUpScreen()
                 case .loggedIn, .initialized:
@@ -28,30 +28,30 @@ public struct SignUpHomeScreen: View {
                 if state == .loggedIn { onLoggedIn() }
             }
     }
-    
+
     public init(onLoggedIn: @escaping (() -> Void)) {
         self.onLoggedIn = onLoggedIn
     }
 }
 
 private struct SignUpOrInView: View {
-    
+
     @ObservedObject var viewModel: SignUpHomeViewModel
-    
+
     var body: some View {
         VStack(spacing: 32) {
-            SignInButton(
-                action: { viewModel.updateState(.signIn) }
-            )
-            
-            SignUpButton(
-                action: { viewModel.updateState(.signUp) }
-            )
+            SignInButton {
+                viewModel.updateState(.signIn)
+            }
+
+            SignUpButton {
+                viewModel.updateState(.signUp)
+            }
         }
         .frame(maxHeight: .infinity, alignment: .bottom)
         .padding(.horizontal)
     }
-    
+
     init(_ viewModel: SignUpHomeViewModel) {
         self.viewModel = viewModel
     }
@@ -59,7 +59,7 @@ private struct SignUpOrInView: View {
 
 private struct SignInButton: View {
     var action: (() -> Void)
-    
+
     var body: some View {
         Button {
             action()
@@ -81,7 +81,7 @@ private struct SignInButton: View {
 
 private struct SignUpButton: View {
     var action: (() -> Void)
-    
+
     var body: some View {
         Button {
             action()
@@ -97,6 +97,6 @@ private struct SignUpButton: View {
 
 struct SignUpHomeScreen_Previews: PreviewProvider {
     static var previews: some View {
-        SignUpHomeScreen() {}
+        SignUpHomeScreen {}
     }
 }

@@ -1,6 +1,6 @@
 //
 //  RepositoryEntity.swift
-//  
+//
 //
 //  Created by Yoshiki Hemmi on 2022/09/27.
 //
@@ -27,7 +27,13 @@ public extension RepositoryEntity {
         name: "GLSample4iOS",
         fullName: "yoshi991/GLSample4iOS",
         owner: .preview,
-        htmlUrl: URL(string: "https://github.com/yoshi991/GLSample4iOS")!,
+        htmlUrl: {
+            if let url = URL(string: "https://github.com/yoshi991/GLSample4iOS") {
+                return url
+            } else {
+                fatalError("Invalid URL.")
+            }
+        }(),
         description: "decription",
         language: "Swift",
         stargazersCount: 1000,

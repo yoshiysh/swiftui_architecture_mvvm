@@ -8,21 +8,20 @@
 import SwiftUI
 
 public struct RootScreen: View {
-    
+
     @StateObject private var viewModel: RootViewModel = .init()
-    
+
     public var body: some View {
-        switch(viewModel.state) {
+        switch viewModel.state {
         case .initialized:
             SplashScreen()
         case .loggedOut:
-            SignUpHomeScreen() { viewModel.updateState(.loggedIn) }
+            SignUpHomeScreen { viewModel.updateState(.loggedIn) }
         case .loggedIn:
             TabHomeScreen()
         }
     }
-    
-    
+
     public init() {}
 }
 

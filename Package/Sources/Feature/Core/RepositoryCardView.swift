@@ -1,16 +1,16 @@
 //
 //  RepositoryCardView.swift
-//  
+//
 //
 //  Created by Yoshiki Hemmi on 2022/09/29.
 //
 
-import SwiftUI
 import Domain
+import SwiftUI
 
-public struct RepositoryCardView: View {
+public struct RepositoryCardView: View { // swiftlint:disable:this file_types_order
     @Binding var item: RepositoryEntity
-    
+
     public var body: some View {
         RepositoryCardContentView(item: $item)
             .padding()
@@ -23,7 +23,7 @@ public struct RepositoryCardView: View {
 
 private struct RepositoryCardContentView: View {
     @Binding var item: RepositoryEntity
-    
+
     var body: some View {
         HStack(alignment: .top, spacing: 16) {
             AsyncImage(url: item.owner.avatarUrl) { image in
@@ -34,7 +34,7 @@ private struct RepositoryCardContentView: View {
             .frame(width: 48, height: 48)
             .clipShape(Circle())
             .shadow(color: .gray, radius: 4, x: 0, y: 0)
-            
+
             RepositoryInfoView(item: $item)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -43,27 +43,29 @@ private struct RepositoryCardContentView: View {
 
 private struct RepositoryInfoView: View {
     @Binding var item: RepositoryEntity
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(item.owner.login)
                 .font(.title3)
                 .fontWeight(.bold)
-            
+
             Text(item.name)
                 .font(.headline)
-            
-            Text(item.description ?? "")
-                .foregroundColor(.gray)
-                .font(.subheadline)
-                .lineLimit(3)
-            
+
+            if let description = item.description {
+                Text(description)
+                    .foregroundColor(.gray)
+                    .font(.subheadline)
+                    .lineLimit(3)
+            }
+
             Text("Updated At: \(DateUtil.shared.formatDate(from: item.updatedAt, format: .YYYYMMDD))")
                 .font(.caption)
                 .foregroundColor(.gray)
                 .font(.subheadline)
                 .lineLimit(1)
-            
+
             RepositoryTagsView(item: $item)
         }
     }
@@ -72,11 +74,11 @@ private struct RepositoryInfoView: View {
 private struct RepositoryTagsView: View {
     @Binding var item: RepositoryEntity
     private let raduis: CGFloat = 16
-    
+
     var body: some View {
         HStack {
-            if item.language != nil {
-                Text(item.language!)
+            if let language = item.language {
+                Text(language)
                     .foregroundColor(.white)
                     .font(.subheadline)
                     .lineLimit(1)
@@ -84,7 +86,7 @@ private struct RepositoryTagsView: View {
                     .background(.blue)
                     .clipShape(RoundedRectangle(cornerRadius: raduis))
             }
-            
+
             Label(title: {
                 Text("\(item.stargazersCount)")
                     .foregroundColor(.white)
@@ -104,12 +106,12 @@ private struct RepositoryTagsView: View {
 struct RepositoryCardView_Previews: PreviewProvider {
     private struct Preview: View {
         @State private var model = RepositoryEntity.preview
-        
+
         var body: some View {
             RepositoryCardView(item: $model)
         }
     }
-    
+
     static var previews: some View {
         Preview()
             .previewLayout(.sizeThatFits)

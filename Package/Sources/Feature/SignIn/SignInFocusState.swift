@@ -1,6 +1,6 @@
 //
 //  SignInFocusState.swift
-//  
+//
 //
 //  Created by Yoshiki Hemmi on 2022/09/14.
 //

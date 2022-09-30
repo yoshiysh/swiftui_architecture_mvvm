@@ -1,6 +1,6 @@
 //
 //  UserEntity.swift
-//  
+//
 //
 //  Created by Yoshiki Hemmi on 2022/09/27.
 //
@@ -23,9 +23,27 @@ public extension UserEntity {
     static let preview = UserEntity(
         login: "yoshi991",
         id: 22577999,
-        avatarUrl: URL(string: "https://avatars.githubusercontent.com/u/22577999?v=4")!,
-        url: URL(string: "https://api.github.com/users/yoshi991")!,
-        reposUrl: URL(string: "https://api.github.com/users/yoshi991/repos")!,
+        avatarUrl: {
+            if let url = URL(string: "https://avatars.githubusercontent.com/u/22577999?v=4") {
+                return url
+            } else {
+                fatalError("Invalid URL.")
+            }
+        }(),
+        url: {
+            if let url = URL(string: "https://api.github.com/users/yoshi991") {
+                return url
+            } else {
+                fatalError("Invalid URL.")
+            }
+        }(),
+        reposUrl: {
+            if let url = URL(string: "https://api.github.com/users/yoshi991/repos") {
+                return url
+            } else {
+                fatalError("Invalid URL.")
+            }
+        }(),
         followers: 1000,
         following: 1001
     )

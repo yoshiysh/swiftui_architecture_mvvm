@@ -5,13 +5,13 @@
 //  Created by Yoshiki Hemmi on 2022/09/13.
 //
 
-import SwiftUI
 import Domain
+import SwiftUI
 
-public struct HomeScreen: View {
-   
+public struct HomeScreen: View { // swiftlint:disable:this file_types_order
+
     @StateObject private var viewModel: HomeViewModel = .init()
-    
+
     public var body: some View {
         NavigationView {
             HomeView(viewModel: viewModel)
@@ -23,17 +23,17 @@ public struct HomeScreen: View {
             }
         }
     }
-    
+
     public init() {}
 }
 
 private struct HomeView: View {
-    
+
     @ObservedObject var viewModel: HomeViewModel
-    
+
     var body: some View {
         if viewModel.data.isEmpty {
-            EmptyView()
+            ContentsEmptyView()
         } else {
             HomeContentsView(
                 items: $viewModel.data.items,
@@ -48,11 +48,11 @@ private struct HomeView: View {
 }
 
 private struct HomeContentsView: View {
-    
+
     @Binding var items: [RepositoryEntity]
-    @State var hasNextPage: Bool = true
+    @State var hasNextPage = true
     var onAppearLoadingItem: (() -> Void)
-    
+
     var body: some View {
         ScrollView(.vertical) {
             LazyVStack {
@@ -60,7 +60,7 @@ private struct HomeContentsView: View {
                     RepositoryCardView(item: binding(for: item))
                         .frame(maxWidth: .infinity)
                 }
-                
+
                 if hasNextPage {
                     LoadingView()
                         .frame(maxWidth: .infinity, alignment: .center)
@@ -70,42 +70,32 @@ private struct HomeContentsView: View {
             .padding()
         }
     }
-    
+
     private func binding(for model: RepositoryEntity) -> Binding<RepositoryEntity> {
         Binding<RepositoryEntity> {
             guard let index = items.firstIndex(where: { $0.id == model.id }) else {
-                fatalError()
+                fatalError("Index Out of Bounds Exception.")
             }
             return items[index]
         } set: { newValue in
             guard let index = items.firstIndex(where: { $0.id == model.id }) else {
-                fatalError()
+                fatalError("Index Out of Bounds Exception.")
             }
             return items[index] = newValue
         }
     }
 }
 
-private struct HomeEmptyView: View {
-    
-    var body: some View {
-        Text("Contents is Empty")
-    }
-}
-
 struct HomeScreen_Previews: PreviewProvider {
     private struct HomeContentsPreview: View {
         @State private var model = [RepositoryEntity.preview]
-        
+
         var body: some View {
             HomeContentsView(items: $model) {}
         }
     }
-    
+
     static var previews: some View {
-        Group {
-            HomeContentsPreview()
-            HomeEmptyView()
-        }
+        HomeContentsPreview()
     }
 }

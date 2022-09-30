@@ -5,29 +5,29 @@
 //  Created by Yoshiki Hemmi on 2022/09/14.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 @MainActor
 public final class SignUpHomeViewModel: ObservableObject {
-    
+
     @Published private(set) var state: SignUpHomeState = .initialized
-    @Published var isShowingSheet: Bool = false
-    
+    @Published var isShowingSheet = false
+
     private var cancellables = Set<AnyCancellable>()
-    
+
+    public init() {
+        startObserver()
+    }
+
     func updateState(_ state: SignUpHomeState) {
         self.state = state
     }
-    
+
     private func startObserver() {
-        $state.sink(receiveValue: { [weak self] value in
+        $state.sink { [weak self] value in
             self?.isShowingSheet = value == .signIn || value == .signUp
-        })
+        }
         .store(in: &cancellables)
-    }
-    
-    public init() {
-        startObserver()
     }
 }

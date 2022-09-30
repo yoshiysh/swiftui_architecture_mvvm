@@ -7,6 +7,6 @@
 
 import Foundation
 
-public enum SignInViewState: String {
-    case initialzed, loading, suceess, invalid, error
+public enum SignInViewState {
+    case initialzed, loading, suceess, error
 }

@@ -1,13 +1,13 @@
 //
 //  ApiClient.swift
-//  
+//
 //
 //  Created by Yoshiki Hemmi on 2022/09/27.
 //
 
-import Foundation
 import Combine
 import Domain
+import Foundation
 
 struct ApiClient {
     private static let timeout: Double = 30
@@ -20,20 +20,20 @@ struct ApiClient {
         jsonDecoder.dateDecodingStrategy = .iso8601
         return jsonDecoder
     }()
-    
+
     static func call<T, V>(_ request: T) async throws -> V where T: BaseRequestProtocol, V: Codable, T.ResponseType == V {
         var req = request.asURLRequest()
         req.timeoutInterval = TimeInterval(timeout)
-//        debugPrint("[ApiClient] request: \(req)")
+        //        debugPrint("[ApiClient] request: \(req)")
         let response = try await session.data(for: req)
-//        debugPrint("[ApiClient] response: \(response)")
-        
+        //        debugPrint("[ApiClient] response: \(response)")
+
         let data = try validate(data: response.0, response: response.1)
         return try decoder.decode(V.self, from: data)
     }
-    
+
     static func publish<T, V>(_ request: T) -> AnyPublisher<V, NetworkErrorType> where T: BaseRequestProtocol, V: Codable, T.ResponseType == V {
-        return session
+        session
             .dataTaskPublisher(for: request.asURLRequest())
             .timeout(.seconds(timeout), scheduler: DispatchQueue.main)
             .retry(retryCount)
@@ -42,8 +42,8 @@ struct ApiClient {
             .mapDecodeError()
             .eraseToAnyPublisher()
     }
-    
-    static private func validate(data: Data, response: URLResponse) throws -> Data {
+
+    private static func validate(data: Data, response: URLResponse) throws -> Data {
         guard let code = (response as? HTTPURLResponse)?.statusCode else {
             throw NetworkErrorType.networkError(code: -1, description: String(data: data, encoding: .utf8) ?? "Network Error")
         }
@@ -52,8 +52,8 @@ struct ApiClient {
         }
         return data
     }
-    
-    static private func validateCode(data: Data, response: URLResponse) throws -> Data {
+
+    private static func validateCode(data: Data, response: URLResponse) throws -> Data {
         switch (response as? HTTPURLResponse)?.statusCode {
         case .some(let code) where code == 401:
             throw NetworkErrorType.networkError(code: code, description: "Unauthorized")

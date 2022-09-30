@@ -1,18 +1,18 @@
 //
 //  SearchScreen.swift
-//  
+//
 //
 //  Created by Yoshiki Hemmi on 2022/09/15.
 //
 
 import SwiftUI
 
-public struct SearchScreen: View {
-    
+public struct SearchScreen: View { // swiftlint:disable:this file_types_order
+
     public var body: some View {
         SearchView()
     }
-    
+
     public init() {}
 }
 

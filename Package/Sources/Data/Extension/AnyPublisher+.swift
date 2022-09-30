@@ -1,20 +1,20 @@
 //
 //  AnyPublisher+.swift
-//  
+//
 //
 //  Created by Yoshiki Hemmi on 2022/09/27.
 //
 
-import Foundation
 import Combine
 import Domain
+import Foundation
 
 extension AnyPublisher {
     func async() async throws -> Output {
         try await withCheckedThrowingContinuation { continuation in
             var cancellable: AnyCancellable?
             var finishedWithoutValue = true
-            
+
             cancellable = first()
                 .sink { result in
                     switch result {
