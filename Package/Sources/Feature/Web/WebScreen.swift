@@ -9,53 +9,42 @@ import SwiftUI
 
 public struct WebScreen: View { // swiftlint:disable:this file_types_order
 
-    @ObservedObject private var viewModel: WebViewModel = .init()
-    private let webView: WebView
-    private let url: URL
+    @ObservedObject private var viewModel: WebViewModel
 
     public var body: some View {
-        WebContentView(viewModel: viewModel, webView: webView)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .onAppear {
-                webView.load(url: url)
-            }
+        NavigationView {
+            WebContentView(viewModel: viewModel)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
     }
 
-    public init(_ urlString: String) {
-        if let url = URL(string: urlString) {
-            self.url = url
-        } else {
-            fatalError("Invalid URL.")
-        }
-
-        webView = .init()
-        viewModel.wkWebView = webView.wkWebView
+    public init(_ url: String) {
+        viewModel = .init(url)
     }
 }
 
 private struct WebContentView: View {
     @ObservedObject var viewModel: WebViewModel
-    var webView: WebView
 
     var body: some View {
-        ZStack(alignment: .top) {
-            webView
+        ZStack(alignment: .bottom) {
+            WebView(viewModel: viewModel)
 
             ProgressView(value: viewModel.estimatedProgress)
-                .opacity(viewModel.isLoadCompleted ? 0 : 1)
+                .opacity(viewModel.isLoading ? 1 : 0)
                 .transition(.opacity)
         }
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
                 Button {
-                    webView.goBack()
+                    viewModel.shouldGoBack = true
                 } label: {
                     Image(systemName: "chevron.left")
                 }
                 .disabled(!viewModel.canGoBack)
 
                 Button {
-                    webView.goForward()
+                    viewModel.shouldGoForward = true
                 } label: {
                     Image(systemName: "chevron.right")
                 }
@@ -64,7 +53,7 @@ private struct WebContentView: View {
                 Spacer()
 
                 Button {
-                    webView.reload()
+                    viewModel.shouldLoad = true
                 } label: {
                     Image(systemName: "arrow.clockwise")
                 }
