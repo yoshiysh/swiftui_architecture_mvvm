@@ -35,6 +35,13 @@ public final class WebViewModel: NSObject, ObservableObject {
         self.url = URL(string: url)
     }
 
+    func updateUrl(_ url: URL?) {
+        guard let url = url else {
+            return
+        }
+        self.url = url
+    }
+
     func load(_ url: String) {
         load(URL(string: url))
     }

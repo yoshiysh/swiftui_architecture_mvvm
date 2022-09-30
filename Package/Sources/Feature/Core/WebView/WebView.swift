@@ -88,6 +88,7 @@ extension WebView {
 
         public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
             viewModel.isLoading = false
+            viewModel.updateUrl(webView.url)
             viewModel.canGoBack = webView.canGoBack
             viewModel.canGoForward = webView.canGoForward
         }
