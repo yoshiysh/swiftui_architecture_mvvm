@@ -10,10 +10,10 @@ import SwiftUI
 import WebKit
 
 public struct WebView {
-    @ObservedObject private var viewModel: WebViewModel
+    @ObservedObject private var viewState: WebViewStateModel
 
-    public init(viewModel: WebViewModel) {
-        self.viewModel = viewModel
+    public init(viewState: WebViewStateModel) {
+        self.viewState = viewState
     }
 }
 
@@ -22,11 +22,11 @@ public struct WebView {
 extension WebView: UIViewRepresentable {
 
     public func makeCoordinator() -> Coordinator {
-        Coordinator(viewModel: viewModel)
+        Coordinator(viewState: viewState)
     }
 
     public func makeUIView(context: Context) -> WKWebView {
-        guard let url = viewModel.url else {
+        guard let url = viewState.url else {
             return WKWebView()
         }
 
@@ -36,31 +36,31 @@ extension WebView: UIViewRepresentable {
         wkWebView.navigationDelegate = context.coordinator
         wkWebView.uiDelegate = context.coordinator
         wkWebView.load(request)
-        viewModel.subscribe(wkWebView: wkWebView)
+        viewState.subscribe(wkWebView: wkWebView)
 
         return wkWebView
     }
 
     public func updateUIView(_ wkWebView: WKWebView, context: Context) {
         Task { @MainActor in
-            if viewModel.shouldGoBack {
+            if viewState.shouldGoBack {
                 _ = wkWebView.goBack()
-                viewModel.shouldGoBack = false
+                viewState.shouldGoBack = false
             }
 
-            if viewModel.shouldGoForward {
+            if viewState.shouldGoForward {
                 _ = wkWebView.goForward()
-                viewModel.shouldGoForward = false
+                viewState.shouldGoForward = false
             }
 
-            if viewModel.shouldLoad {
-                guard let url = viewModel.url else {
+            if viewState.shouldLoad {
+                guard let url = viewState.url else {
                     return
                 }
 
                 let request = URLRequest(url: url)
                 _ = wkWebView.load(request)
-                viewModel.shouldLoad = false
+                viewState.shouldLoad = false
             }
         }
     }
@@ -72,11 +72,10 @@ extension WebView {
 
     public class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate {
 
-        @ObservedObject private var viewModel: WebViewModel
-        //        private let parent: WebView
+        @ObservedObject private var viewState: WebViewStateModel
 
-        init(viewModel: WebViewModel) {
-            self.viewModel = viewModel
+        init(viewState: WebViewStateModel) {
+            self.viewState = viewState
         }
 
         // MARK: WKNavigationDelegate
@@ -85,29 +84,29 @@ extension WebView {
         }
 
         public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-            viewModel.isLoading = true
+            viewState.isLoading = true
         }
 
         public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-            viewModel.isLoading = false
-            viewModel.updateUrl(webView.url)
-            viewModel.canGoBack = webView.canGoBack
-            viewModel.canGoForward = webView.canGoForward
+            viewState.isLoading = false
+            viewState.current(url: webView.url)
+            viewState.canGoBack = webView.canGoBack
+            viewState.canGoForward = webView.canGoForward
         }
 
         public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-            viewModel.isLoading = false
+            viewState.isLoading = false
             setError(error)
         }
 
         public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-            viewModel.isLoading = false
+            viewState.isLoading = false
             setError(error)
         }
 
         private func setError(_ error: Error) {
             if let error = error as? URLError {
-                viewModel.error = WebViewModel.Error(code: error.code, message: error.localizedDescription)
+                viewState.error = WebViewError(code: error.code, message: error.localizedDescription)
             }
         }
 

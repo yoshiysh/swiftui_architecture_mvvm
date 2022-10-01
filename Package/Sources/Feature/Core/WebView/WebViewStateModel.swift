@@ -1,5 +1,5 @@
 //
-//  WebViewModel.swift
+//  WebViewStateModel.swift
 //
 //
 //  Created by Yoshiki Hemmi on 2022/10/01.
@@ -10,12 +10,7 @@ import Foundation
 import WebKit
 
 @MainActor
-public final class WebViewModel: NSObject, ObservableObject {
-
-    public struct Error {
-        let code: URLError.Code
-        let message: String
-    }
+public final class WebViewStateModel: NSObject, ObservableObject {
 
     @Published var isLoading = false
     @Published var canGoBack = false
@@ -26,29 +21,29 @@ public final class WebViewModel: NSObject, ObservableObject {
     @Published var shouldLoad = false
 
     @Published var estimatedProgress: Double = 0
-    @Published var error: WebViewModel.Error?
+    @Published var error: WebViewError?
 
     private var cancellables = Set<AnyCancellable>()
     private(set) var url: URL?
 
-    public init(_ url: String) {
+    public init(url: String) {
         self.url = URL(string: url)
     }
 
-    func updateUrl(_ url: URL?) {
+    func current(url: URL?) {
         guard let url = url else {
             return
         }
         self.url = url
     }
 
-    func load(_ url: String) {
-        load(URL(string: url))
+    func load(url: String) {
+        load(url: URL(string: url))
     }
 
-    func load(_ url: URL?) {
+    func load(url: URL?) {
         if url == nil {
-            self.error = Self.Error(code: URLError.badURL, message: "Bad URL.")
+            self.error = WebViewError(code: URLError.badURL, message: "Bad URL.")
             return
         }
 

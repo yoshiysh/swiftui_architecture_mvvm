@@ -9,51 +9,51 @@ import SwiftUI
 
 public struct WebScreen: View { // swiftlint:disable:this file_types_order
 
-    @ObservedObject private var viewModel: WebViewModel
+    @ObservedObject private var viewState: WebViewStateModel
 
     public var body: some View {
         NavigationView {
-            WebContentView(viewModel: viewModel)
+            WebContentView(viewState: viewState)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 
     public init(_ url: String) {
-        viewModel = .init(url)
+        viewState = .init(url: url)
     }
 }
 
 private struct WebContentView: View {
-    @ObservedObject var viewModel: WebViewModel
+    @ObservedObject var viewState: WebViewStateModel
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            WebView(viewModel: viewModel)
+            WebView(viewState: viewState)
 
-            ProgressView(value: viewModel.estimatedProgress)
-                .opacity(viewModel.isLoading ? 1 : 0)
+            ProgressView(value: viewState.estimatedProgress)
+                .opacity(viewState.isLoading ? 1 : 0)
                 .transition(.opacity)
         }
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
                 Button {
-                    viewModel.shouldGoBack = true
+                    viewState.shouldGoBack = true
                 } label: {
                     Image(systemName: "chevron.left")
                 }
-                .disabled(!viewModel.canGoBack)
+                .disabled(!viewState.canGoBack)
 
                 Button {
-                    viewModel.shouldGoForward = true
+                    viewState.shouldGoForward = true
                 } label: {
                     Image(systemName: "chevron.right")
                 }
-                .disabled(!viewModel.canGoForward)
+                .disabled(!viewState.canGoForward)
 
                 Spacer()
 
                 Button {
-                    viewModel.shouldLoad = true
+                    viewState.shouldLoad = true
                 } label: {
                     Image(systemName: "arrow.clockwise")
                 }
