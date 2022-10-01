@@ -9,23 +9,24 @@ import Foundation
 import SwiftUI
 import WebKit
 
-public struct WebView {
+struct WebView { // swiftlint:disable:this file_types_order
     @ObservedObject private var viewState: WebViewStateModel
 
-    public init(viewState: WebViewStateModel) {
+    init(viewState: WebViewStateModel) {
         self.viewState = viewState
     }
 }
 
 // MARK: UIViewRepresentable
 
-extension WebView: UIViewRepresentable {
+extension WebView: UIViewRepresentable { // swiftlint:disable:this file_types_order
+    typealias Coordinator = WebViewCoordinator
 
-    public func makeCoordinator() -> Coordinator {
-        Coordinator(viewState: viewState)
+    func makeCoordinator() -> Coordinator {
+        WebViewCoordinator(viewState: viewState)
     }
 
-    public func makeUIView(context: Context) -> WKWebView {
+    func makeUIView(context: Context) -> WKWebView {
         guard let url = viewState.url else {
             return WKWebView()
         }
@@ -41,7 +42,7 @@ extension WebView: UIViewRepresentable {
         return wkWebView
     }
 
-    public func updateUIView(_ wkWebView: WKWebView, context: Context) {
+    func updateUIView(_ wkWebView: WKWebView, context: Context) {
         Task { @MainActor in
             if viewState.shouldGoBack {
                 _ = wkWebView.goBack()
@@ -68,80 +69,83 @@ extension WebView: UIViewRepresentable {
 
 // MARK: Coordinator
 
-extension WebView {
+class WebViewCoordinator: NSObject {
 
-    public class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate {
+    @ObservedObject private var viewState: WebViewStateModel
 
-        @ObservedObject private var viewState: WebViewStateModel
+    init(viewState: WebViewStateModel) {
+        self.viewState = viewState
+    }
+}
 
-        init(viewState: WebViewStateModel) {
-            self.viewState = viewState
+// MARK: WKNavigationDelegate
+
+extension WebViewCoordinator: WKNavigationDelegate {
+
+    func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+    }
+
+    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        viewState.isLoading = true
+    }
+
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        viewState.isLoading = false
+        viewState.current(url: webView.url)
+        viewState.canGoBack = webView.canGoBack
+        viewState.canGoForward = webView.canGoForward
+    }
+
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        viewState.isLoading = false
+        setError(error)
+    }
+
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        viewState.isLoading = false
+        setError(error)
+    }
+
+    func setError(_ error: Error) {
+        if let error = error as? URLError {
+            viewState.error = WebViewError(code: error.code, message: error.localizedDescription)
         }
+    }
+}
 
-        // MARK: WKNavigationDelegate
+// MARK: WKUIDelegate
 
-        public func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+extension WebViewCoordinator: WKUIDelegate {
+
+    func webView(
+        _ webView: WKWebView,
+        createWebViewWith configuration: WKWebViewConfiguration,
+        for navigationAction: WKNavigationAction,
+        windowFeatures: WKWindowFeatures
+    ) -> WKWebView? {
+        if navigationAction.targetFrame == nil {
+            webView.load(navigationAction.request)
         }
+        return nil
+    }
 
-        public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-            viewState.isLoading = true
-        }
-
-        public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-            viewState.isLoading = false
-            viewState.current(url: webView.url)
-            viewState.canGoBack = webView.canGoBack
-            viewState.canGoForward = webView.canGoForward
-        }
-
-        public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-            viewState.isLoading = false
-            setError(error)
-        }
-
-        public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-            viewState.isLoading = false
-            setError(error)
-        }
-
-        private func setError(_ error: Error) {
-            if let error = error as? URLError {
-                viewState.error = WebViewError(code: error.code, message: error.localizedDescription)
-            }
-        }
-
-        // MARK: WKUIDelegate
-
-        public func webView(
-            _ webView: WKWebView,
-            createWebViewWith configuration: WKWebViewConfiguration,
-            for navigationAction: WKNavigationAction,
-            windowFeatures: WKWindowFeatures
-        ) -> WKWebView? {
-            if navigationAction.targetFrame == nil {
-                webView.load(navigationAction.request)
-            }
-            return nil
-        }
-
-        public func webView(
-            _ webView: WKWebView,
-            decidePolicyFor navigationAction: WKNavigationAction,
-            decisionHandler: (WKNavigationActionPolicy) -> Void
-        ) {
-            if let url = navigationAction.request.url?.absoluteString {
-                if url.hasPrefix("https://apps.apple.com/") {
-                    guard let appStoreLink = URL(string: url) else {
-                        return
-                    }
-                    UIApplication.shared.open(appStoreLink, options: [:]) { _ in
-                    }
-                    decisionHandler(WKNavigationActionPolicy.cancel)
-                } else if url.hasPrefix("http") {
-                    decisionHandler(WKNavigationActionPolicy.allow)
-                } else {
-                    decisionHandler(WKNavigationActionPolicy.cancel)
+    func webView(
+        _ webView: WKWebView,
+        decidePolicyFor navigationAction: WKNavigationAction,
+        decisionHandler: (WKNavigationActionPolicy) -> Void
+    ) {
+        if let url = navigationAction.request.url?.absoluteString {
+            if url.hasPrefix("https://apps.apple.com/") {
+                guard let appStoreLink = URL(string: url) else {
+                    return
                 }
+                UIApplication.shared.open(appStoreLink, options: [:]) { _ in
+                }
+                decisionHandler(WKNavigationActionPolicy.cancel)
+            } else if url.hasPrefix("http") {
+                decisionHandler(WKNavigationActionPolicy.allow)
+            } else {
+                decisionHandler(WKNavigationActionPolicy.cancel)
             }
         }
     }
