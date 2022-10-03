@@ -58,6 +58,27 @@ public final class WebViewModel: NSObject, ObservableObject {
     }
 
     func subscribe(wkWebView: WKWebView) {
+        wkWebView.publisher(for: \.isLoading)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] value in
+                self?.isLoading = value
+            }
+            .store(in: &cancellables)
+
+        wkWebView.publisher(for: \.canGoBack)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] value in
+                self?.canGoBack = value
+            }
+            .store(in: &cancellables)
+
+        wkWebView.publisher(for: \.canGoForward)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] value in
+                self?.canGoForward = value
+            }
+            .store(in: &cancellables)
+
         wkWebView.publisher(for: \.estimatedProgress)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] value in

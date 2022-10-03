@@ -26,23 +26,17 @@ extension WebViewCoordinator: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        viewModel.isLoading = true
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        viewModel.isLoading = false
         viewModel.current(url: webView.url)
-        viewModel.canGoBack = webView.canGoBack
-        viewModel.canGoForward = webView.canGoForward
     }
 
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-        viewModel.isLoading = false
         viewModel.handleError(error)
     }
 
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-        viewModel.isLoading = false
         viewModel.handleError(error)
     }
 }
