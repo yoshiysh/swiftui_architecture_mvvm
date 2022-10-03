@@ -11,10 +11,10 @@ import WebKit
 
 class WebViewCoordinator: NSObject {
 
-    @ObservedObject private var viewState: WebViewStateModel
+    @ObservedObject private var viewModel: WebViewModel
 
-    init(viewState: WebViewStateModel) {
-        self.viewState = viewState
+    init(viewModel: WebViewModel) {
+        self.viewModel = viewModel
     }
 }
 
@@ -26,30 +26,24 @@ extension WebViewCoordinator: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        viewState.isLoading = true
+        viewModel.isLoading = true
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        viewState.isLoading = false
-        viewState.current(url: webView.url)
-        viewState.canGoBack = webView.canGoBack
-        viewState.canGoForward = webView.canGoForward
+        viewModel.isLoading = false
+        viewModel.current(url: webView.url)
+        viewModel.canGoBack = webView.canGoBack
+        viewModel.canGoForward = webView.canGoForward
     }
 
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-        viewState.isLoading = false
-        setError(error)
+        viewModel.isLoading = false
+        viewModel.handleError(error)
     }
 
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-        viewState.isLoading = false
-        setError(error)
-    }
-
-    func setError(_ error: Error) {
-        if let error = error as? URLError {
-            viewState.error = WebViewError(code: error.code, message: error.localizedDescription)
-        }
+        viewModel.isLoading = false
+        viewModel.handleError(error)
     }
 }
 

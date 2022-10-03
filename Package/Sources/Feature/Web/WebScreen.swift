@@ -7,53 +7,53 @@
 
 import SwiftUI
 
-public struct WebScreen: View { // swiftlint:disable:this file_types_order
+struct WebScreen: View { // swiftlint:disable:this file_types_order
 
-    @ObservedObject private var viewState: WebViewStateModel
+    @ObservedObject private var viewModel: WebViewModel
 
-    public var body: some View {
+    var body: some View {
         NavigationView {
-            WebContentView(viewState: viewState)
+            WebContentView(viewModel: viewModel)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 
-    public init(_ url: String) {
-        viewState = .init(url: url)
+    init(_ url: String) {
+        viewModel = .init(url: url)
     }
 }
 
 private struct WebContentView: View {
-    @ObservedObject var viewState: WebViewStateModel
+    @ObservedObject var viewModel: WebViewModel
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            WebView(viewState: viewState)
+            WebView(viewModel: viewModel)
 
-            ProgressView(value: viewState.estimatedProgress)
-                .opacity(viewState.isLoading ? 1 : 0)
+            ProgressView(value: viewModel.estimatedProgress)
+                .opacity(viewModel.isLoading ? 1 : 0)
                 .transition(.opacity)
         }
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
                 Button {
-                    viewState.shouldGoBack = true
+                    viewModel.shouldGoBack = true
                 } label: {
                     Image(systemName: "chevron.left")
                 }
-                .disabled(!viewState.canGoBack)
+                .disabled(!viewModel.canGoBack)
 
                 Button {
-                    viewState.shouldGoForward = true
+                    viewModel.shouldGoForward = true
                 } label: {
                     Image(systemName: "chevron.right")
                 }
-                .disabled(!viewState.canGoForward)
+                .disabled(!viewModel.canGoForward)
 
                 Spacer()
 
                 Button {
-                    viewState.shouldLoad = true
+                    viewModel.shouldLoad = true
                 } label: {
                     Image(systemName: "arrow.clockwise")
                 }

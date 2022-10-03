@@ -1,5 +1,5 @@
 //
-//  WebViewStateModel.swift
+//  WebViewModel.swift
 //
 //
 //  Created by Yoshiki Hemmi on 2022/10/01.
@@ -10,7 +10,7 @@ import Foundation
 import WebKit
 
 @MainActor
-public final class WebViewStateModel: NSObject, ObservableObject {
+public final class WebViewModel: NSObject, ObservableObject {
 
     @Published var isLoading = false
     @Published var canGoBack = false
@@ -43,12 +43,18 @@ public final class WebViewStateModel: NSObject, ObservableObject {
 
     func load(url: URL?) {
         if url == nil {
-            self.error = WebViewError(code: URLError.badURL, message: "Bad URL.")
+            error = WebViewError(code: URLError.badURL, message: "Bad URL.")
             return
         }
 
         self.url = url
         shouldLoad = true
+    }
+
+    func handleError(_ error: Error) {
+        if let error = error as? URLError {
+            self.error = WebViewError(code: error.code, message: error.localizedDescription)
+        }
     }
 
     func subscribe(wkWebView: WKWebView) {
