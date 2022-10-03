@@ -40,7 +40,7 @@ final class WebViewModel: ObservableObject {
 
     func load(url: URL?) {
         if url == nil {
-            uiState?.error = WebViewError(code: URLError.badURL, message: "Bad URL.")
+            handleError()
             return
         }
 
@@ -48,7 +48,7 @@ final class WebViewModel: ObservableObject {
         shouldLoad = true
     }
 
-    func handleError(_ error: Error) {
+    func handleError(_ error: Error? = nil) {
         uiState?.handleError(error)
     }
 

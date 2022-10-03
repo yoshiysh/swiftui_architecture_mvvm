@@ -10,7 +10,7 @@ import SwiftUI
 struct WebScreen: View { // swiftlint:disable:this file_types_order
 
     @ObservedObject private var viewModel: WebViewModel
-    @StateObject private var uiState: WebViewUIStateModel = .init()
+    @ObservedObject private var uiState: WebViewUIStateModel = .init()
 
     var body: some View {
         NavigationView {

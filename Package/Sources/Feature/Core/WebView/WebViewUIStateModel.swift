@@ -20,10 +20,8 @@ class WebViewUIStateModel: ObservableObject {
 
     private var cancellables = Set<AnyCancellable>()
 
-    func handleError(_ error: Error) {
-        if let error = error as? URLError {
-            self.error = WebViewError(code: error.code, message: error.localizedDescription)
-        }
+    func handleError(_ error: Error? = nil) {
+        self.error = .handleError(error)
     }
 
     func subscribe(wkWebView: WKWebView) {
