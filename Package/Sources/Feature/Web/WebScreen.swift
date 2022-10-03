@@ -10,28 +10,31 @@ import SwiftUI
 struct WebScreen: View { // swiftlint:disable:this file_types_order
 
     @ObservedObject private var viewModel: WebViewModel
+    @StateObject private var uiState: WebViewUIStateModel = .init()
 
     var body: some View {
         NavigationView {
-            WebContentView(viewModel: viewModel)
+            WebContentView(viewModel: viewModel, uiState: uiState)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 
     init(_ url: String) {
         viewModel = .init(url: url)
+        viewModel.setUIState(uiState)
     }
 }
 
 private struct WebContentView: View {
     @ObservedObject var viewModel: WebViewModel
+    @ObservedObject var uiState: WebViewUIStateModel
 
     var body: some View {
         ZStack(alignment: .bottom) {
             WebView(viewModel: viewModel)
 
-            ProgressView(value: viewModel.estimatedProgress)
-                .opacity(viewModel.isLoading ? 1 : 0)
+            ProgressView(value: uiState.estimatedProgress)
+                .opacity(uiState.isLoading ? 1 : 0)
                 .transition(.opacity)
         }
         .toolbar {
@@ -41,14 +44,14 @@ private struct WebContentView: View {
                 } label: {
                     Image(systemName: "chevron.left")
                 }
-                .disabled(!viewModel.canGoBack)
+                .disabled(!uiState.canGoBack)
 
                 Button {
                     viewModel.shouldGoForward = true
                 } label: {
                     Image(systemName: "chevron.right")
                 }
-                .disabled(!viewModel.canGoForward)
+                .disabled(!uiState.canGoForward)
 
                 Spacer()
 
