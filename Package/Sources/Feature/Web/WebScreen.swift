@@ -40,14 +40,14 @@ private struct WebContentView: View {
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
                 Button {
-                    viewModel.shouldGoBack = true
+                    viewModel.updateState(webViewState: .goBack)
                 } label: {
                     Image(systemName: "chevron.left")
                 }
                 .disabled(!uiState.canGoBack)
 
                 Button {
-                    viewModel.shouldGoForward = true
+                    viewModel.updateState(webViewState: .goForward)
                 } label: {
                     Image(systemName: "chevron.right")
                 }
@@ -56,7 +56,7 @@ private struct WebContentView: View {
                 Spacer()
 
                 Button {
-                    viewModel.shouldLoad = true
+                    viewModel.updateState(webViewState: .reload)
                 } label: {
                     Image(systemName: "arrow.clockwise")
                 }

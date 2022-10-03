@@ -14,14 +14,13 @@ struct WebViewError: Error {
 
 extension WebViewError {
     static func handleError(_ error: Error? = nil) -> WebViewError {
-        if let error = error as? WebViewError {
-            return error
+        switch error {
+        case let err as WebViewError:
+            return err
+        case let err as URLError:
+            return WebViewError(code: err.code, message: err.localizedDescription)
+        default:
+            return WebViewError(code: URLError.badURL, message: "Bad URL.")
         }
-
-        if let error = error as? URLError {
-            return WebViewError(code: error.code, message: error.localizedDescription)
-        }
-
-        return WebViewError(code: URLError.badURL, message: "Bad URL.")
     }
 }

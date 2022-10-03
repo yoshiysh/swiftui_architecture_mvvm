@@ -43,26 +43,21 @@ extension WebView: UIViewRepresentable {
     }
 
     func updateUIView(_ wkWebView: WKWebView, context: Context) {
-        Task { @MainActor in
-            if viewModel.shouldGoBack {
-                _ = wkWebView.goBack()
-                viewModel.shouldGoBack = false
+        switch viewModel.webViewState {
+        case .goBack:
+            _ = wkWebView.goBack()
+        case .goForward:
+            _ = wkWebView.goForward()
+        case .reload:
+            guard let url = viewModel.url else {
+                return
             }
 
-            if viewModel.shouldGoForward {
-                _ = wkWebView.goForward()
-                viewModel.shouldGoForward = false
-            }
-
-            if viewModel.shouldLoad {
-                guard let url = viewModel.url else {
-                    return
-                }
-
-                let request = URLRequest(url: url)
-                _ = wkWebView.load(request)
-                viewModel.shouldLoad = false
-            }
+            let request = URLRequest(url: url)
+            _ = wkWebView.load(request)
+        case nil:
+            break
         }
+        viewModel.resetWebViewState()
     }
 }

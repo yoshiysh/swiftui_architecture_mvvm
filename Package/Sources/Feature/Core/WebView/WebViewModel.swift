@@ -12,10 +12,9 @@ import WebKit
 @MainActor
 final class WebViewModel: ObservableObject {
 
-    @Published var shouldGoBack = false
-    @Published var shouldGoForward = false
     @Published var shouldLoad = false
 
+    private(set) var webViewState: WebViewState?
     private(set) var uiState: WebViewUIStateModel?
     private(set) var url: URL?
 
@@ -25,6 +24,15 @@ final class WebViewModel: ObservableObject {
 
     func setUIState(_ uiState: WebViewUIStateModel) {
         self.uiState = uiState
+    }
+
+    func updateState(webViewState: WebViewState?) {
+        self.webViewState = webViewState
+        shouldLoad = true
+    }
+
+    func resetWebViewState() {
+        webViewState = nil
     }
 
     func current(url: URL?) {
