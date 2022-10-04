@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-public struct TabHomeScreen: View {
+struct TabHomeScreen: View {
 
     @StateObject private var viewModel: TabHomeViewModel = .init()
 
-    public var body: some View {
+    var body: some View {
         TabView {
             HomeScreen()
                 .tabItem {
@@ -25,8 +25,6 @@ public struct TabHomeScreen: View {
                 }
         }
     }
-
-    public init() {}
 }
 
 struct TabHome_Previews: PreviewProvider {

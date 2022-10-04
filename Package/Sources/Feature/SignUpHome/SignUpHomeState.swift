@@ -7,6 +7,6 @@
 
 import Foundation
 
-public enum SignUpHomeState: String {
+enum SignUpHomeState: String {
     case initialized, signUp, signIn, loggedIn
 }

@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-public struct SignUpHomeScreen: View { // swiftlint:disable:this file_types_order
+struct SignUpHomeScreen: View { // swiftlint:disable:this file_types_order
 
     @StateObject private var viewModel: SignUpHomeViewModel = .init()
     private var onLoggedIn: (() -> Void)
 
-    public var body: some View {
+    var body: some View {
         SignUpOrInView(viewModel)
             .sheet(isPresented: $viewModel.isShowingSheet) {
                 switch viewModel.state {
@@ -29,7 +29,7 @@ public struct SignUpHomeScreen: View { // swiftlint:disable:this file_types_orde
             }
     }
 
-    public init(onLoggedIn: @escaping (() -> Void)) {
+    init(onLoggedIn: @escaping (() -> Void)) {
         self.onLoggedIn = onLoggedIn
     }
 }

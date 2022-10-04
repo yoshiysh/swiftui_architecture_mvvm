@@ -9,13 +9,13 @@ import Combine
 import Foundation
 
 @MainActor
-public final class RootViewModel: ObservableObject {
+final class RootViewModel: ObservableObject {
 
     @Published var state: RootViewState = .initialized
 
     private var cancellables = Set<AnyCancellable>()
 
-    public init() {
+    init() {
         getUser()
     }
 

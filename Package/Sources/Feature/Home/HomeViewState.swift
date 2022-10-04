@@ -7,7 +7,7 @@
 
 import Domain
 
-public enum HomeViewState {
+enum HomeViewState {
     case initialzed, loading, suceess
     case error(Error)
 }

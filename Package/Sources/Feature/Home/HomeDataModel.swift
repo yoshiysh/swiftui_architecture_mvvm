@@ -8,20 +8,20 @@
 import Combine
 import Domain
 
-public struct HomeDataModel {
-    public var query: QueryDto
-    public var items: [RepositoryEntity] = []
-    public var totalCount: Int = -1
-    public var hasNextPage: Bool {
+struct HomeDataModel {
+    var query: QueryDto
+    var items: [RepositoryEntity] = []
+    var totalCount: Int = -1
+    var hasNextPage: Bool {
         items.count < totalCount
     }
 
-    public init(query: QueryDto) {
+    init(query: QueryDto) {
         self.query = query
     }
 }
 
-public extension HomeDataModel {
+extension HomeDataModel {
     var isEmpty: Bool {
         items.isEmpty
     }

@@ -11,7 +11,7 @@ import Domain
 import Foundation
 
 @MainActor
-public final class HomeViewModel: ObservableObject {
+final class HomeViewModel: ObservableObject {
 
     @Inject(.githubRepository)
     private var repository: GithubRepositoryProtcol
@@ -22,7 +22,7 @@ public final class HomeViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     private var defaultQuery = QueryDto(language: "swift")
 
-    public init() {
+    init() {
         self.data = .init(query: defaultQuery)
     }
 

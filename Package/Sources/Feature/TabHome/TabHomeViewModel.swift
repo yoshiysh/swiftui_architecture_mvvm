@@ -11,15 +11,13 @@ import Domain
 import Foundation
 
 @MainActor
-public final class TabHomeViewModel: ObservableObject {
+final class TabHomeViewModel: ObservableObject {
 
     @Inject(.githubRepository)
     private var repository: GithubRepositoryProtcol
 
     private var cancellables = Set<AnyCancellable>()
     private var query = QueryDto(keyword: "ios", language: "swift")
-
-    public init() {}
 
     /// Usage:
     /// Task { await getUserAsync() }

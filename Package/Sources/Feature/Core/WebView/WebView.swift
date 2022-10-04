@@ -43,6 +43,10 @@ extension WebView: UIViewRepresentable {
     }
 
     func updateUIView(_ wkWebView: WKWebView, context: Context) {
+        guard viewModel.willWebViewUpdate else {
+            return
+        }
+
         switch viewModel.webViewState {
         case .goBack:
             _ = wkWebView.goBack()

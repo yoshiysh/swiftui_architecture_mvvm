@@ -9,14 +9,14 @@ import Combine
 import Foundation
 
 @MainActor
-public final class SignUpHomeViewModel: ObservableObject {
+final class SignUpHomeViewModel: ObservableObject {
 
     @Published private(set) var state: SignUpHomeState = .initialized
     @Published var isShowingSheet = false
 
     private var cancellables = Set<AnyCancellable>()
 
-    public init() {
+    init() {
         startObserver()
     }
 

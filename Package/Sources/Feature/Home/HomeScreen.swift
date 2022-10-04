@@ -8,11 +8,11 @@
 import Domain
 import SwiftUI
 
-public struct HomeScreen: View { // swiftlint:disable:this file_types_order
+struct HomeScreen: View { // swiftlint:disable:this file_types_order
 
     @StateObject private var viewModel: HomeViewModel = .init()
 
-    public var body: some View {
+    var body: some View {
         NavigationView {
             HomeView(viewModel: viewModel)
                 .navigationTitle("Repository")
@@ -28,8 +28,6 @@ public struct HomeScreen: View { // swiftlint:disable:this file_types_order
             }
         }
     }
-
-    public init() {}
 }
 
 private struct HomeView: View {
