@@ -2,7 +2,7 @@
 //  WebViewError.swift
 //
 //
-//  Created by Yoshiki Hemmi on 2022/10/02.
+//  Created by yoshi on 2022/10/02.
 //
 
 import Foundation

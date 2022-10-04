@@ -2,7 +2,7 @@
 //  UserResponseEntity.swift
 //
 //
-//  Created by Yoshiki Hemmi on 2022/09/27.
+//  Created by yoshi on 2022/09/27.
 //
 
 public struct UserResponseEntity: Equatable {

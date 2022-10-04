@@ -2,7 +2,7 @@
 //  TabHomeScreen.swift
 //  swiftui_architecture_mvvm
 //
-//  Created by Yoshiki Hemmi on 2022/09/15.
+//  Created by yoshi on 2022/09/15.
 //
 
 import SwiftUI

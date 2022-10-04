@@ -2,7 +2,7 @@
 //  WebViewState.swift
 //
 //
-//  Created by Yoshiki Hemmi on 2022/10/03.
+//  Created by yoshi on 2022/10/03.
 //
 
 import Foundation

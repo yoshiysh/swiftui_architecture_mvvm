@@ -2,7 +2,7 @@
 //  WebViewModel.swift
 //
 //
-//  Created by Yoshiki Hemmi on 2022/10/01.
+//  Created by yoshi on 2022/10/01.
 //
 
 import Combine

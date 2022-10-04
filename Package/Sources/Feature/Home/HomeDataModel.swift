@@ -2,7 +2,7 @@
 //  HomeDataModel.swift
 //
 //
-//  Created by Yoshiki Hemmi on 2022/09/30.
+//  Created by yoshi on 2022/09/30.
 //
 
 import Combine

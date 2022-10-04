@@ -2,7 +2,7 @@
 //  TabHomeViewModel.swift
 //  swiftui_architecture_mvvm
 //
-//  Created by Yoshiki Hemmi on 2022/09/21.
+//  Created by yoshi on 2022/09/21.
 //
 
 import Combine

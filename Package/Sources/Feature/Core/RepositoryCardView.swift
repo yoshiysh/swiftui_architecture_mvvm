@@ -2,7 +2,7 @@
 //  RepositoryCardView.swift
 //
 //
-//  Created by Yoshiki Hemmi on 2022/09/29.
+//  Created by yoshi on 2022/09/29.
 //
 
 import Domain

@@ -2,7 +2,7 @@
 //  SignUpScreen.swift
 //  swiftui_architecture_mvvm
 //
-//  Created by Yoshiki Hemmi on 2022/09/14.
+//  Created by yoshi on 2022/09/14.
 //
 
 import SwiftUI

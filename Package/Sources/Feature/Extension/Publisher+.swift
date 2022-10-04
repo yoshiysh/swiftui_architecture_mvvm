@@ -2,7 +2,7 @@
 //  Publisher+.swift
 //
 //
-//  Created by Yoshiki Hemmi on 2022/09/28.
+//  Created by yoshi on 2022/09/28.
 //
 
 import Combine

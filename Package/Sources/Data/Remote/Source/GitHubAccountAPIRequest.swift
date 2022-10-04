@@ -2,7 +2,7 @@
 //  GitHubAccountAPIRequest.swift
 //
 //
-//  Created by Yoshiki Hemmi on 2022/09/20.
+//  Created by yoshi on 2022/09/20.
 //
 
 import Domain
