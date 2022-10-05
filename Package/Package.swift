@@ -20,9 +20,7 @@ let package = Package(
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
-        .target(
-            name: "Resources",
-            dependencies: []),
+        .target(name: "Resources"),
         .target(
             name: "DI",
             dependencies: [
@@ -35,15 +33,30 @@ let package = Package(
                 "Resources",
                 "DI",
                 "Domain"
-            ]),
-        .target(
-            name: "Domain",
-            dependencies: []),
+            ],
+            plugins: ["SwiftLint"]),
+        .target(name: "Domain"),
         .target(
             name: "Data",
             dependencies: [
                 "Domain"
             ]),
+        
+        // === Plugins -----
+        
+        .binaryTarget(
+            name: "SwiftLintBinary",
+            path: "./../Tools/Binaries/SwiftLintBinary.artifactbundle"
+        ),
+        
+        .plugin(
+            name: "SwiftLint",
+            capability: .buildTool(),
+            dependencies: ["SwiftLintBinary"]
+        ),
+        
+        // ==== Tests -----
+        
         .testTarget(
             name: "PackageTests",
             dependencies: [])

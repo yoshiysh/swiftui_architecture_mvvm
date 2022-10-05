@@ -6,15 +6,26 @@ WORKSPACE_NAME := ${PRODUCT_NAME}.xcworkspace
 TOOLS_PACKAGE_PATH := Tools
 TOOLS_PATH := ${TOOLS_PACKAGE_PATH}/.build/release
 
+TOOLS_BINARIES_PATH := ${TOOLS_PACKAGE_PATH}/Binaries
+
+SWIFTLINT_ARTIFACTBUNDLE_NAME := "SwiftLintBinary-macos.artifactbundle.zip"
+
+SWIFTLINT_VERSION := 0.49.1
+
 # Targets
 
+.PHONY: help
+help:
+	@grep -E '^[a-zA-Z_-]+:.*?# .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":[^#]*? #| #"}; {printf "%-36s%s\n", $$1 $$3, $$2}'
+
 .PHONY: setup
-setup:
-	$(MAKE) build-tools
+setup: # Install dependencies and prepared development configuration
+#	$(MAKE) build-tools
+	$(MAKE) download-tools
 	$(MAKE) open
 
 .PHONY: build-tools
-build-tools:
+build-tools: # Build CLI tools managed by Swift Package Manager
 	$(MAKE) build-tool TOOL_NAME=swiftlint
 	$(MAKE) build-tool TOOL_NAME=swiftgen
 
@@ -22,10 +33,20 @@ build-tools:
 build-tool:
 	swift build -c release --package-path ${TOOLS_PACKAGE_PATH} --product ${TOOL_NAME}
 
-.PHONY: swiftgen
-swiftgen:
-	${TOOLS_PATH}/swiftgen
+.PHONY: download-tools
+download-tools:
+	$(MAKE) download-swiftlint-artifactbundle
+
+.PHONY: download-swiftlint-artifactbundle
+download-swiftlint-artifactbundle: # Download SwiftLint Binary
+	curl -o ${TOOLS_BINARIES_PATH}/${SWIFTLINT_ARTIFACTBUNDLE_NAME} https://github.com/realm/SwiftLint/releases/download/${SWIFTLINT_VERSION}/SwiftLintBinary-macos.artifactbundle.zip -L
+	unzip ${TOOLS_BINARIES_PATH}/${SWIFTLINT_ARTIFACTBUNDLE_NAME} -d ${TOOLS_BINARIES_PATH}
+	rm -f ${TOOLS_BINARIES_PATH}/${SWIFTLINT_ARTIFACTBUNDLE_NAME}
 
 .PHONY: open
-open:
+open: # Open workspace in Xcode
 	open ./${WORKSPACE_NAME}
+
+.PHONY: swiftgen
+swiftgen: # Use SwiftGen
+	${TOOLS_PATH}/swiftgen

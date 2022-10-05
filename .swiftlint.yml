@@ -231,6 +231,7 @@ included:
   - Package
 
 excluded:
+  - Package/Package.swift
   - Package/Tests
+  - Package/Sources/Resources/Generated
   - Tools
-
