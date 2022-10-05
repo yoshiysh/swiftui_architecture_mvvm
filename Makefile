@@ -26,7 +26,7 @@ help:
 	@grep -E '^[a-zA-Z_-]+:.*?# .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":[^#]*? #| #"}; {printf "%-36s%s\n", $$1 $$3, $$2}'
 
 .PHONY: setup
-setup: # Install dependencies and prepared development configuration
+setup: # Prepared development configuration
 #	$(MAKE) build-tools
 	$(MAKE) download-tools
 	$(MAKE) open
@@ -61,14 +61,6 @@ download-swiftgen-artifactbundle: # Download SwiftGen Binary
 .PHONY: open
 open: # Open workspace in Xcode
 	open ./${WORKSPACE_NAME}
-
-.PHONY: swiftgen
-swiftgen: # Use SwiftGen
-	${SWIFTGEN_PATH}/swiftgen
-
-.PHONY: swiftlint
-swiftlint: # Use SwiftLint
-	${SWIFTLINT_PATH}/swiftlint
 
 .PHONY: format
 format: # Use SwiftLint format
