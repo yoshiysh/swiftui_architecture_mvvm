@@ -6,14 +6,13 @@ WORKSPACE_NAME := ${PRODUCT_NAME}.xcworkspace
 TOOLS_PACKAGE_PATH := Tools
 TOOLS_PATH := ${TOOLS_PACKAGE_PATH}/.build/release
 
-TOOLS_BINARIES_PATH := ${TOOLS_PACKAGE_PATH}/Binaries
-
-ZIP := ".zip"
+BINARIES_PACKAGE_PATH := Binaries
 
 SWIFTLINT_VERSION := 0.49.1
-SWIFTLINT_ARTIFACTBUNDLE_NAME := "SwiftLintBinary.artifactbundle"
-SWIFTLINT_ARTIFACTBUNDLE_ZIP_NAME := ${SWIFTLINT_ARTIFACTBUNDLE_NAME}${ZIP}
-SWIFTLINT_PATH :=${TOOLS_BINARIES_PATH}/${SWIFTLINT_ARTIFACTBUNDLE_NAME}/swiftlint-${SWIFTLINT_VERSION}-macos/bin/swiftlint
+
+SWIFTLINT_ARTIFACTBUNDLE_NAME := SwiftLintBinary.artifactbundle
+SWIFTLINT_ARTIFACTBUNDLE_ZIP_NAME := ${SWIFTLINT_ARTIFACTBUNDLE_NAME}.zip
+SWIFTLINT_PATH := ${BINARIES_PACKAGE_PATH}/${SWIFTLINT_ARTIFACTBUNDLE_NAME}/swiftlint-${SWIFTLINT_VERSION}-macos/bin
 
 # Targets
 
@@ -42,9 +41,9 @@ download-tools:
 
 .PHONY: download-swiftlint-artifactbundle
 download-swiftlint-artifactbundle: # Download SwiftLint Binary
-	curl -o ${TOOLS_BINARIES_PATH}/${SWIFTLINT_ARTIFACTBUNDLE_ZIP_NAME} https://github.com/realm/SwiftLint/releases/download/${SWIFTLINT_VERSION}/SwiftLintBinary-macos.artifactbundle.zip -L
-	unzip ${TOOLS_BINARIES_PATH}/${SWIFTLINT_ARTIFACTBUNDLE_ZIP_NAME} -d ${TOOLS_BINARIES_PATH}
-	rm -f ${TOOLS_BINARIES_PATH}/${SWIFTLINT_ARTIFACTBUNDLE_ZIP_NAME}
+	curl -o ${BINARIES_PACKAGE_PATH}/${SWIFTLINT_ARTIFACTBUNDLE_ZIP_NAME} https://github.com/realm/SwiftLint/releases/download/${SWIFTLINT_VERSION}/SwiftLintBinary-macos.artifactbundle.zip -L
+	unzip ${BINARIES_PACKAGE_PATH}/${SWIFTLINT_ARTIFACTBUNDLE_ZIP_NAME} -d ${BINARIES_PACKAGE_PATH}
+	rm -f ${BINARIES_PACKAGE_PATH}/${SWIFTLINT_ARTIFACTBUNDLE_ZIP_NAME}
 
 .PHONY: open
 open: # Open workspace in Xcode
@@ -56,8 +55,8 @@ swiftgen: # Use SwiftGen
 
 .PHONY: swiftlint
 swiftlint: # Use SwiftLint
-	${SWIFTLINT_PATH}
+	${SWIFTLINT_PATH}/swiftlint
 
 .PHONY: format
 format: # Use SwiftLint format
-	${SWIFTLINT_PATH} lint --fix --format --quiet
+	$(MAKE) swiftlint --fix --format --quiet
