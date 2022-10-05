@@ -5,6 +5,7 @@
 //  Created by yoshi on 2022/09/13.
 //
 
+import Resources
 import SwiftUI
 
 struct SignUpHomeScreen: View { // swiftlint:disable:this file_types_order
@@ -64,7 +65,7 @@ private struct SignInButton: View {
         Button {
             action()
         } label: {
-            Text("ログイン")
+            Text(L10n.SignUpHome.Button.signIn)
                 .fontWeight(.bold)
                 .foregroundColor(.accentColor)
                 .frame(maxWidth: .infinity)
@@ -86,7 +87,7 @@ private struct SignUpButton: View {
         Button {
             action()
         } label: {
-            Text("新規登録")
+            Text(L10n.SignUpHome.Button.signUp)
                 .fontWeight(.bold)
                 .frame(maxWidth: .infinity)
                 .padding()

@@ -16,10 +16,15 @@ setup:
 .PHONY: build-tools
 build-tools:
 	$(MAKE) build-tool TOOL_NAME=swiftlint
+	$(MAKE) build-tool TOOL_NAME=swiftgen
 
 .PHONY: build-tool
 build-tool:
 	swift build -c release --package-path ${TOOLS_PACKAGE_PATH} --product ${TOOL_NAME}
+
+.PHONY: swiftgen
+swiftgen:
+	${TOOLS_PATH}/swiftgen
 
 .PHONY: open
 open:

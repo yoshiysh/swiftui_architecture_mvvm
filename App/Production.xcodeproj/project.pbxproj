@@ -13,9 +13,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4D621A1828ED7D760036CCB4 /* Production-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Production-Info.plist"; sourceTree = "<group>"; };
 		4DB4328328D2DCE000A2F053 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4DB4328428D2DCE000A2F053 /* Main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
-		4DDA0F9E28D089D80021D6F3 /* Production.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Production.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4DDA0F9E28D089D80021D6F3 /* SwiftUI-Architecture-MVVM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SwiftUI-Architecture-MVVM.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +50,7 @@
 		4DB4328228D2DCE000A2F053 /* Resouces */ = {
 			isa = PBXGroup;
 			children = (
+				4D621A1828ED7D760036CCB4 /* Production-Info.plist */,
 				4DB4328328D2DCE000A2F053 /* Assets.xcassets */,
 			);
 			path = Resouces;
@@ -66,7 +68,7 @@
 		4DDA0F9F28D089D80021D6F3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4DDA0F9E28D089D80021D6F3 /* Production.app */,
+				4DDA0F9E28D089D80021D6F3 /* SwiftUI-Architecture-MVVM.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -92,7 +94,7 @@
 				4D2B83F128E2E522007BA6B3 /* Feature */,
 			);
 			productName = swiftui_architecture_mvvm;
-			productReference = 4DDA0F9E28D089D80021D6F3 /* Production.app */;
+			productReference = 4DDA0F9E28D089D80021D6F3 /* SwiftUI-Architecture-MVVM.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -117,6 +119,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ja,
 			);
 			mainGroup = 4DDA0F9528D089D80021D6F3;
 			productRefGroup = 4DDA0F9F28D089D80021D6F3 /* Products */;
@@ -298,6 +301,8 @@
 				DEVELOPMENT_TEAM = JWP7XZ7BL9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "./SwiftUIArchitectureMVVM/Resouces/Production-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = SwiftUISample;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -327,6 +332,8 @@
 				DEVELOPMENT_TEAM = JWP7XZ7BL9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "./SwiftUIArchitectureMVVM/Resouces/Production-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = SwiftUISample;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

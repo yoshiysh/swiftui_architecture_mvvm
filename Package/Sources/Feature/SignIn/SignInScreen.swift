@@ -5,6 +5,7 @@
 //  Created by yoshi on 2022/09/14.
 //
 
+import Resources
 import SwiftUI
 
 public struct SignInScreen: View { // swiftlint:disable:this file_types_order
@@ -17,7 +18,7 @@ public struct SignInScreen: View { // swiftlint:disable:this file_types_order
     public var body: some View {
         NavigationView {
             SignInView(viewModel: viewModel, focusState: _focusState)
-                .navigationTitle("Sign In")
+                .navigationTitle(L10n.SignIn.Navigation.title)
         }
         .onChange(of: viewModel.state) { state in
             if state == .suceess { onComplete() }
@@ -74,11 +75,11 @@ private struct InputMailAddress: View {
     var body: some View {
         VStack {
             VStack(alignment: .leading) {
-                Text("メールアドレス")
+                Text(L10n.SignIn.MailAddress.title)
                     .font(.footnote)
                     .foregroundColor(.accentColor)
 
-                TextField("メールアドレス", text: $text)
+                TextField(L10n.SignIn.MailAddress.placeholder, text: $text)
                     .frame(height: 36)
                     .focused($focusState, equals: .email)
                     .submitLabel(.next)
@@ -98,11 +99,11 @@ private struct InputPassword: View {
     var body: some View {
         VStack {
             VStack(alignment: .leading) {
-                Text("パスワード")
+                Text(L10n.SignIn.Password.title)
                     .font(.footnote)
                     .foregroundColor(.accentColor)
 
-                SecureField("6~12文字のパスワード", text: $text)
+                SecureField(L10n.SignIn.Password.placeholder, text: $text)
                     .frame(height: 36)
                     .focused($focusState, equals: .password)
                     .submitLabel(.done)
@@ -122,7 +123,7 @@ private struct LoginButton: View {
         Button {
             action()
         } label: {
-            Text("ログイン")
+            Text(L10n.SignIn.Button.signIn)
                 .fontWeight(.bold)
                 .frame(maxWidth: .infinity)
                 .padding()

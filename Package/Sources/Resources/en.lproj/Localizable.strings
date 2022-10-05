@@ -1,0 +1,10 @@
+/* 
+  Localizable.strings
+  Production
+
+  Created by yoshi991 on 2022/10/05.
+  
+*/
+
+"sign_up_home.button.sign_in" = "Sign in";
+"sign_up_home.button.sign_up" = "Sign up";

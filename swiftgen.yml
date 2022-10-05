@@ -1,0 +1,11 @@
+input_dir: ./Package/Sources/Resources
+output_dir: ./Package/Sources/Resources/Generated
+
+strings:
+  inputs: ja.lproj
+  filter: .+\.strings$
+  outputs:
+    templateName: structured-swift5
+    output: L10n-Constants.swift
+    params:
+      publicAccess: true

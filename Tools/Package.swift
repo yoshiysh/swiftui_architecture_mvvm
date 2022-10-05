@@ -9,6 +9,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/realm/SwiftLint", from: "0.49.1"),
+        .package(url: "https://github.com/SwiftGen/SwiftGen", from: "6.6.2"),
     ],
     targets: [.target(name: "Tools", path: "")]
 )
