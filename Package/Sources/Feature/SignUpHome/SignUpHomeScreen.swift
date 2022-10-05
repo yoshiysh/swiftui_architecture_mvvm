@@ -5,7 +5,6 @@
 //  Created by yoshi on 2022/09/13.
 //
 
-import Resources
 import SwiftUI
 
 struct SignUpHomeScreen: View { // swiftlint:disable:this file_types_order

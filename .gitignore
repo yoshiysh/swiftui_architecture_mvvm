@@ -89,9 +89,9 @@ fastlane/test_output
 
 iOSInjectionProject/
 
-# Binaries
-/Binaries/*
-!/Binaries/.gitkeep
+# Artifacts
+/Artifacts/*
+!/Artifacts/.gitkeep
 
 # SwiftGen
 /Package/Sources/Resources/Generated/*

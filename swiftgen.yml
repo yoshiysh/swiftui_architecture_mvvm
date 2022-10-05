@@ -1,5 +1,5 @@
-input_dir: ./Package/Sources/Resources
-output_dir: ./Package/Sources/Resources/Generated
+input_dir: ./Package/Sources/Feature/Resources
+output_dir: ${OUTPUT_DIR}
 
 strings:
   inputs: ja.lproj
@@ -7,5 +7,3 @@ strings:
   outputs:
     templateName: structured-swift5
     output: L10n-Constants.swift
-    params:
-      publicAccess: true

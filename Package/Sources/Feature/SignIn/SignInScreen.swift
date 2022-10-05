@@ -5,7 +5,6 @@
 //  Created by yoshi on 2022/09/14.
 //
 
-import Resources
 import SwiftUI
 
 public struct SignInScreen: View { // swiftlint:disable:this file_types_order
