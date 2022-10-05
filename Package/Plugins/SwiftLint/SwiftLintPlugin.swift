@@ -17,6 +17,7 @@ struct SwiftLintPlugin: BuildToolPlugin {
                 arguments: [
                     "--config", "\(context.package.directory.string)/../.swiftlint.yml",
                     "--no-cache",
+                    "--quiet",
                     "--format"
                 ],
                 environment: [:]

@@ -8,9 +8,12 @@ TOOLS_PATH := ${TOOLS_PACKAGE_PATH}/.build/release
 
 TOOLS_BINARIES_PATH := ${TOOLS_PACKAGE_PATH}/Binaries
 
-SWIFTLINT_ARTIFACTBUNDLE_NAME := "SwiftLintBinary-macos.artifactbundle.zip"
+ZIP := ".zip"
 
 SWIFTLINT_VERSION := 0.49.1
+SWIFTLINT_ARTIFACTBUNDLE_NAME := "SwiftLintBinary.artifactbundle"
+SWIFTLINT_ARTIFACTBUNDLE_ZIP_NAME := ${SWIFTLINT_ARTIFACTBUNDLE_NAME}${ZIP}
+SWIFTLINT_PATH :=${TOOLS_BINARIES_PATH}/${SWIFTLINT_ARTIFACTBUNDLE_NAME}/swiftlint-${SWIFTLINT_VERSION}-macos/bin/swiftlint
 
 # Targets
 
@@ -20,13 +23,13 @@ help:
 
 .PHONY: setup
 setup: # Install dependencies and prepared development configuration
-#	$(MAKE) build-tools
+	$(MAKE) build-tools
 	$(MAKE) download-tools
 	$(MAKE) open
 
 .PHONY: build-tools
 build-tools: # Build CLI tools managed by Swift Package Manager
-	$(MAKE) build-tool TOOL_NAME=swiftlint
+#	$(MAKE) build-tool TOOL_NAME=swiftlint
 	$(MAKE) build-tool TOOL_NAME=swiftgen
 
 .PHONY: build-tool
@@ -39,9 +42,9 @@ download-tools:
 
 .PHONY: download-swiftlint-artifactbundle
 download-swiftlint-artifactbundle: # Download SwiftLint Binary
-	curl -o ${TOOLS_BINARIES_PATH}/${SWIFTLINT_ARTIFACTBUNDLE_NAME} https://github.com/realm/SwiftLint/releases/download/${SWIFTLINT_VERSION}/SwiftLintBinary-macos.artifactbundle.zip -L
-	unzip ${TOOLS_BINARIES_PATH}/${SWIFTLINT_ARTIFACTBUNDLE_NAME} -d ${TOOLS_BINARIES_PATH}
-	rm -f ${TOOLS_BINARIES_PATH}/${SWIFTLINT_ARTIFACTBUNDLE_NAME}
+	curl -o ${TOOLS_BINARIES_PATH}/${SWIFTLINT_ARTIFACTBUNDLE_ZIP_NAME} https://github.com/realm/SwiftLint/releases/download/${SWIFTLINT_VERSION}/SwiftLintBinary-macos.artifactbundle.zip -L
+	unzip ${TOOLS_BINARIES_PATH}/${SWIFTLINT_ARTIFACTBUNDLE_ZIP_NAME} -d ${TOOLS_BINARIES_PATH}
+	rm -f ${TOOLS_BINARIES_PATH}/${SWIFTLINT_ARTIFACTBUNDLE_ZIP_NAME}
 
 .PHONY: open
 open: # Open workspace in Xcode
@@ -50,3 +53,11 @@ open: # Open workspace in Xcode
 .PHONY: swiftgen
 swiftgen: # Use SwiftGen
 	${TOOLS_PATH}/swiftgen
+
+.PHONY: swiftlint
+swiftlint: # Use SwiftLint
+	${SWIFTLINT_PATH}
+
+.PHONY: format
+format: # Use SwiftLint format
+	${SWIFTLINT_PATH} lint --fix --format --quiet
