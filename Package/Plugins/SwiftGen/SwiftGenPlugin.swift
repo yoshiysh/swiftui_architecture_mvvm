@@ -20,7 +20,6 @@ struct SwiftGenPlugin: BuildToolPlugin {
                     "--config", "\(context.package.directory.string)/../swiftgen.yml"
                 ],
                 environment: [
-                    "INPUT_DIR": context.package.directory.string,
                     "OUTPUT_DIR": context.pluginWorkDirectory.string
                 ],
                 outputFilesDirectory: context.pluginWorkDirectory
