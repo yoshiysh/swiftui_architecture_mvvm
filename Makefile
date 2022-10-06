@@ -64,4 +64,4 @@ open: # Open workspace in Xcode
 
 .PHONY: format
 format: # Use SwiftLint format
-	${SWIFTLINT_PATH}/swiftlint swiftlint --fix --format --quiet
+	${SWIFTLINT_PATH}/swiftlint --fix --format --quiet
