@@ -5,7 +5,7 @@
 //  Created by yoshi on 2022/09/13.
 //
 
-import Feature
+import App
 import SwiftUI
 
 @main
