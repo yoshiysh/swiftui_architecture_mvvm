@@ -1,6 +1,6 @@
 //
 //  RepositoryEntity.swift
-//
+//  swiftui_architecture_mvvm
 //
 //  Created by yoshi on 2022/09/27.
 //
@@ -25,10 +25,10 @@ public extension RepositoryEntity {
     static let preview = RepositoryEntity(
         id: 0,
         name: "GLSample4iOS",
-        fullName: "yoshi991/GLSample4iOS",
+        fullName: "yoshiysh/GLSample4iOS",
         owner: .preview,
         htmlUrl: {
-            if let url = URL(string: "https://github.com/yoshi991/GLSample4iOS") {
+            if let url = URL(string: "https://github.com/yoshiysh/GLSample4iOS") {
                 return url
             } else {
                 fatalError("Invalid URL.")

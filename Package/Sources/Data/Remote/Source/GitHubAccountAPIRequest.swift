@@ -1,6 +1,6 @@
 //
 //  GitHubAccountAPIRequest.swift
-//
+//  swiftui_architecture_mvvm
 //
 //  Created by yoshi on 2022/09/20.
 //
@@ -8,15 +8,15 @@
 import Domain
 import Foundation
 
-struct GitHubAccountAPIRequest: BaseRequestProtocol {
-    typealias ResponseType = UserEntity
+public struct GitHubAccountAPIRequest: BaseRequestProtocol {
+    public typealias ResponseType = UserEntity
 
-    var method: HTTPMethod = .get
-    var path: String = "/users"
-    var body: String = ""
-    var queryItems: [URLQueryItem] = []
+    public var method: HTTPMethod = .get
+    public var path: String = "/users"
+    public var body: String = ""
+    public var queryItems: [URLQueryItem] = []
 
-    init(userName: String) {
+    public init(userName: String) {
         path += "/\(userName)"
     }
 }

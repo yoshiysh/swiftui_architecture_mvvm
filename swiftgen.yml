@@ -1,9 +1,0 @@
-input_dir: ./Package/Sources/App/Resources
-output_dir: ${OUTPUT_DIR}
-
-strings:
-  inputs: ja.lproj
-  filter: .+\.strings$
-  outputs:
-    templateName: structured-swift5
-    output: L10n-Constants.swift

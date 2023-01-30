@@ -1,8 +1,8 @@
 //
 //  SwiftLintPlugin.swift
+//  swiftui_architecture_mvvm
 //
-//
-//  Created by yoshi991 on 2022/10/05.
+//  Created by yoshi on 2022/10/05.
 //
 
 import PackagePlugin

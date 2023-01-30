@@ -1,6 +1,6 @@
 //
 //  GitHubSearchAPIRequest.swift
-//
+//  swiftui_architecture_mvvm
 //
 //  Created by yoshi on 2022/09/27.
 //
@@ -8,19 +8,19 @@
 import Domain
 import Foundation
 
-struct GitHubSearchAPIRequest: BaseRequestProtocol {
-    typealias ResponseType = SearchResponseEntity
+public struct GitHubSearchAPIRequest: BaseRequestProtocol {
+    public typealias ResponseType = SearchResponseEntity
 
-    var method: HTTPMethod = .get
-    var path: String = "/search/repositories"
-    var body: String = ""
-    var queryItems: [URLQueryItem] {
+    public var method: HTTPMethod = .get
+    public var path: String = "/search/repositories"
+    public var body: String = ""
+    public var queryItems: [URLQueryItem] {
         query.buildQueryItems()
     }
 
     private let query: QueryDto
 
-    init(query: QueryDto) {
+    public init(query: QueryDto) {
         self.query = query
     }
 }

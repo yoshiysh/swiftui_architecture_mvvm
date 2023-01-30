@@ -1,15 +1,16 @@
 //
 //  ApiClient.swift
-//
+//  swiftui_architecture_mvvm
 //
 //  Created by yoshi on 2022/09/27.
 //
 
 import Combine
+import Data_Core
 import Domain
 import Foundation
 
-enum ApiClient {
+public enum ApiClient {
     private static let timeout: Double = 30
     private static let successRange = 200..<300
     private static let retryCount: Int = 1
@@ -21,7 +22,7 @@ enum ApiClient {
         return jsonDecoder
     }()
 
-    static func call<T, V>(_ request: T) async throws -> V where T: BaseRequestProtocol, V: Codable, T.ResponseType == V {
+    public static func call<T, V>(_ request: T) async throws -> V where T: BaseRequestProtocol, V: Codable, T.ResponseType == V {
         var req = request.asURLRequest()
         req.timeoutInterval = TimeInterval(timeout)
         //        debugPrint("[ApiClient] request: \(req)")
@@ -32,7 +33,7 @@ enum ApiClient {
         return try decoder.decode(V.self, from: data)
     }
 
-    static func publish<T, V>(_ request: T) -> AnyPublisher<V, NetworkErrorType> where T: BaseRequestProtocol, V: Codable, T.ResponseType == V {
+    public static func publish<T, V>(_ request: T) -> AnyPublisher<V, NetworkErrorType> where T: BaseRequestProtocol, V: Codable, T.ResponseType == V {
         session
             .dataTaskPublisher(for: request.asURLRequest())
             .timeout(.seconds(timeout), scheduler: DispatchQueue.main)

@@ -1,6 +1,6 @@
 //
 //  UserEntity.swift
-//
+//  swiftui_architecture_mvvm
 //
 //  Created by yoshi on 2022/09/27.
 //
@@ -21,7 +21,7 @@ extension UserEntity: Codable {}
 
 public extension UserEntity {
     static let preview = UserEntity(
-        login: "yoshi991",
+        login: "yoshiysh",
         id: 22577999,
         avatarUrl: {
             if let url = URL(string: "https://avatars.githubusercontent.com/u/22577999?v=4") {
@@ -31,14 +31,14 @@ public extension UserEntity {
             }
         }(),
         url: {
-            if let url = URL(string: "https://api.github.com/users/yoshi991") {
+            if let url = URL(string: "https://api.github.com/users/yoshiysh") {
                 return url
             } else {
                 fatalError("Invalid URL.")
             }
         }(),
         reposUrl: {
-            if let url = URL(string: "https://api.github.com/users/yoshi991/repos") {
+            if let url = URL(string: "https://api.github.com/users/yoshiysh/repos") {
                 return url
             } else {
                 fatalError("Invalid URL.")

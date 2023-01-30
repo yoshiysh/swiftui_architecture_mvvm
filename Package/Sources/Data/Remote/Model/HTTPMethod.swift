@@ -1,13 +1,13 @@
 //
 //  HTTPMethod.swift
-//
+//  swiftui_architecture_mvvm
 //
 //  Created by yoshi on 2022/09/27.
 //
 
 import Foundation
 
-enum HTTPMethod: String {
+public enum HTTPMethod: String {
     case connect = "CONNECT"
     case delete = "DELETE"
     case get = "GET"

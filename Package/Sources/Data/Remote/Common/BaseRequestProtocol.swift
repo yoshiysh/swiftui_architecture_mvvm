@@ -1,13 +1,13 @@
 //
 //  BaseRequestProtocol.swift
-//
+//  swiftui_architecture_mvvm
 //
 //  Created by yoshi on 2022/09/27.
 //
 
 import Foundation
 
-protocol BaseRequestProtocol: BaseAPIProtocol {
+public protocol BaseRequestProtocol: BaseAPIProtocol {
     var body: String { get }
     var queryItems: [URLQueryItem] { get }
 }

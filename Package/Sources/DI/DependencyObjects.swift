@@ -1,12 +1,10 @@
 //
 //  DependencyObjects.swift
+//  swiftui_architecture_mvvm
 //  ref.) https://www.avanderlee.com/swift/dependency-injection/
 //
 //  Created by yoshi on 2022/09/27.
 //
-
-import Data
-import Domain
 
 public class DependencyObjects { // swiftlint:disable:this file_types_order
     init() {}

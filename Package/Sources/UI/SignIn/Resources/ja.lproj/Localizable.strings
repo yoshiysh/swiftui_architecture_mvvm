@@ -1,0 +1,14 @@
+/* 
+  Localizable.strings
+  swiftui_architecture_mvvm
+
+  Created by yoshi on 2022/10/05.
+  
+*/
+
+"navigation.title" = "ログイン";
+"mail_address.title" = "メールアドレス";
+"mail_address.placeholder" = "メールアドレス";
+"password.title" = "メールアドレス";
+"password.placeholder" = "6~12文字のパスワード";
+"button.sign_in" = "メールアドレス";

@@ -1,11 +1,12 @@
 //
 //  GithubRepository.swift
-//
+//  swiftui_architecture_mvvm
 //
 //  Created by yoshi on 2022/09/27.
 //
 
 import Combine
+import Data_Rempte
 import Domain
 
 public final class GithubRepository {

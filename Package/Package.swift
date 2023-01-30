@@ -20,28 +20,94 @@ let package = Package(
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
+        
+        // === Dependency Injection -----
+        
         .target(
             name: "DI",
-            dependencies: [
-                "Domain",
-                "Data"
-            ]),
+            dependencies: ["Domain", "Data/Repository"]
+        ),
+        
+        // === Application -----
+        
         .target(
             name: "App",
-            dependencies: [
-                "DI",
-                "Domain"
-            ],
-            plugins: [
-                "SwiftLint",
-                "SwiftGen"
-            ]),
-        .target(name: "Domain"),
+            dependencies: ["UI/Splash", "UI/SignUpHome", "UI/TabHome"],
+            plugins: ["SwiftLint"]
+        ),
+        
+        // === UI -----
+        
         .target(
-            name: "Data",
-            dependencies: [
-                "Domain"
-            ]),
+            name: "UI/Core",
+            dependencies: ["Domain"],
+            path: "Sources/UI/Core"
+        ),
+        .target(
+            name: "UI/Home",
+            dependencies: ["DI", "UI/Core", "Domain"],
+            path: "Sources/UI/Home"
+        ),
+        .target(
+            name: "UI/Search",
+            path: "Sources/UI/Search"
+        ),
+        .target(
+            name: "UI/SignIn",
+            dependencies: ["UI/Core", "Domain"],
+            path: "Sources/UI/SignIn",
+            plugins: ["SwiftGen"]
+        ),
+        .target(
+            name: "UI/SignUp",
+            dependencies: ["UI/Web"],
+            path: "Sources/UI/SignUp"
+        ),
+        .target(
+            name: "UI/SignUpHome",
+            dependencies: ["DI", "UI/SignIn", "UI/SignUp"],
+            path: "Sources/UI/SignUpHome",
+            plugins: ["SwiftGen"]
+        ),
+        .target(
+            name: "UI/Splash",
+            path: "Sources/UI/Splash"
+        ),
+        .target(
+            name: "UI/TabHome",
+            dependencies: ["UI/Home", "UI/Search"],
+            path: "Sources/UI/TabHome"
+        ),
+        .target(
+            name: "UI/Web",
+            path: "Sources/UI/Web"
+        ),
+        
+        // === Domain -----
+        
+        .target(name: "Domain"),
+        
+        // === Data -----
+        
+        .target(
+            name: "Data/Core",
+            path: "Sources/Data/Core"
+        ),
+        .target(
+            name: "Data/Local",
+            path: "Sources/Data/Local"
+        ),
+        .target(
+            name: "Data/Rempte",
+            dependencies: ["Data/Core"],
+            path: "Sources/Data/Remote"
+        ),
+        .target(
+            name: "Data/Repository",
+            dependencies: ["Domain", "Data/Rempte"],
+            path: "Sources/Data/Repository"
+        ),
+
         
         // === Plugins -----
         
@@ -49,7 +115,6 @@ let package = Package(
             name: "SwiftLintBinary",
             path: "./../Artifacts/SwiftLintBinary.artifactbundle"
         ),
-        
         .plugin(
             name: "SwiftLint",
             capability: .buildTool(),
@@ -60,7 +125,6 @@ let package = Package(
             name: "SwiftGenBinary",
             path: "./../Artifacts/SwiftGenBinary.artifactbundle"
         ),
-
         .plugin(
             name: "SwiftGen",
             capability: .buildTool(),
@@ -71,6 +135,7 @@ let package = Package(
         
         .testTarget(
             name: "PackageTests",
-            dependencies: [])
+            dependencies: []
+        )
     ]
 )
