@@ -27,7 +27,8 @@ public struct Snackbar: View { // swiftlint:disable:this file_types_order
     private let backgroundColor: Color
     private let length: Length
     @State private var opacity = 0.0
-    private var icon: AnyView?
+    private var icon: AnyView
+    private let onDismiss: (() -> Void)
 
     private let targetView: AnyView
 
@@ -46,15 +47,14 @@ public struct Snackbar: View { // swiftlint:disable:this file_types_order
                         icon: icon
                     )
                     .frame(maxHeight: .infinity, alignment: .bottom)
+                    .onAnimationCompleted(for: opacity) {
+                        isPresented = false
+                        onDismiss()
+                    }
                     .task {
                         opacity = 0.8
-                        Task {
-                            try await Task.sleep(nanoseconds: length.duration)
-                            withAnimation {
-                                isPresented = false
-                                opacity = 0.0
-                            }
-                        }
+                        try? await Task.sleep(nanoseconds: length.duration)
+                        withAnimation(.easeInOut) { opacity = 0.0 }
                     }
                 }
             }
@@ -68,7 +68,8 @@ public struct Snackbar: View { // swiftlint:disable:this file_types_order
         foregroundColor: Color,
         backgroundColor: Color,
         length: Length,
-        @ViewBuilder icon: @escaping () -> Icon?
+        @ViewBuilder icon: @escaping () -> Icon,
+        onDismiss: @escaping () -> Void
     ) {
         self.targetView = AnyView(targetView)
         _isPresented = isPresented
@@ -76,9 +77,8 @@ public struct Snackbar: View { // swiftlint:disable:this file_types_order
         self.foregroundColor = foregroundColor
         self.backgroundColor = backgroundColor
         self.length = length
-        if let icon = icon() {
-            self.icon = AnyView(icon)
-        }
+        self.icon = AnyView(icon())
+        self.onDismiss = onDismiss
     }
 }
 
@@ -106,7 +106,6 @@ private struct SnackContent: View {
         .cornerRadius(8)
         .offset(x: 0, y: -10)
         .opacity(opacity)
-        .animation(.easeInOut, value: opacity)
     }
 }
 
@@ -117,7 +116,8 @@ extension View {
         foregroundColor: Color = .white,
         backgroundColor: Color = .red,
         length: Snackbar.Length = .short,
-        @ViewBuilder icon: @escaping () -> Icon?
+        @ViewBuilder icon: @escaping () -> Icon,
+        onDismiss: @escaping () -> Void = {}
     ) -> some View {
         Snackbar(
             targetView: self,
@@ -126,7 +126,8 @@ extension View {
             foregroundColor: foregroundColor,
             backgroundColor: backgroundColor,
             length: length,
-            icon: icon
+            icon: icon,
+            onDismiss: onDismiss
         )
     }
 
@@ -135,7 +136,8 @@ extension View {
         message: String,
         foregroundColor: Color = .white,
         backgroundColor: Color = .red,
-        length: Snackbar.Length = .short
+        length: Snackbar.Length = .short,
+        onDismiss: @escaping () -> Void = {}
     ) -> some View {
         snackbar(
             isPresented: isPresented,
@@ -143,6 +145,9 @@ extension View {
             foregroundColor: foregroundColor,
             backgroundColor: backgroundColor,
             length: length
-        ) {}
+        ) {
+        } onDismiss: {
+            onDismiss()
+        }
     }
 }
