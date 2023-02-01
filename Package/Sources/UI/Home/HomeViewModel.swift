@@ -8,22 +8,17 @@
 import Combine
 import DI
 import Domain
-import Foundation
 
 @MainActor
 final class HomeViewModel: ObservableObject {
-
     @Inject(.githubRepository)
     private var repository: GithubRepositoryProtcol
 
-    @Published private(set) var state: HomeViewState = .initialzed
-    @Published var data: HomeDataModel
-
-    private var cancellables = Set<AnyCancellable>()
-    private var defaultQuery = QueryDto(language: "swift")
+    @Published var uiState: HomeUIState
+    private let defaultQuery = QueryDto(language: "swift")
 
     init() {
-        self.data = .init(query: defaultQuery)
+        uiState = .init(query: defaultQuery)
     }
 
     func fetch() async {
@@ -31,16 +26,16 @@ final class HomeViewModel: ObservableObject {
     }
 
     func next() async {
-        if !data.hasNextPage {
+        if !uiState.hasNextPage {
             return
         }
-        data.query.page += 1
-        await fetch(forQuery: data.query, isForce: true)
+        uiState.query.page += 1
+        await fetch(forQuery: uiState.query, isForce: true)
     }
 
     func refresh() async {
-        data.query.page = 1
-        await fetch(forQuery: data.query, isForce: true, isRefresh: true)
+        uiState.query.page = 1
+        await fetch(forQuery: uiState.query, isForce: true, isRefresh: true)
     }
 
     private func fetch(
@@ -48,17 +43,17 @@ final class HomeViewModel: ObservableObject {
         isForce force: Bool = false,
         isRefresh: Bool = false
     ) async {
-        switch state {
+        switch uiState.state {
         case .loading:
             return
         case .suceess:
-            if !force && !data.isEmpty {
+            if !force && !uiState.isEmptyItem {
                 return
             }
         case .initialzed, .error:
             break
         }
-        state = .loading
+        uiState.updateState(.loading)
 
         await search(query: query, isRefresh: isRefresh)
     }
@@ -72,7 +67,11 @@ final class HomeViewModel: ObservableObject {
             handleSuccessResponse(response: response, isRefresh: isRefresh)
         } catch {
             debugPrint("error: \(error)")
-            state = .error(error)
+            if let error = error as? NetworkErrorType {
+                uiState.updateState(.error(error))
+            } else {
+                uiState.updateState(.error(NetworkErrorType.unknown))
+            }
         }
     }
 
@@ -80,8 +79,8 @@ final class HomeViewModel: ObservableObject {
         response: SearchResponseEntity,
         isRefresh: Bool = false
     ) {
-        if isRefresh { data.refresh() }
-        data.update(data: response)
-        state = .suceess
+        if isRefresh { uiState.refresh() }
+        uiState.update(data: response)
+        uiState.updateState(.suceess)
     }
 }

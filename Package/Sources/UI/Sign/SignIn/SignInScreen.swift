@@ -8,28 +8,37 @@
 import SwiftUI
 
 public struct SignInScreen: View { // swiftlint:disable:this file_types_order
-
     @StateObject private var viewModel: SignInViewModel = .init()
-    @FocusState private var focusState: SignInFocusState?
+    @FocusState private var focusState: SignInViewUIState.FocusState?
 
-    var onComplete: (() -> Void)
+    private let onComplete: (() -> Void)
 
     public var body: some View {
         NavigationView {
-            SignInView(viewModel: viewModel, focusState: _focusState)
-                .navigationTitle(L10n.Navigation.title)
+            SignInView(
+                email: $viewModel.uiState.email,
+                password: $viewModel.uiState.password,
+                isSubmitButtonEnabled: viewModel.uiState.isSubmitButtonEnabled,
+                focusState: _focusState,
+                onTapEmailSubmitButton: { viewModel.didTapSubmitButton() },
+                onTapPasswordSubmitButton: { viewModel.didTapSubmitButton() },
+                onTapSignInButton: {
+                    Task { await viewModel.signIn() }
+                }
+            )
+            .navigationTitle(L10n.Navigation.title)
         }
-        .onChange(of: viewModel.state) { state in
+        .onChange(of: viewModel.uiState.state) { state in
             if state == .suceess { onComplete() }
         }
-        .onChange(of: viewModel.focusState) { state in
+        .onChange(of: viewModel.uiState.focusState) { state in
             focusState = state
         }
-        .onAppear {
-            Task {
-                try await Task.sleep(nanoseconds: 200_000_000)
-                self.viewModel.initializeFocusState()
-            }
+        .onChange(of: [viewModel.uiState.email, viewModel.uiState.password]) { _ in
+            viewModel.updateSubmitButton()
+        }
+        .task {
+            await viewModel.initializeFocusState()
         }
     }
 
@@ -39,26 +48,31 @@ public struct SignInScreen: View { // swiftlint:disable:this file_types_order
 }
 
 private struct SignInView: View {
+    @Binding var email: String
+    @Binding var password: String
+    let isSubmitButtonEnabled: Bool
+    @FocusState var focusState: SignInViewUIState.FocusState?
 
-    @ObservedObject var viewModel: SignInViewModel
-    @FocusState var focusState: SignInFocusState?
+    let onTapEmailSubmitButton: (() -> Void)
+    let onTapPasswordSubmitButton: (() -> Void)
+    let onTapSignInButton: (() -> Void)
 
     var body: some View {
         VStack {
             VStack(spacing: 32) {
                 InputMailAddress(
-                    text: $viewModel.email,
+                    text: _email,
                     focusState: _focusState
-                ) { viewModel.didTapSubmitButton() }
+                ) { onTapEmailSubmitButton() }
 
                 InputPassword(
-                    text: $viewModel.password,
+                    text: _password,
                     focusState: _focusState
-                ) { viewModel.didTapSubmitButton() }
+                ) { onTapPasswordSubmitButton() }
             }
 
-            LoginButton(enabled: $viewModel.isSubmitButtonEnabled) {
-                viewModel.onCommit()
+            LoginButton(enabled: isSubmitButtonEnabled) {
+                onTapSignInButton()
             }
             .frame(maxHeight: .infinity, alignment: .bottom)
         }
@@ -68,8 +82,8 @@ private struct SignInView: View {
 
 private struct InputMailAddress: View {
     @Binding var text: String
-    @FocusState var focusState: SignInFocusState?
-    var onSubmit: (() -> Void)
+    @FocusState var focusState: SignInViewUIState.FocusState?
+    let onSubmit: (() -> Void)
 
     var body: some View {
         VStack {
@@ -92,8 +106,8 @@ private struct InputMailAddress: View {
 
 private struct InputPassword: View {
     @Binding var text: String
-    @FocusState var focusState: SignInFocusState?
-    var onSubmit: (() -> Void)
+    @FocusState var focusState: SignInViewUIState.FocusState?
+    let onSubmit: (() -> Void)
 
     var body: some View {
         VStack {
@@ -115,12 +129,12 @@ private struct InputPassword: View {
 }
 
 private struct LoginButton: View {
-    @Binding var enabled: Bool
-    var action: (() -> Void)
+    let enabled: Bool
+    let onSubmit: (() -> Void)
 
     var body: some View {
         Button {
-            action()
+            onSubmit()
         } label: {
             Text(L10n.Button.signIn)
                 .fontWeight(.bold)

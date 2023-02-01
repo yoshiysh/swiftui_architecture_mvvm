@@ -1,13 +1,12 @@
 //
 //  AnyPublisher+.swift
-//
+//  swiftui_architecture_mvvm
 //
 //  Created by yoshi on 2022/09/27.
 //
 
 import Combine
 import Domain
-import Foundation
 
 public extension AnyPublisher {
     func async() async throws -> Output {

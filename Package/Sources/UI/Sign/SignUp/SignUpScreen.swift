@@ -9,7 +9,6 @@ import SwiftUI
 import UI_Web
 
 public struct SignUpScreen: View { // swiftlint:disable:this file_types_order
-
     public var body: some View {
         SignUpView()
     }
@@ -18,7 +17,6 @@ public struct SignUpScreen: View { // swiftlint:disable:this file_types_order
 }
 
 private struct SignUpView: View {
-
     var body: some View {
         WebScreen("https://github.com/signup")
     }

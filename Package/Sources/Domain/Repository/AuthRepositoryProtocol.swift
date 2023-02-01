@@ -6,7 +6,6 @@
 //
 
 import Combine
-import Foundation
 
 public protocol AuthRepositoryProtocol {
     func login(email: String, password: String) -> AnyPublisher<Void, Error>

@@ -10,8 +10,6 @@ import UI_Home
 import UI_Search
 
 public struct TabHomeScreen: View {
-    @StateObject private var viewModel: TabHomeViewModel = .init()
-
     public var body: some View {
         TabView {
             HomeScreen()

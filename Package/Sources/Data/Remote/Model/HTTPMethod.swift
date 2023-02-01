@@ -5,8 +5,6 @@
 //  Created by yoshi on 2022/09/27.
 //
 
-import Foundation
-
 public enum HTTPMethod: String {
     case connect = "CONNECT"
     case delete = "DELETE"

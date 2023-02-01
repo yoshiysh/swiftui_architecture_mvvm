@@ -5,13 +5,10 @@
 //  Created by yoshi on 2022/09/14.
 //
 
-import Combine
-import Foundation
-
 public protocol AuthUseCaseProtcol {
     func validate(email: String, password: String) -> Bool
 
-    func signIn(email: String, password: String) -> AnyPublisher<Void, Error>
+    func signIn(email: String, password: String) async throws
 }
 
 public final class AuthUseCase: AuthUseCaseProtcol {
@@ -21,10 +18,9 @@ public final class AuthUseCase: AuthUseCaseProtcol {
         !email.isEmpty && !password.isEmpty
     }
 
-    public func signIn(email: String, password: String) -> AnyPublisher<Void, Error> {
-        if validate(email: email, password: password) {
-            return Fail(error: AuthErrorType.invalid).eraseToAnyPublisher()
+    public func signIn(email: String, password: String) async throws {
+        if !validate(email: email, password: password) {
+            throw AuthErrorType.invalid
         }
-        return Fail(error: AuthErrorType.invalid).eraseToAnyPublisher()
     }
 }

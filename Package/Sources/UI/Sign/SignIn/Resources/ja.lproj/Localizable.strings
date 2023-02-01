@@ -11,4 +11,4 @@
 "mail_address.placeholder" = "メールアドレス";
 "password.title" = "メールアドレス";
 "password.placeholder" = "6~12文字のパスワード";
-"button.sign_in" = "メールアドレス";
+"button.sign_in" = "メールアドレスでログイン";

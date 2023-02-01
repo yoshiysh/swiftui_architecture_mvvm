@@ -8,9 +8,9 @@
 import Combine
 import DI
 import Domain
-import Foundation
 import UI_Core
 
+/// Dependency Injection demo class
 @MainActor
 final class TabHomeViewModel: ObservableObject {
 

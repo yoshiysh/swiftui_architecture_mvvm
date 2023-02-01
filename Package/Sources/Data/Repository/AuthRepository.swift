@@ -7,7 +7,6 @@
 
 import Combine
 import Domain
-import Foundation
 
 public final class AuthRepository: AuthRepositoryProtocol {
     public func login(email: String, password: String) -> AnyPublisher<Void, Error> {

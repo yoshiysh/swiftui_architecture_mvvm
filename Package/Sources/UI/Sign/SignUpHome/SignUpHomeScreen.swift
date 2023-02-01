@@ -6,29 +6,32 @@
 //
 
 import SwiftUI
+import UI_Core
 import UI_SignIn
 import UI_SignUp
 
 public struct SignUpHomeScreen: View { // swiftlint:disable:this file_types_order
-
     @StateObject private var viewModel: SignUpHomeViewModel = .init()
-    private var onLoggedIn: (() -> Void)
+    private let onLoggedIn: (() -> Void)
 
     public var body: some View {
-        SignUpOrInView(viewModel)
-            .sheet(isPresented: $viewModel.isShowingSheet) {
-                switch viewModel.state {
-                case .signIn:
-                    SignInScreen { viewModel.updateState(.loggedIn) }
-                case .signUp:
-                    SignUpScreen()
-                case .loggedIn, .initialized:
-                    EmptyView()
-                }
+        SignUpOrInView(
+            onClickSignIn: { viewModel.updateState(.signIn) },
+            onClickSignUp: { viewModel.updateState(.signUp) }
+        )
+        .sheet(isPresented: $viewModel.uiState.isShowingSheet) {
+            switch viewModel.uiState.state {
+            case .signIn:
+                SignInScreen { viewModel.updateState(.loggedIn) }
+            case .signUp:
+                SignUpScreen()
+            case .loggedIn, .initialized:
+                EmptyView()
             }
-            .onChange(of: viewModel.state) { state in
-                if state == .loggedIn { onLoggedIn() }
-            }
+        }
+        .onChange(of: viewModel.uiState.state) { state in
+            if state == .loggedIn { onLoggedIn() }
+        }
     }
 
     public init(onLoggedIn: @escaping (() -> Void)) {
@@ -37,25 +40,24 @@ public struct SignUpHomeScreen: View { // swiftlint:disable:this file_types_orde
 }
 
 private struct SignUpOrInView: View {
-
-    @ObservedObject var viewModel: SignUpHomeViewModel
+    private let onClickSignIn: (() -> Void)
+    private let onClickSignUp: (() -> Void)
 
     var body: some View {
         VStack(spacing: 32) {
-            SignInButton {
-                viewModel.updateState(.signIn)
-            }
-
-            SignUpButton {
-                viewModel.updateState(.signUp)
-            }
+            SignInButton(action: onClickSignIn)
+            SignUpButton(action: onClickSignUp)
         }
         .frame(maxHeight: .infinity, alignment: .bottom)
         .padding(.horizontal)
     }
 
-    init(_ viewModel: SignUpHomeViewModel) {
-        self.viewModel = viewModel
+    init(
+        onClickSignIn: @escaping (() -> Void),
+        onClickSignUp: @escaping (() -> Void)
+    ) {
+        self.onClickSignIn = onClickSignIn
+        self.onClickSignUp = onClickSignUp
     }
 }
 

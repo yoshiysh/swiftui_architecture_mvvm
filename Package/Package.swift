@@ -55,18 +55,18 @@ let package = Package(
         .target(
             name: "UI/SignIn",
             dependencies: ["UI/Core", "Domain"],
-            path: "Sources/UI/SignIn",
+            path: "Sources/UI/Sign/SignIn",
             plugins: ["SwiftGen"]
         ),
         .target(
             name: "UI/SignUp",
             dependencies: ["UI/Web"],
-            path: "Sources/UI/SignUp"
+            path: "Sources/UI/Sign/SignUp"
         ),
         .target(
             name: "UI/SignUpHome",
             dependencies: ["DI", "UI/SignIn", "UI/SignUp"],
-            path: "Sources/UI/SignUpHome",
+            path: "Sources/UI/Sign/SignUpHome",
             plugins: ["SwiftGen"]
         ),
         .target(
@@ -91,6 +91,7 @@ let package = Package(
         
         .target(
             name: "Data/Core",
+            dependencies: ["Domain"],
             path: "Sources/Data/Core"
         ),
         .target(

@@ -14,18 +14,32 @@ public struct HomeScreen: View { // swiftlint:disable:this file_types_order
 
     public var body: some View {
         NavigationView {
-            HomeView(viewModel: viewModel)
-                .navigationTitle("Repository")
+            Group {
+                if viewModel.uiState.isInitial {
+                    VStack {}
+                } else {
+                    HomeView(
+                        items: viewModel.uiState.items,
+                        hasNextPage: viewModel.uiState.hasNextPage
+                    ) {
+                        Task { await viewModel.next() }
+                    }
+                }
+            }
+            .navigationTitle("Repository")
+        }
+        .snackbar(
+            isPresented: $viewModel.uiState.isShowingAlert,
+            message: viewModel.uiState.alertMessage
+        ) {
+            Image(systemName: "star")
+                .foregroundColor(.white)
         }
         .refreshable {
-            Task {
-                await viewModel.refresh()
-            }
+            await viewModel.refresh()
         }
-        .onAppear {
-            Task {
-                await viewModel.fetch()
-            }
+        .task {
+            await viewModel.fetch()
         }
     }
 
@@ -33,28 +47,27 @@ public struct HomeScreen: View { // swiftlint:disable:this file_types_order
 }
 
 private struct HomeView: View {
-    @ObservedObject var viewModel: HomeViewModel
+    let items: [RepositoryEntity]
+    let hasNextPage: Bool
+    let onAppearLoadingItem: (() -> Void)
 
     var body: some View {
-        if viewModel.data.isEmpty {
+        if items.isEmpty {
             ContentsEmptyView()
         } else {
             HomeContentsView(
-                items: viewModel.data.items,
-                hasNextPage: viewModel.data.hasNextPage
-            ) {
-                Task {
-                    await viewModel.next()
-                }
-            }
+                items: items,
+                hasNextPage: hasNextPage,
+                onAppearLoadingItem: onAppearLoadingItem
+            )
         }
     }
 }
 
 private struct HomeContentsView: View {
-    var items: [RepositoryEntity]
-    @State var hasNextPage = true
-    var onAppearLoadingItem: (() -> Void)
+    let items: [RepositoryEntity]
+    let hasNextPage: Bool
+    let onAppearLoadingItem: (() -> Void)
 
     var body: some View {
         ScrollView(.vertical) {
@@ -67,7 +80,7 @@ private struct HomeContentsView: View {
                 if hasNextPage {
                     LoadingView()
                         .frame(maxWidth: .infinity, alignment: .center)
-                        .onAppear { onAppearLoadingItem() }
+                        .task { onAppearLoadingItem() }
                 }
             }
             .padding()
@@ -78,7 +91,7 @@ private struct HomeContentsView: View {
 struct HomeScreen_Previews: PreviewProvider {
     private struct HomeContentsPreview: View {
         var body: some View {
-            HomeContentsView(items: [RepositoryEntity.preview]) {}
+            HomeContentsView(items: [RepositoryEntity.preview], hasNextPage: false) {}
         }
     }
 
