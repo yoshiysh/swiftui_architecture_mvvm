@@ -72,7 +72,7 @@ private struct RepositoryInfoView: View {
                     .lineLimit(3)
             }
 
-            Text("Updated At: \(DateUtil.shared.formatDate(from: item.updatedAt, format: .YYYYMMDD))")
+            Text("Updated At: \(item.updatedAt.formatted(date: .numeric, time: .omitted))")
                 .font(.caption)
                 .foregroundColor(.gray)
                 .font(.subheadline)
