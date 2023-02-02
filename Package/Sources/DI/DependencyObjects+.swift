@@ -10,6 +10,6 @@ import Domain
 
 public extension DependencyObjects {
     static let githubRepository = DependencyObject<GithubRepositoryProtcol> {
-        GithubRepository()
+        GithubDefaultRepository()
     }
 }

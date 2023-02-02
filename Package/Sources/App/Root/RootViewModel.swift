@@ -6,22 +6,15 @@
 //
 
 import Combine
+import Foundation
 
 @MainActor
 final class RootViewModel: ObservableObject {
-    @Published var state: RootViewState = .initialized
+    @Published var uiState: RootUIState = .init()
 
-    private var cancellables = Set<AnyCancellable>()
-
-    init() {
-        getUser()
-    }
-
-    func updateState(_ state: RootViewState) {
-        self.state = state
-    }
-
-    private func getUser() {
-        state = .loggedOut
+    func getUser() async {
+        try? await Task.sleep(nanoseconds: 1 * USEC_PER_SEC)
+//        uiState.update(state: .loggedOut)
+        uiState.update(state: .loggedIn)
     }
 }

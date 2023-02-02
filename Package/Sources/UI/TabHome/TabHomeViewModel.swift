@@ -13,7 +13,6 @@ import UI_Core
 /// Dependency Injection demo class
 @MainActor
 final class TabHomeViewModel: ObservableObject {
-
     @Inject(.githubRepository)
     private var repository: GithubRepositoryProtcol
 

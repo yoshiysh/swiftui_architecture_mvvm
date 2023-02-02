@@ -21,6 +21,10 @@ final class HomeViewModel: ObservableObject {
         uiState = .init(query: defaultQuery)
     }
 
+    func navigate(to path: HomeUIState.Navigator) {
+        uiState.navigationPath.append(path)
+    }
+
     func fetch() async {
         await fetch(forQuery: defaultQuery)
     }

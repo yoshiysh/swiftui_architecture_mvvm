@@ -10,14 +10,28 @@ struct SignUpHomeUIState {
         case initialized, signUp, signIn, loggedIn
     }
 
-    private(set) var state: State = .initialized {
-        didSet {
-            self.isShowingSheet = state == .signIn || state == .signUp
+    enum ActiveSheet: String, Identifiable {
+        case signUp, signIn
+        var id: String {
+            self.rawValue
         }
     }
-    var isShowingSheet = false
 
-    mutating func updateState(_ state: State) {
+    private(set) var state: State = .initialized {
+        didSet {
+            switch state {
+            case .signIn:
+                activeSheet = .signIn
+            case .signUp:
+                activeSheet = .signUp
+            default:
+                activeSheet = nil
+            }
+        }
+    }
+    var activeSheet: ActiveSheet?
+
+    mutating func update(state: State) {
         self.state = state
     }
 }

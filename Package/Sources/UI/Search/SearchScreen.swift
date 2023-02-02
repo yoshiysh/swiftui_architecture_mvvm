@@ -7,16 +7,16 @@
 
 import SwiftUI
 
-public struct SearchScreen: View { // swiftlint:disable:this file_types_order
+public struct SearchScreen: View {
     public var body: some View {
-        SearchView()
+        searchView()
     }
 
     public init() {}
 }
 
-private struct SearchView: View {
-    var body: some View {
+private extension View {
+    func searchView() -> some View {
         Text("Hello, Search!")
     }
 }

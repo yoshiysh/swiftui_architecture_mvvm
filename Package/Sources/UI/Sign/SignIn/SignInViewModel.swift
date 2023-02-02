@@ -10,21 +10,17 @@ import Domain
 import Foundation
 
 @MainActor
-public final class SignInViewModel: ObservableObject {
+final class SignInViewModel: ObservableObject {
     @Published var uiState: SignInViewUIState = .init()
     private let useCase: AuthUseCaseProtcol
 
-    public init(_ useCase: AuthUseCaseProtcol = AuthUseCase()) {
+    init(_ useCase: AuthUseCaseProtcol = AuthUseCase()) {
         self.useCase = useCase
     }
 
     func initializeFocusState() async {
-        do {
-            try await Task.sleep(nanoseconds: 2 * USEC_PER_SEC)
-            uiState.initializeFocusState()
-        } catch {
-            debugPrint("error: \(error)")
-        }
+        try? await Task.sleep(nanoseconds: 2 * USEC_PER_SEC)
+        uiState.initializeFocusState()
     }
 
     func didTapSubmitButton() {
@@ -32,8 +28,8 @@ public final class SignInViewModel: ObservableObject {
     }
 
     func updateSubmitButton() {
-        uiState.updateSubmitButton { [weak self] email, password in
-            self?.useCase.validate(email: email, password: password) ?? false
+        uiState.updateSubmitButton { [self] email, password in
+            self.useCase.validate(email: email, password: password)
         }
     }
 
@@ -46,7 +42,7 @@ public final class SignInViewModel: ObservableObject {
                     try await self.useCase.signIn(email: self.uiState.email, password: self.uiState.password)
                 }
                 group.addTask {
-                    try await Task.sleep(nanoseconds: 1000 * USEC_PER_SEC)
+                    try? await Task.sleep(nanoseconds: 1000 * USEC_PER_SEC)
                 }
                 for try await _ in group {
                 }

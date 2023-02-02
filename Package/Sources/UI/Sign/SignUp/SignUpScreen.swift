@@ -8,16 +8,16 @@
 import SwiftUI
 import UI_Web
 
-public struct SignUpScreen: View { // swiftlint:disable:this file_types_order
+public struct SignUpScreen: View {
     public var body: some View {
-        SignUpView()
+        signUpView()
     }
 
     public init() {}
 }
 
-private struct SignUpView: View {
-    var body: some View {
+private extension View {
+    func signUpView() -> some View {
         WebScreen("https://github.com/signup")
     }
 }

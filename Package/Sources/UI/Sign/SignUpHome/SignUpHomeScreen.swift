@@ -10,24 +10,18 @@ import UI_Core
 import UI_SignIn
 import UI_SignUp
 
-public struct SignUpHomeScreen: View { // swiftlint:disable:this file_types_order
+public struct SignUpHomeScreen: View {
     @StateObject private var viewModel: SignUpHomeViewModel = .init()
     private let onLoggedIn: () -> Void
 
     public var body: some View {
-        SignUpOrInView(
-            onClickSignIn: { viewModel.updateState(.signIn) },
-            onClickSignUp: { viewModel.updateState(.signUp) }
-        )
-        .sheet(isPresented: $viewModel.uiState.isShowingSheet) {
-            switch viewModel.uiState.state {
-            case .signIn:
-                SignInScreen { viewModel.updateState(.loggedIn) }
-            case .signUp:
-                SignUpScreen()
-            case .loggedIn, .initialized:
-                EmptyView()
-            }
+        signUpOrInView {
+            viewModel.uiState.update(state: .signIn)
+        } onClickSignUp: {
+            viewModel.uiState.update(state: .signUp)
+        }
+        .signUpHomeSheet(item: $viewModel.uiState.activeSheet) {
+            viewModel.uiState.update(state: .loggedIn)
         }
         .onChange(of: viewModel.uiState.state) { state in
             if state == .loggedIn { onLoggedIn() }
@@ -39,24 +33,22 @@ public struct SignUpHomeScreen: View { // swiftlint:disable:this file_types_orde
     }
 }
 
-private struct SignUpOrInView: View {
-    let onClickSignIn: () -> Void
-    let onClickSignUp: () -> Void
-
-    var body: some View {
+private extension View {
+    func signUpOrInView (
+        onClickSignIn: @escaping () -> Void,
+        onClickSignUp: @escaping () -> Void
+    ) -> some View {
         VStack(spacing: 32) {
-            SignInButton(action: onClickSignIn)
-            SignUpButton(action: onClickSignUp)
+            signInButton(action: onClickSignIn)
+            signUpButton(action: onClickSignUp)
         }
         .frame(maxHeight: .infinity, alignment: .bottom)
         .padding(.horizontal)
     }
-}
 
-private struct SignInButton: View {
-    let action: () -> Void
-
-    var body: some View {
+    func signInButton(
+        action: @escaping () -> Void
+    ) -> some View {
         Button {
             action()
         } label: {
@@ -73,12 +65,10 @@ private struct SignInButton: View {
                 .stroke(.blue, lineWidth: 2)
         )
     }
-}
 
-private struct SignUpButton: View {
-    let action: () -> Void
-
-    var body: some View {
+    func signUpButton(
+        action: @escaping () -> Void
+    ) -> some View {
         Button {
             action()
         } label: {
@@ -88,6 +78,20 @@ private struct SignUpButton: View {
                 .padding()
         }
         .buttonStyle(.borderedProminent)
+    }
+
+    func signUpHomeSheet(
+        item: Binding<SignUpHomeUIState.ActiveSheet?>,
+        onLoggedIn: @escaping () -> Void
+    ) -> some View {
+        sheet(item: item) { sheet in
+            switch sheet {
+            case .signIn:
+                SignInScreen(onLoggedIn: onLoggedIn)
+            case .signUp:
+                SignUpScreen()
+            }
+        }
     }
 }
 

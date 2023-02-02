@@ -8,36 +8,37 @@
 import Domain
 import SwiftUI
 import UI_Core
+import UI_Search
 import UI_Setting
 
-public struct HomeScreen: View { // swiftlint:disable:this file_types_order
+public struct HomeScreen: View {
     @StateObject private var viewModel: HomeViewModel = .init()
     private let onLoggedOut: () -> Void
 
     public var body: some View {
-        NavigationView {
-            VStack {
-                HomeView(
-                    items: viewModel.uiState.items,
-                    isInitial: viewModel.uiState.isInitial,
-                    hasNextPage: viewModel.uiState.hasNextPage
-                ) {
-                    Task { await viewModel.next() }
-                } onTapItem: {
-                    print("item tapped")
-                }
-                .navigationTitle("Repository")
-                .toolbar {
-                    HomeToolbar {
-                    } onClickDebug: {
-                        viewModel.showSnackbar()
-                    } onClickSetting: {
-                        viewModel.uiState.routeToSetting = true
-                    }
-                }
-
-                navigationLink
+        NavigationStack(path: $viewModel.uiState.navigationPath) {
+            homeView(
+                items: viewModel.uiState.items,
+                isInitial: viewModel.uiState.isInitial,
+                hasNextPage: viewModel.uiState.hasNextPage
+            ) {
+                Task { await viewModel.next() }
+            } onTapItem: {
+                debugPrint("item tapped")
             }
+            .homeNavigationDestination {
+                viewModel.navigate(to: .search)
+            } navigateToLoggedOut: {
+                onLoggedOut()
+            }
+            .homeToolbar {
+                debugPrint("menu tapped")
+            } onClickDebug: {
+                viewModel.showSnackbar()
+            } onClickSetting: {
+                viewModel.navigate(to: .setting)
+            }
+            .navigationTitle("Repository")
         }
         .snackbar(
             isPresented: $viewModel.uiState.isShowingAlert,
@@ -57,78 +58,84 @@ public struct HomeScreen: View { // swiftlint:disable:this file_types_order
         }
     }
 
-    @ViewBuilder
-    private var navigationLink: some View {
-        NavigationLink(
-            destination: SettingScreen(onLoggedOut: onLoggedOut),
-            isActive: $viewModel.uiState.routeToSetting
-        ) { EmptyView() }
-    }
-
     public init(onLoggedOut: @escaping () -> Void) {
         self.onLoggedOut = onLoggedOut
     }
 }
 
-private struct HomeToolbar: ToolbarContent {
-    let onClickMenu: () -> Void
-    let onClickDebug: () -> Void
-    let onClickSetting: () -> Void
-
-    var body: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
-            Button {
-                onClickMenu()
-            } label: {
-                Image(systemName: "line.3.horizontal")
+private extension View {
+    func homeToolbar(
+        onClickMenu: @escaping () -> Void,
+        onClickDebug: @escaping () -> Void,
+        onClickSetting: @escaping () -> Void
+    ) -> some View {
+        toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button {
+                    onClickMenu()
+                } label: {
+                    Image(systemName: "line.3.horizontal")
+                }
             }
-        }
 
-        ToolbarItemGroup(placement: .navigationBarTrailing) {
-            Button {
-                onClickDebug()
-            } label: {
-                Image(systemName: "exclamationmark.circle")
-            }
-            Button {
-                onClickSetting()
-            } label: {
-                Image(systemName: "gearshape.fill")
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                Button {
+                    onClickDebug()
+                } label: {
+                    Image(systemName: "exclamationmark.circle")
+                }
+                Button {
+                    onClickSetting()
+                } label: {
+                    Image(systemName: "gearshape.fill")
+                }
             }
         }
     }
-}
 
-private struct HomeView: View {
-    let items: [RepositoryEntity]
-    let isInitial: Bool
-    let hasNextPage: Bool
-    let onAppearLoadingItem: (() -> Void)
-    let onTapItem: () -> Void
-
-    var body: some View {
-        if isInitial {
-            VStack {}
-        } else if items.isEmpty {
-            ContentsEmptyView()
-        } else {
-            HomeContentsView(
-                items: items,
-                hasNextPage: hasNextPage,
-                onAppearLoadingItem: onAppearLoadingItem,
-                onTapItem: onTapItem
-            )
+    func homeNavigationDestination(
+        navigateToSearch: @escaping () -> Void,
+        navigateToLoggedOut: @escaping () -> Void
+    ) -> some View {
+        navigationDestination(for: HomeUIState.Navigator.self) { path in
+            switch path {
+            case .setting:
+                SettingScreen(onClickSearch: navigateToSearch, onClickLoggedOut: navigateToLoggedOut)
+            case .search:
+                SearchScreen()
+            }
         }
     }
-}
 
-private struct HomeContentsView: View {
-    let items: [RepositoryEntity]
-    let hasNextPage: Bool
-    let onAppearLoadingItem: () -> Void
-    let onTapItem: () -> Void
+    func homeView(
+        items: [RepositoryEntity],
+        isInitial: Bool,
+        hasNextPage: Bool,
+        onAppearLoadingItem: @escaping () -> Void,
+        onTapItem: @escaping () -> Void
+    ) -> some View {
+        Group {
+            if isInitial {
+                VStack {}
+            } else if items.isEmpty {
+                ContentsEmptyView()
+            } else {
+                homeContentsView(
+                    items: items,
+                    hasNextPage: hasNextPage,
+                    onAppearLoadingItem: onAppearLoadingItem,
+                    onTapItem: onTapItem
+                )
+            }
+        }
+    }
 
-    var body: some View {
+    func homeContentsView(
+        items: [RepositoryEntity],
+        hasNextPage: Bool,
+        onAppearLoadingItem: @escaping () -> Void,
+        onTapItem: @escaping () -> Void
+    ) -> some View {
         ScrollView(.vertical) {
             LazyVStack {
                 ForEach(items, id: \.id) { item in
@@ -153,7 +160,7 @@ private struct HomeContentsView: View {
 struct HomeScreen_Previews: PreviewProvider {
     private struct HomeContentsPreview: View {
         var body: some View {
-            HomeContentsView(items: [RepositoryEntity.preview], hasNextPage: false) {} onTapItem: {}
+            homeContentsView(items: [RepositoryEntity.preview], hasNextPage: false) {} onTapItem: {}
         }
     }
 

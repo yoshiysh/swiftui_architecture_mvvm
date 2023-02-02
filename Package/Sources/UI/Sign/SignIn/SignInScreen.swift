@@ -11,7 +11,7 @@ public struct SignInScreen: View { // swiftlint:disable:this file_types_order
     @StateObject private var viewModel: SignInViewModel = .init()
     @FocusState private var focusState: SignInViewUIState.FocusState?
 
-    private let onComplete: (() -> Void)
+    private let onLoggedIn: () -> Void
 
     public var body: some View {
         NavigationView {
@@ -29,7 +29,7 @@ public struct SignInScreen: View { // swiftlint:disable:this file_types_order
             .navigationTitle(L10n.Navigation.title)
         }
         .onChange(of: viewModel.uiState.state) { state in
-            if state == .suceess { onComplete() }
+            if state == .suceess { onLoggedIn() }
         }
         .onChange(of: viewModel.uiState.focusState) { state in
             focusState = state
@@ -42,8 +42,8 @@ public struct SignInScreen: View { // swiftlint:disable:this file_types_order
         }
     }
 
-    public init(_ onComplete: @escaping (() -> Void)) {
-        self.onComplete = onComplete
+    public init(onLoggedIn: @escaping () -> Void) {
+        self.onLoggedIn = onLoggedIn
     }
 }
 

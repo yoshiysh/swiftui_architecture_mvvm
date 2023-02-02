@@ -14,17 +14,36 @@ public struct RootScreen: View {
     @StateObject private var viewModel: RootViewModel = .init()
 
     public var body: some View {
-        switch viewModel.state {
-        case .initialized:
-            SplashScreen()
-        case .loggedOut:
-            SignUpHomeScreen { viewModel.updateState(.loggedIn) }
-        case .loggedIn:
-            TabHomeScreen { viewModel.updateState(.loggedOut) }
+        rootView(state: viewModel.uiState.state) {
+            viewModel.uiState.update(state: .loggedIn)
+        } navigateToSignUp: {
+            viewModel.uiState.update(state: .loggedOut)
+        }
+        .task {
+            await viewModel.getUser()
         }
     }
 
     public init() {}
+}
+
+private extension View {
+    func rootView(
+        state: RootUIState.State,
+        navigateToHome: @escaping () -> Void,
+        navigateToSignUp: @escaping () -> Void
+    ) -> some View {
+        Group {
+            switch state {
+            case .initialized:
+                SplashScreen()
+            case .loggedOut:
+                SignUpHomeScreen(onLoggedIn: navigateToHome)
+            case .loggedIn:
+                TabHomeScreen(onLoggedOut: navigateToSignUp)
+            }
+        }
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {
