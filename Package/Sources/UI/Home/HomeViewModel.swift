@@ -38,6 +38,10 @@ final class HomeViewModel: ObservableObject {
         await fetch(forQuery: uiState.query, isForce: true, isRefresh: true)
     }
 
+    func showSnackbar() {
+        uiState.updateState(.error(NetworkErrorType.unknown))
+    }
+
     private func fetch(
         forQuery query: QueryDto,
         isForce force: Bool = false,

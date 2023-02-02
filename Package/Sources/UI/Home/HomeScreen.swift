@@ -23,10 +23,19 @@ public struct HomeScreen: View { // swiftlint:disable:this file_types_order
                         hasNextPage: viewModel.uiState.hasNextPage
                     ) {
                         Task { await viewModel.next() }
+                    } onTapItem: {
+                        print("item tapped")
                     }
                 }
             }
             .navigationTitle("Repository")
+            .toolbar {
+                HomeToolbar {
+                } onClickDebug: {
+                    viewModel.showSnackbar()
+                } onClickSetting: {
+                }
+            }
         }
         .snackbar(
             isPresented: $viewModel.uiState.isShowingAlert,
@@ -46,10 +55,40 @@ public struct HomeScreen: View { // swiftlint:disable:this file_types_order
     public init() {}
 }
 
+private struct HomeToolbar: ToolbarContent {
+    let onClickMenu: () -> Void
+    let onClickDebug: () -> Void
+    let onClickSetting: () -> Void
+
+    var body: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button {
+                onClickMenu()
+            } label: {
+                Image(systemName: "line.3.horizontal")
+            }
+        }
+
+        ToolbarItemGroup(placement: .navigationBarTrailing) {
+            Button {
+                onClickDebug()
+            } label: {
+                Image(systemName: "exclamationmark.circle")
+            }
+            Button {
+                onClickSetting()
+            } label: {
+                Image(systemName: "gearshape.fill")
+            }
+        }
+    }
+}
+
 private struct HomeView: View {
     let items: [RepositoryEntity]
     let hasNextPage: Bool
     let onAppearLoadingItem: (() -> Void)
+    let onTapItem: () -> Void
 
     var body: some View {
         if items.isEmpty {
@@ -58,7 +97,8 @@ private struct HomeView: View {
             HomeContentsView(
                 items: items,
                 hasNextPage: hasNextPage,
-                onAppearLoadingItem: onAppearLoadingItem
+                onAppearLoadingItem: onAppearLoadingItem,
+                onTapItem: onTapItem
             )
         }
     }
@@ -67,14 +107,18 @@ private struct HomeView: View {
 private struct HomeContentsView: View {
     let items: [RepositoryEntity]
     let hasNextPage: Bool
-    let onAppearLoadingItem: (() -> Void)
+    let onAppearLoadingItem: () -> Void
+    let onTapItem: () -> Void
 
     var body: some View {
         ScrollView(.vertical) {
             LazyVStack {
                 ForEach(items, id: \.id) { item in
-                    RepositoryCardView(item: item)
-                        .frame(maxWidth: .infinity)
+                    RepositoryCardView(
+                        item: item,
+                        onTapGesture: onTapItem
+                    )
+                    .frame(maxWidth: .infinity)
                 }
 
                 if hasNextPage {
@@ -91,7 +135,7 @@ private struct HomeContentsView: View {
 struct HomeScreen_Previews: PreviewProvider {
     private struct HomeContentsPreview: View {
         var body: some View {
-            HomeContentsView(items: [RepositoryEntity.preview], hasNextPage: false) {}
+            HomeContentsView(items: [RepositoryEntity.preview], hasNextPage: false) {} onTapItem: {}
         }
     }
 

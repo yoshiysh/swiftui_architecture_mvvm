@@ -10,6 +10,7 @@ import SwiftUI
 
 public struct RepositoryCardView: View { // swiftlint:disable:this file_types_order
     let item: RepositoryEntity
+    let onTapGesture: () -> Void
 
     public var body: some View {
         RepositoryCardContentView(item: item)
@@ -18,10 +19,17 @@ public struct RepositoryCardView: View { // swiftlint:disable:this file_types_or
                 RoundedRectangle(cornerRadius: 16)
                     .stroke(Color.gray, lineWidth: 1)
             )
+            .onTapGesture {
+                onTapGesture()
+            }
     }
 
-    public init(item: RepositoryEntity) {
+    public init(
+        item: RepositoryEntity,
+        onTapGesture: @escaping () -> Void
+    ) {
         self.item = item
+        self.onTapGesture = onTapGesture
     }
 }
 
@@ -110,7 +118,8 @@ private struct RepositoryTagsView: View {
 struct RepositoryCardView_Previews: PreviewProvider {
     private struct Preview: View {
         var body: some View {
-            RepositoryCardView(item: RepositoryEntity.preview)
+            RepositoryCardView(item: RepositoryEntity.preview) {
+            }
         }
     }
 
