@@ -12,7 +12,7 @@ import UI_SignUp
 
 public struct SignUpHomeScreen: View { // swiftlint:disable:this file_types_order
     @StateObject private var viewModel: SignUpHomeViewModel = .init()
-    private let onLoggedIn: (() -> Void)
+    private let onLoggedIn: () -> Void
 
     public var body: some View {
         SignUpOrInView(
@@ -40,8 +40,8 @@ public struct SignUpHomeScreen: View { // swiftlint:disable:this file_types_orde
 }
 
 private struct SignUpOrInView: View {
-    private let onClickSignIn: (() -> Void)
-    private let onClickSignUp: (() -> Void)
+    let onClickSignIn: () -> Void
+    let onClickSignUp: () -> Void
 
     var body: some View {
         VStack(spacing: 32) {
@@ -51,18 +51,10 @@ private struct SignUpOrInView: View {
         .frame(maxHeight: .infinity, alignment: .bottom)
         .padding(.horizontal)
     }
-
-    init(
-        onClickSignIn: @escaping (() -> Void),
-        onClickSignUp: @escaping (() -> Void)
-    ) {
-        self.onClickSignIn = onClickSignIn
-        self.onClickSignUp = onClickSignUp
-    }
 }
 
 private struct SignInButton: View {
-    var action: (() -> Void)
+    let action: () -> Void
 
     var body: some View {
         Button {
@@ -84,7 +76,7 @@ private struct SignInButton: View {
 }
 
 private struct SignUpButton: View {
-    var action: (() -> Void)
+    let action: () -> Void
 
     var body: some View {
         Button {

@@ -8,41 +8,46 @@
 import Domain
 import SwiftUI
 import UI_Core
+import UI_Setting
 
 public struct HomeScreen: View { // swiftlint:disable:this file_types_order
     @StateObject private var viewModel: HomeViewModel = .init()
+    private let onLoggedOut: () -> Void
 
     public var body: some View {
         NavigationView {
-            Group {
-                if viewModel.uiState.isInitial {
-                    VStack {}
-                } else {
-                    HomeView(
-                        items: viewModel.uiState.items,
-                        hasNextPage: viewModel.uiState.hasNextPage
-                    ) {
-                        Task { await viewModel.next() }
-                    } onTapItem: {
-                        print("item tapped")
+            VStack {
+                HomeView(
+                    items: viewModel.uiState.items,
+                    isInitial: viewModel.uiState.isInitial,
+                    hasNextPage: viewModel.uiState.hasNextPage
+                ) {
+                    Task { await viewModel.next() }
+                } onTapItem: {
+                    print("item tapped")
+                }
+                .navigationTitle("Repository")
+                .toolbar {
+                    HomeToolbar {
+                    } onClickDebug: {
+                        viewModel.showSnackbar()
+                    } onClickSetting: {
+                        viewModel.uiState.routeToSetting = true
                     }
                 }
-            }
-            .navigationTitle("Repository")
-            .toolbar {
-                HomeToolbar {
-                } onClickDebug: {
-                    viewModel.showSnackbar()
-                } onClickSetting: {
-                }
+
+                navigationLink
             }
         }
         .snackbar(
             isPresented: $viewModel.uiState.isShowingAlert,
             message: viewModel.uiState.alertMessage
         ) {
-            Image(systemName: "star")
-                .foregroundColor(.white)
+            Button {
+                viewModel.uiState.isShowingAlert = false
+            } label: {
+                Image(systemName: "xmark.circle")
+            }
         }
         .refreshable {
             await viewModel.refresh()
@@ -52,7 +57,17 @@ public struct HomeScreen: View { // swiftlint:disable:this file_types_order
         }
     }
 
-    public init() {}
+    @ViewBuilder
+    private var navigationLink: some View {
+        NavigationLink(
+            destination: SettingScreen(onLoggedOut: onLoggedOut),
+            isActive: $viewModel.uiState.routeToSetting
+        ) { EmptyView() }
+    }
+
+    public init(onLoggedOut: @escaping () -> Void) {
+        self.onLoggedOut = onLoggedOut
+    }
 }
 
 private struct HomeToolbar: ToolbarContent {
@@ -86,12 +101,15 @@ private struct HomeToolbar: ToolbarContent {
 
 private struct HomeView: View {
     let items: [RepositoryEntity]
+    let isInitial: Bool
     let hasNextPage: Bool
     let onAppearLoadingItem: (() -> Void)
     let onTapItem: () -> Void
 
     var body: some View {
-        if items.isEmpty {
+        if isInitial {
+            VStack {}
+        } else if items.isEmpty {
             ContentsEmptyView()
         } else {
             HomeContentsView(

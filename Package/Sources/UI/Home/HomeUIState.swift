@@ -18,6 +18,8 @@ struct HomeUIState {
     private(set) var items: [RepositoryEntity] = []
     private(set) var totalCount: Int = -1
 
+    var routeToSetting = false
+
     var isShowingAlert = false
     var alertMessage = ""
 

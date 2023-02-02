@@ -10,9 +10,11 @@ import UI_Home
 import UI_Search
 
 public struct TabHomeScreen: View {
+    private let onLoggedOut: () -> Void
+
     public var body: some View {
         TabView {
-            HomeScreen()
+            HomeScreen(onLoggedOut: onLoggedOut)
                 .tabItem {
                     Image(systemName: "house")
                     Text("Home")
@@ -25,11 +27,13 @@ public struct TabHomeScreen: View {
         }
     }
 
-    public init() {}
+    public init(onLoggedOut: @escaping () -> Void) {
+        self.onLoggedOut = onLoggedOut
+    }
 }
 
 struct TabHome_Previews: PreviewProvider {
     static var previews: some View {
-        TabHomeScreen()
+        TabHomeScreen {}
     }
 }

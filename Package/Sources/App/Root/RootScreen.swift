@@ -20,7 +20,7 @@ public struct RootScreen: View {
         case .loggedOut:
             SignUpHomeScreen { viewModel.updateState(.loggedIn) }
         case .loggedIn:
-            TabHomeScreen()
+            TabHomeScreen { viewModel.updateState(.loggedOut) }
         }
     }
 

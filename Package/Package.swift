@@ -45,12 +45,17 @@ let package = Package(
         ),
         .target(
             name: "UI/Home",
-            dependencies: ["DI", "UI/Core", "Domain"],
+            dependencies: ["DI", "UI/Core", "UI/Setting", "Domain"],
             path: "Sources/UI/Home"
         ),
         .target(
             name: "UI/Search",
             path: "Sources/UI/Search"
+        ),
+        .target(
+            name: "UI/Setting",
+            path: "Sources/UI/Setting",
+            plugins: ["SwiftGen"]
         ),
         .target(
             name: "UI/SignIn",
