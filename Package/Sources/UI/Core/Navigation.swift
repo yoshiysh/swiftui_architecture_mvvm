@@ -14,7 +14,6 @@ public struct Navigation { // swiftlint:disable:this file_types_order
     public var path: [Path] = []
 }
 
-@MainActor
 public final class Navigator: ObservableObject {
     public static let shared: Navigator = .init()
 
