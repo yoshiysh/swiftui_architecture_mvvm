@@ -9,28 +9,22 @@ import SwiftUI
 import UI_Core
 
 public struct TabHomeScreen<Content: View>: View {
-    public enum Tab {
-        case home, search
-    }
-
-    private let content: (Tab) -> Content
+    private let content: (TabType) -> Content
 
     public var body: some View {
         TabView {
-            content(.home)
-                .tabItem {
-                    Image(systemName: "house")
-                    Text("Home")
-                }
-            content(.search)
-                .tabItem {
-                    Image(systemName: "magnifyingglass")
-                    Text("Search")
-                }
+            ForEach(0..<TabType.allCases.count, id: \.self) { index in
+                let type = TabType.allCases[index]
+                content(type)
+                    .tabItem {
+                        Image(systemName: type.imageName)
+                        Text(type.text)
+                    }
+            }
         }
     }
 
-    public init(@ViewBuilder content: @escaping (Tab) -> Content) {
+    public init(@ViewBuilder content: @escaping (TabType) -> Content) {
         self.content = content
     }
 }
