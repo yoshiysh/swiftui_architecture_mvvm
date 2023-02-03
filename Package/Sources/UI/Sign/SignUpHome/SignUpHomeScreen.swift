@@ -14,12 +14,12 @@ public struct SignUpHomeScreen<Content: View>: View {
     private let content: (Navigation.Path) -> Content
 
     public var body: some View {
-        signUpOrInView {
+        signUpHomeView {
             viewModel.uiState.update(state: .signIn)
         } onClickSignUp: {
             viewModel.uiState.update(state: .signUp)
         }
-        .sheet(item: $viewModel.uiState.activeSheet) { sheet in
+        .signUpHomeSheet(item: $viewModel.uiState.activeSheet) { sheet in
             switch sheet {
             case .signIn:
                 signIn()
@@ -45,7 +45,19 @@ public struct SignUpHomeScreen<Content: View>: View {
 }
 
 private extension SignUpHomeScreen {
-    func signUpOrInView (
+    func signIn() -> some View {
+        NavigationStack {
+            SignInScreen(navigate: navigate)
+        }
+    }
+
+    func signUp() -> some View {
+        SignUpScreen(content: content)
+    }
+}
+
+private extension View {
+    func signUpHomeView (
         onClickSignIn: @escaping () -> Void,
         onClickSignUp: @escaping () -> Void
     ) -> some View {
@@ -91,14 +103,13 @@ private extension SignUpHomeScreen {
         .buttonStyle(.borderedProminent)
     }
 
-    func signIn() -> some View {
-        NavigationStack {
-            SignInScreen(navigate: navigate)
+    func signUpHomeSheet(
+        item: Binding<SignUpHomeUIState.ActiveSheet?>,
+        @ViewBuilder content: @escaping (SignUpHomeUIState.ActiveSheet) -> some View
+    ) -> some View {
+        sheet(item: item) { sheet in
+            content(sheet)
         }
-    }
-
-    func signUp() -> some View {
-        SignUpScreen(content: content)
     }
 }
 
