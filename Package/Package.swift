@@ -32,7 +32,17 @@ let package = Package(
         
         .target(
             name: "App",
-            dependencies: ["UI/Splash", "UI/SignUpHome", "UI/TabHome"],
+            dependencies: [
+                "UI/Home",
+                "UI/Search",
+                "UI/Setting",
+                "UI/SignIn",
+                "UI/SignUp",
+                "UI/SignUpHome",
+                "UI/Splash",
+                "UI/TabHome",
+                "UI/Web"
+            ],
             plugins: ["SwiftLint"]
         ),
         
@@ -45,7 +55,7 @@ let package = Package(
         ),
         .target(
             name: "UI/Home",
-            dependencies: ["DI", "UI/Core", "UI/Setting", "Domain"],
+            dependencies: ["DI", "UI/Core", "Domain"],
             path: "Sources/UI/Home"
         ),
         .target(
@@ -59,7 +69,7 @@ let package = Package(
         ),
         .target(
             name: "UI/SignIn",
-            dependencies: ["UI/Core", "Domain"],
+            dependencies: ["Domain"],
             path: "Sources/UI/Sign/SignIn",
             plugins: ["SwiftGen"]
         ),
@@ -70,7 +80,7 @@ let package = Package(
         ),
         .target(
             name: "UI/SignUpHome",
-            dependencies: ["DI", "UI/SignIn", "UI/SignUp"],
+            dependencies: ["DI", "UI/Core"],
             path: "Sources/UI/Sign/SignUpHome",
             plugins: ["SwiftGen"]
         ),
@@ -80,7 +90,7 @@ let package = Package(
         ),
         .target(
             name: "UI/TabHome",
-            dependencies: ["UI/Home", "UI/Search"],
+            dependencies: ["DI"],
             path: "Sources/UI/TabHome"
         ),
         .target(

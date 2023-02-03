@@ -6,20 +6,23 @@
 //
 
 import SwiftUI
-import UI_Home
-import UI_Search
+import UI_Core
 
-public struct TabHomeScreen: View {
-    private let onLoggedOut: () -> Void
+public struct TabHomeScreen<Content: View>: View {
+    public enum Tab {
+        case home, search
+    }
+
+    private let content: (Tab) -> Content
 
     public var body: some View {
         TabView {
-            HomeScreen(onLoggedOut: onLoggedOut)
+            content(.home)
                 .tabItem {
                     Image(systemName: "house")
                     Text("Home")
                 }
-            SearchScreen()
+            content(.search)
                 .tabItem {
                     Image(systemName: "magnifyingglass")
                     Text("Search")
@@ -27,13 +30,13 @@ public struct TabHomeScreen: View {
         }
     }
 
-    public init(onLoggedOut: @escaping () -> Void) {
-        self.onLoggedOut = onLoggedOut
+    public init(@ViewBuilder content: @escaping (Tab) -> Content) {
+        self.content = content
     }
 }
 
 struct TabHome_Previews: PreviewProvider {
     static var previews: some View {
-        TabHomeScreen {}
+        TabHomeScreen { _ in }
     }
 }

@@ -9,11 +9,8 @@ struct RootUIState {
     enum State {
         case initialized, loggedOut, loggedIn
     }
-
     private(set) var state: State = .initialized
-}
 
-extension RootUIState {
     mutating func update(state: State) {
         self.state = state
     }

@@ -13,8 +13,12 @@ final class RootViewModel: ObservableObject {
     @Published var uiState: RootUIState = .init()
 
     func getUser() async {
-        try? await Task.sleep(nanoseconds: 1 * USEC_PER_SEC)
-//        uiState.update(state: .loggedOut)
+        try? await Task.sleep(nanoseconds: 100 * USEC_PER_SEC)
+        //        uiState.update(state: .loggedOut)
         uiState.update(state: .loggedIn)
+    }
+
+    func update(state: RootUIState.State) {
+        uiState.update(state: state)
     }
 }

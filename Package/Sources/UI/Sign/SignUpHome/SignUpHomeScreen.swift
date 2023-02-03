@@ -24,7 +24,10 @@ public struct SignUpHomeScreen: View {
             viewModel.uiState.update(state: .loggedIn)
         }
         .onChange(of: viewModel.uiState.state) { state in
-            if state == .loggedIn { onLoggedIn() }
+            if state == .loggedIn {
+                viewModel.uiState.activeSheet = nil
+                onLoggedIn()
+            }
         }
     }
 

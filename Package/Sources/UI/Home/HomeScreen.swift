@@ -8,15 +8,16 @@
 import Domain
 import SwiftUI
 import UI_Core
-import UI_Search
-import UI_Setting
 
-public struct HomeScreen: View {
+public struct HomeScreen<Content: View>: View {
     @StateObject private var viewModel: HomeViewModel = .init()
-    private let onLoggedOut: () -> Void
+    @StateObject private var navigator: Navigator = .shared
+
+    private let navigate: (Navigation.Path) -> Void
+    private let content: (Navigation.Path) -> Content
 
     public var body: some View {
-        NavigationStack(path: $viewModel.uiState.navigationPath) {
+        NavigationStack(path: $navigator.navigation.path) {
             homeView(
                 items: viewModel.uiState.items,
                 isInitial: viewModel.uiState.isInitial,
@@ -26,18 +27,14 @@ public struct HomeScreen: View {
             } onTapItem: {
                 debugPrint("item tapped")
             }
-            .homeNavigationDestination {
-                viewModel.navigate(to: .search)
-            } navigateToLoggedOut: {
-                onLoggedOut()
-            }
             .homeToolbar {
                 debugPrint("menu tapped")
             } onClickDebug: {
                 viewModel.showSnackbar()
             } onClickSetting: {
-                viewModel.navigate(to: .setting)
+                navigate(.setting)
             }
+            .appNavigationDestination(content: content)
             .navigationTitle("Repository")
         }
         .snackbar(
@@ -58,8 +55,12 @@ public struct HomeScreen: View {
         }
     }
 
-    public init(onLoggedOut: @escaping () -> Void) {
-        self.onLoggedOut = onLoggedOut
+    public init(
+        navigate: @escaping (Navigation.Path) -> Void,
+        @ViewBuilder content: @escaping (Navigation.Path) -> Content
+    ) {
+        self.navigate = navigate
+        self.content = content
     }
 }
 
@@ -89,20 +90,6 @@ private extension View {
                 } label: {
                     Image(systemName: "gearshape.fill")
                 }
-            }
-        }
-    }
-
-    func homeNavigationDestination(
-        navigateToSearch: @escaping () -> Void,
-        navigateToLoggedOut: @escaping () -> Void
-    ) -> some View {
-        navigationDestination(for: HomeUIState.Navigator.self) { path in
-            switch path {
-            case .setting:
-                SettingScreen(onClickSearch: navigateToSearch, onClickLoggedOut: navigateToLoggedOut)
-            case .search:
-                SearchScreen()
             }
         }
     }

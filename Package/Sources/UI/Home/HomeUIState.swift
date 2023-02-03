@@ -6,6 +6,7 @@
 //
 
 import Domain
+import UI_Core
 
 struct HomeUIState {
     enum State {
@@ -13,16 +14,11 @@ struct HomeUIState {
         case error(_ error: NetworkErrorType)
     }
 
-    enum Navigator: Hashable {
-        case setting, search
-    }
-
     var query: QueryDto
     private(set) var state: State = .initialzed
     private(set) var items: [RepositoryEntity] = []
     private(set) var totalCount: Int = -1
 
-    var navigationPath: [Navigator] = []
     var isShowingAlert = false
     var alertMessage = ""
 

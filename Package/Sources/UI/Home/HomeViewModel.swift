@@ -8,6 +8,7 @@
 import Combine
 import DI
 import Domain
+import UI_Core
 
 @MainActor
 final class HomeViewModel: ObservableObject {
@@ -19,10 +20,6 @@ final class HomeViewModel: ObservableObject {
 
     init() {
         uiState = .init(query: defaultQuery)
-    }
-
-    func navigate(to path: HomeUIState.Navigator) {
-        uiState.navigationPath.append(path)
     }
 
     func fetch() async {

@@ -7,45 +7,42 @@
 
 import SwiftUI
 
-public struct SettingScreen: View { // swiftlint:disable:this file_types_order
-    private let onClickSearch: () -> Void
+public struct SettingScreen: View {
     private let onClickLoggedOut: () -> Void
+    private let onClickSearch: () -> Void
 
-    public var body: some View {
-        SettingView(
-            onClickSearch: onClickSearch,
-            onClickLoggedOut: onClickLoggedOut
-        )
+    @MainActor public var body: some View {
+        settingView {
+            onClickLoggedOut()
+        } onClickSearch: {
+            onClickSearch()
+        }
         .navigationTitle("Setting")
     }
 
     public init(
-        onClickSearch: @escaping () -> Void,
-        onClickLoggedOut: @escaping () -> Void
+        onClickLoggedOut: @escaping () -> Void,
+        onClickSearch: @escaping () -> Void
     ) {
-        self.onClickSearch = onClickSearch
         self.onClickLoggedOut = onClickLoggedOut
+        self.onClickSearch = onClickSearch
     }
 }
 
-private struct SettingView: View {
-    let onClickSearch: () -> Void
-    let onClickLoggedOut: () -> Void
-
-    var body: some View {
+private extension View {
+    func settingView(
+        onClickLoggedOut: @escaping () -> Void,
+        onClickSearch: @escaping () -> Void
+    ) -> some View {
         VStack {
-            TransitionSearchButton(action: onClickSearch)
-            SignOutButton(action: onClickLoggedOut)
+            transitionSearchButton(action: onClickSearch)
+            signOutButton(action: onClickLoggedOut)
         }
         .frame(maxHeight: .infinity, alignment: .top)
         .padding()
     }
-}
 
-private struct TransitionSearchButton: View {
-    let action: () -> Void
-
-    var body: some View {
+    func transitionSearchButton(action: @escaping () -> Void) -> some View {
         Button {
             action()
         } label: {
@@ -56,12 +53,8 @@ private struct TransitionSearchButton: View {
         }
         .buttonStyle(.borderedProminent)
     }
-}
 
-private struct SignOutButton: View {
-    let action: () -> Void
-
-    var body: some View {
+    func signOutButton(action: @escaping () -> Void) -> some View {
         Button {
             action()
         } label: {
@@ -76,8 +69,6 @@ private struct SignOutButton: View {
 
 struct SettingScreen_Previews: PreviewProvider {
     static var previews: some View {
-        SettingScreen {
-        } onClickLoggedOut: {
-        }
+        SettingScreen {} onClickSearch: {}
     }
 }
