@@ -9,13 +9,20 @@ import SwiftUI
 import UI_Core
 
 public struct SettingScreen: View {
+    enum ActionType {
+        case search, signOut
+    }
+
     private let navigate: (Navigation.Path) -> Void
 
     public var body: some View {
-        settingView {
-            navigate(.signUpHome)
-        } onClickSearch: {
-            navigate(.search)
+        settingView { type in
+            switch type {
+            case .search:
+                navigate(.search)
+            case .signOut:
+                navigate(.signUpHome)
+            }
         }
         .navigationTitle("Setting")
     }
@@ -26,13 +33,15 @@ public struct SettingScreen: View {
 }
 
 private extension View {
-    func settingView(
-        onClickLoggedOut: @escaping () -> Void,
-        onClickSearch: @escaping () -> Void
-    ) -> some View {
-        VStack {
-            transitionSearchButton(action: onClickSearch)
-            signOutButton(action: onClickLoggedOut)
+    func settingView(action: @escaping (SettingScreen.ActionType) -> Void) -> some View {
+        VStack(spacing: 32) {
+            transitionSearchButton {
+                action(.search)
+            }
+
+            signOutButton {
+                action(.signOut)
+            }
         }
         .frame(maxHeight: .infinity, alignment: .top)
         .padding()

@@ -11,8 +11,6 @@ import UI_Core
 
 public struct HomeScreen: View {
     @StateObject private var viewModel: HomeViewModel = .init()
-    @StateObject private var navigator: Navigator = .shared
-
     private let navigate: (Navigation.Path) -> Void
 
     public var body: some View {

@@ -17,7 +17,8 @@ import UI_Web
 
 public struct RootScreen: View {
     @StateObject private var viewModel: RootViewModel = .init()
-    @StateObject private var navigator: Navigator = .shared
+    @StateObject private var navHome: Navigator = .init()
+    @StateObject private var navSearch: Navigator = .init()
 
     public var body: some View {
         rootView()
@@ -52,7 +53,9 @@ private extension RootScreen {
     }
 
     func tabHome() -> some View {
-        TabHomeScreen { tab in
+        TabHomeScreen { current in
+            viewModel.uiState.currentTab = current
+        } content: { tab in
             switch tab {
             case .home:
                 navigationHome()
@@ -71,7 +74,7 @@ private extension RootScreen {
     }
 
     func search() -> some View {
-        SearchScreen()
+        SearchScreen(navigate: navigate)
     }
 
     func web(url: String) -> some View {
@@ -79,15 +82,16 @@ private extension RootScreen {
     }
 
     func navigationHome() -> some View {
-        NavigationStack(path: $navigator.navigation.path) {
+        NavigationStack(path: $navHome.navigation.path) {
             home()
                 .appNavigationDestination(content: content)
         }
     }
 
     func navigationSearch() -> some View {
-        NavigationStack {
+        NavigationStack(path: $navSearch.navigation.path) {
             search()
+                .appNavigationDestination(content: content)
         }
     }
 
@@ -98,12 +102,18 @@ private extension RootScreen {
     }
 
     func navigateToHome() {
-        viewModel.uiState.update(state: .loggedIn)
+        viewModel.update(state: .loggedIn)
     }
 
     func navigateToSignUpHome() {
-        viewModel.uiState.update(state: .loggedOut)
-        navigator.removeAll()
+        viewModel.update(state: .loggedOut)
+        reset()
+    }
+
+    func reset() {
+        navHome.removeAll()
+        navSearch.removeAll()
+        viewModel.uiState.currentTab = .home
     }
 
     func navigate(path: Navigation.Path) {
@@ -113,7 +123,12 @@ private extension RootScreen {
         case .tabHome:
             navigateToHome()
         default:
-            navigator.navigate(to: path)
+            switch viewModel.uiState.currentTab {
+            case .home:
+                navHome.navigate(to: path)
+            case .search:
+                navSearch.navigate(to: path)
+            }
         }
     }
 

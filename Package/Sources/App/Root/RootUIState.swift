@@ -5,13 +5,12 @@
 //  Created by yoshi on 2022/09/14.
 //
 
+import UI_Core
+
 struct RootUIState {
     enum State {
         case initialized, loggedOut, loggedIn
     }
-    private(set) var state: State = .initialized
-
-    mutating func update(state: State) {
-        self.state = state
-    }
+    var state: State = .initialized
+    var currentTab: TabType = .home
 }

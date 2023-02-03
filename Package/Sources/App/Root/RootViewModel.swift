@@ -7,6 +7,7 @@
 
 import Combine
 import Foundation
+import UI_Core
 
 @MainActor
 final class RootViewModel: ObservableObject {
@@ -14,11 +15,15 @@ final class RootViewModel: ObservableObject {
 
     func getUser() async {
         try? await Task.sleep(nanoseconds: 100 * USEC_PER_SEC)
-//        uiState.update(state: .loggedOut)
-        uiState.update(state: .loggedIn)
+        //        uiState.state = .loggedOut
+        uiState.state = .loggedIn
     }
 
     func update(state: RootUIState.State) {
-        uiState.update(state: state)
+        uiState.state = state
+    }
+
+    func update(currentTab: TabType) {
+        uiState.currentTab = currentTab
     }
 }
