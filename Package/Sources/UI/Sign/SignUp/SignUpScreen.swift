@@ -8,15 +8,14 @@
 import SwiftUI
 import UI_Core
 
-public struct SignUpScreen<Content: View>: View {
+struct SignUpScreen<Content: View>: View {
     private let content: (Navigation.Path) -> Content
 
-    public var body: some View {
-//        content(.web(url: "https://github.com/signup"))
-        EmptyView()
+    var body: some View {
+        content(.web(url: "https://github.com/signup"))
     }
 
-    public init(@ViewBuilder content: @escaping (Navigation.Path) -> Content) {
+    init(@ViewBuilder content: @escaping (Navigation.Path) -> Content) {
         self.content = content
     }
 }

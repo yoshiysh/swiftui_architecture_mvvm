@@ -8,7 +8,6 @@
 import Combine
 import WebKit
 
-@MainActor
 class WebViewUIStateModel: ObservableObject {
 
     @Published var isLoading = false

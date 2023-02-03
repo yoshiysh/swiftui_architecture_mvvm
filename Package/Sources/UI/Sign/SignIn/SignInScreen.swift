@@ -8,27 +8,25 @@
 import SwiftUI
 import UI_Core
 
-public struct SignInScreen: View { // swiftlint:disable:this file_types_order
+struct SignInScreen: View { // swiftlint:disable:this file_types_order
     @StateObject private var viewModel: SignInViewModel = .init()
     @FocusState private var focusState: SignInViewUIState.FocusState?
 
     private let navigate: (Navigation.Path) -> Void
 
-    public var body: some View {
-        NavigationView {
-            SignInView(
-                email: $viewModel.uiState.email,
-                password: $viewModel.uiState.password,
-                isSubmitButtonEnabled: viewModel.uiState.isSubmitButtonEnabled,
-                focusState: _focusState,
-                onTapEmailSubmitButton: { viewModel.didTapSubmitButton() },
-                onTapPasswordSubmitButton: { viewModel.didTapSubmitButton() },
-                onTapSignInButton: {
-                    Task { await viewModel.signIn() }
-                }
-            )
-            .navigationTitle(L10n.Navigation.title)
-        }
+    var body: some View {
+        SignInView(
+            email: $viewModel.uiState.email,
+            password: $viewModel.uiState.password,
+            isSubmitButtonEnabled: viewModel.uiState.isSubmitButtonEnabled,
+            focusState: _focusState,
+            onTapEmailSubmitButton: { viewModel.didTapSubmitButton() },
+            onTapPasswordSubmitButton: { viewModel.didTapSubmitButton() },
+            onTapSignInButton: {
+                Task { await viewModel.signIn() }
+            }
+        )
+        .navigationTitle(L10n.SignIn.Navigation.title)
         .onChange(of: viewModel.uiState.state) { state in
             if state == .suceess { navigate(.tabHome) }
         }
@@ -43,7 +41,7 @@ public struct SignInScreen: View { // swiftlint:disable:this file_types_order
         }
     }
 
-    public init(navigate: @escaping (Navigation.Path) -> Void) {
+    init(navigate: @escaping (Navigation.Path) -> Void) {
         self.navigate = navigate
     }
 }
@@ -89,11 +87,11 @@ private struct InputMailAddress: View {
     var body: some View {
         VStack {
             VStack(alignment: .leading) {
-                Text(L10n.MailAddress.title)
+                Text(L10n.SignIn.MailAddress.title)
                     .font(.footnote)
                     .foregroundColor(.accentColor)
 
-                TextField(L10n.MailAddress.placeholder, text: $text)
+                TextField(L10n.SignIn.MailAddress.placeholder, text: $text)
                     .frame(height: 36)
                     .focused($focusState, equals: .email)
                     .submitLabel(.next)
@@ -113,11 +111,11 @@ private struct InputPassword: View {
     var body: some View {
         VStack {
             VStack(alignment: .leading) {
-                Text(L10n.Password.title)
+                Text(L10n.SignIn.Password.title)
                     .font(.footnote)
                     .foregroundColor(.accentColor)
 
-                SecureField(L10n.Password.placeholder, text: $text)
+                SecureField(L10n.SignIn.Password.placeholder, text: $text)
                     .frame(height: 36)
                     .focused($focusState, equals: .password)
                     .submitLabel(.done)
@@ -137,7 +135,7 @@ private struct LoginButton: View {
         Button {
             onSubmit()
         } label: {
-            Text(L10n.Button.signIn)
+            Text(L10n.SignIn.Button.signIn)
                 .fontWeight(.bold)
                 .frame(maxWidth: .infinity)
                 .padding()

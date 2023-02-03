@@ -9,7 +9,7 @@ import Combine
 
 public struct Navigation { // swiftlint:disable:this file_types_order
     public enum Path: Hashable {
-        case home, search, setting, signUpHome, signIn, signUp, splash, tabHome
+        case home, search, setting, signUpHome, splash, tabHome
         case web(url: String)
     }
     public var path: [Path] = []

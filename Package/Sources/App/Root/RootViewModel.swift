@@ -14,7 +14,7 @@ final class RootViewModel: ObservableObject {
 
     func getUser() async {
         try? await Task.sleep(nanoseconds: 100 * USEC_PER_SEC)
-        //        uiState.update(state: .loggedOut)
+//        uiState.update(state: .loggedOut)
         uiState.update(state: .loggedIn)
     }
 

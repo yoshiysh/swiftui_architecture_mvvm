@@ -36,9 +36,7 @@ let package = Package(
                 "UI/Home",
                 "UI/Search",
                 "UI/Setting",
-                "UI/SignIn",
-                "UI/SignUp",
-                "UI/SignUpHome",
+                "UI/Sign",
                 "UI/Splash",
                 "UI/TabHome",
                 "UI/Web"
@@ -69,20 +67,9 @@ let package = Package(
             plugins: ["SwiftGen"]
         ),
         .target(
-            name: "UI/SignIn",
-            dependencies: ["UI/Core", "Domain"],
-            path: "Sources/UI/Sign/SignIn",
-            plugins: ["SwiftGen"]
-        ),
-        .target(
-            name: "UI/SignUp",
-            dependencies: ["UI/Core"],
-            path: "Sources/UI/Sign/SignUp"
-        ),
-        .target(
-            name: "UI/SignUpHome",
+            name: "UI/Sign",
             dependencies: ["DI", "UI/Core"],
-            path: "Sources/UI/Sign/SignUpHome",
+            path: "Sources/UI/Sign",
             plugins: ["SwiftGen"]
         ),
         .target(

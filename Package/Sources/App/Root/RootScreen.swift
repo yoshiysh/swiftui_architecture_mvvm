@@ -10,9 +10,7 @@ import UI_Core
 import UI_Home
 import UI_Search
 import UI_Setting
-import UI_SignIn
-import UI_SignUp
-import UI_SignUpHome
+import UI_Sign
 import UI_Splash
 import UI_TabHome
 import UI_Web
@@ -38,7 +36,7 @@ private extension RootScreen {
             case .initialized:
                 splash()
             case .loggedOut:
-                signUpHome()
+                navigationSignUpHome()
             case .loggedIn:
                 tabHome()
             }
@@ -51,15 +49,6 @@ private extension RootScreen {
 
     func signUpHome() -> some View {
         SignUpHomeScreen(navigate: navigate, content: content)
-    }
-
-    func signIn() -> some View {
-        SignInScreen(navigate: navigate)
-    }
-
-    func signUp() -> some View {
-//        SignUpScreen(content: content) // FIXME: compile error
-        EmptyView()
     }
 
     func tabHome() -> some View {
@@ -102,6 +91,12 @@ private extension RootScreen {
         }
     }
 
+    func navigationSignUpHome() -> some View {
+        NavigationStack {
+            signUpHome()
+        }
+    }
+
     func navigateToHome() {
         viewModel.uiState.update(state: .loggedIn)
     }
@@ -128,10 +123,6 @@ private extension RootScreen {
             search()
         case .setting:
             setting()
-        case .signIn:
-            signIn()
-        case .signUp:
-            signUp()
         case .web(let url):
             web(url: url)
         default:

@@ -22,15 +22,11 @@ public struct SignUpHomeScreen<Content: View>: View {
         .sheet(item: $viewModel.uiState.activeSheet) { sheet in
             switch sheet {
             case .signIn:
-                content(.signIn)
+                signIn()
             case .signUp:
-                content(.signUp)
+                signUp()
             }
         }
-        //        .signUpHomeSheet(
-        //            item: $viewModel.uiState.activeSheet,
-        //            content: content
-        //        )
         .onChange(of: viewModel.uiState.state) { state in
             if state == .loggedIn {
                 viewModel.uiState.activeSheet = nil
@@ -67,7 +63,7 @@ private extension SignUpHomeScreen {
         Button {
             action()
         } label: {
-            Text(L10n.Button.signIn)
+            Text(L10n.SignUpHome.Button.signIn)
                 .fontWeight(.bold)
                 .foregroundColor(.accentColor)
                 .frame(maxWidth: .infinity)
@@ -87,7 +83,7 @@ private extension SignUpHomeScreen {
         Button {
             action()
         } label: {
-            Text(L10n.Button.signUp)
+            Text(L10n.SignUpHome.Button.signUp)
                 .fontWeight(.bold)
                 .frame(maxWidth: .infinity)
                 .padding()
@@ -95,18 +91,14 @@ private extension SignUpHomeScreen {
         .buttonStyle(.borderedProminent)
     }
 
-    func signUpHomeSheet(
-        item: Binding<SignUpHomeUIState.ActiveSheet?>,
-        @ViewBuilder content: @escaping (Navigation.Path) -> Content
-    ) -> some View {
-        sheet(item: item) { sheet in
-            switch sheet {
-            case .signIn:
-                content(.signIn)
-            case .signUp:
-                content(.signUp)
-            }
+    func signIn() -> some View {
+        NavigationStack {
+            SignInScreen(navigate: navigate)
         }
+    }
+
+    func signUp() -> some View {
+        SignUpScreen(content: content)
     }
 }
 
