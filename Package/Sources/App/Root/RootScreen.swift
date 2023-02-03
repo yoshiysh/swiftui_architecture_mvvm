@@ -93,16 +93,7 @@ private extension RootScreen {
     func navigationHome() -> some View {
         NavigationStack(path: $navigator.navigation.path) {
             home()
-                .appNavigationDestination { path in
-                    switch path {
-                    case .search:
-                        search()
-                    case .setting:
-                        setting()
-                    default:
-                        fatalError("undefined")
-                    }
-                }
+                .appNavigationDestination(content: content)
         }
     }
 
@@ -112,13 +103,24 @@ private extension RootScreen {
         }
     }
 
-    private func navigateToHome() {
+    func navigateToHome() {
         viewModel.uiState.update(state: .loggedIn)
     }
 
-    private func navigateToSignUpHome() {
+    func navigateToSignUpHome() {
         viewModel.uiState.update(state: .loggedOut)
         navigator.removeAll()
+    }
+
+    @ViewBuilder func content(path: Navigation.Path) -> some View {
+        switch path {
+        case .search:
+            search()
+        case .setting:
+            setting()
+        default:
+            fatalError("undefined")
+        }
     }
 }
 
