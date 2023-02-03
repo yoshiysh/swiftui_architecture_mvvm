@@ -9,34 +9,30 @@ import Domain
 import SwiftUI
 import UI_Core
 
-public struct HomeScreen<Content: View>: View {
+public struct HomeScreen: View {
     @StateObject private var viewModel: HomeViewModel = .init()
     @StateObject private var navigator: Navigator = .shared
 
     private let navigate: (Navigation.Path) -> Void
-    private let content: (Navigation.Path) -> Content
 
     public var body: some View {
-        NavigationStack(path: $navigator.navigation.path) {
-            homeView(
-                items: viewModel.uiState.items,
-                isInitial: viewModel.uiState.isInitial,
-                hasNextPage: viewModel.uiState.hasNextPage
-            ) {
-                Task { await viewModel.next() }
-            } onTapItem: {
-                debugPrint("item tapped")
-            }
-            .homeToolbar {
-                debugPrint("menu tapped")
-            } onClickDebug: {
-                viewModel.showSnackbar()
-            } onClickSetting: {
-                navigate(.setting)
-            }
-            .appNavigationDestination(content: content)
-            .navigationTitle("Repository")
+        homeView(
+            items: viewModel.uiState.items,
+            isInitial: viewModel.uiState.isInitial,
+            hasNextPage: viewModel.uiState.hasNextPage
+        ) {
+            Task { await viewModel.next() }
+        } onTapItem: {
+            debugPrint("item tapped")
         }
+        .homeToolbar {
+            debugPrint("menu tapped")
+        } onClickDebug: {
+            viewModel.showSnackbar()
+        } onClickSetting: {
+            navigate(.setting)
+        }
+        .navigationTitle("Repository")
         .snackbar(
             isPresented: $viewModel.uiState.isShowingAlert,
             message: viewModel.uiState.alertMessage
@@ -55,12 +51,8 @@ public struct HomeScreen<Content: View>: View {
         }
     }
 
-    public init(
-        navigate: @escaping (Navigation.Path) -> Void,
-        @ViewBuilder content: @escaping (Navigation.Path) -> Content
-    ) {
+    public init(navigate: @escaping (Navigation.Path) -> Void) {
         self.navigate = navigate
-        self.content = content
     }
 }
 

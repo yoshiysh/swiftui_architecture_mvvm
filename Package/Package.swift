@@ -64,6 +64,7 @@ let package = Package(
         ),
         .target(
             name: "UI/Setting",
+            dependencies: ["UI/Core"],
             path: "Sources/UI/Setting",
             plugins: ["SwiftGen"]
         ),

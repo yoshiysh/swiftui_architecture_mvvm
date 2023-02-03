@@ -6,26 +6,22 @@
 //
 
 import SwiftUI
+import UI_Core
 
 public struct SettingScreen: View {
-    private let onClickLoggedOut: () -> Void
-    private let onClickSearch: () -> Void
+    private let navigate: (Navigation.Path) -> Void
 
     @MainActor public var body: some View {
         settingView {
-            onClickLoggedOut()
+            navigate(.signUpHome)
         } onClickSearch: {
-            onClickSearch()
+            navigate(.search)
         }
         .navigationTitle("Setting")
     }
 
-    public init(
-        onClickLoggedOut: @escaping () -> Void,
-        onClickSearch: @escaping () -> Void
-    ) {
-        self.onClickLoggedOut = onClickLoggedOut
-        self.onClickSearch = onClickSearch
+    public init(navigate: @escaping (Navigation.Path) -> Void) {
+        self.navigate = navigate
     }
 }
 
@@ -69,6 +65,6 @@ private extension View {
 
 struct SettingScreen_Previews: PreviewProvider {
     static var previews: some View {
-        SettingScreen {} onClickSearch: {}
+        SettingScreen { _ in }
     }
 }

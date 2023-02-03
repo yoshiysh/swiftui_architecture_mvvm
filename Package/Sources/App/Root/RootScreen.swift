@@ -57,9 +57,9 @@ private extension RootScreen {
         TabHomeScreen { tab in
             switch tab {
             case .home:
-                home()
+                navigationHome()
             case .search:
-                search()
+                navigationSearch()
             }
         }
     }
@@ -72,26 +72,44 @@ private extension RootScreen {
             default:
                 navigator.navigate(to: path)
             }
-        } content: { destination in
-            switch destination {
-            case .search:
-                search()
-            case .setting:
-                setting()
-            default:
-                EmptyView()
-            }
         }
     }
 
     func setting() -> some View {
-        SettingScreen(onClickLoggedOut: navigateToSignUpHome) {
-            navigator.navigate(to: .search)
+        SettingScreen { path in
+            switch path {
+            case .signUpHome:
+                navigateToSignUpHome()
+            default:
+                navigator.navigate(to: path)
+            }
         }
     }
 
     func search() -> some View {
         SearchScreen()
+    }
+
+    func navigationHome() -> some View {
+        NavigationStack(path: $navigator.navigation.path) {
+            home()
+                .appNavigationDestination { path in
+                    switch path {
+                    case .search:
+                        search()
+                    case .setting:
+                        setting()
+                    default:
+                        fatalError("undefined")
+                    }
+                }
+        }
+    }
+
+    func navigationSearch() -> some View {
+        NavigationStack {
+            search()
+        }
     }
 
     private func navigateToHome() {

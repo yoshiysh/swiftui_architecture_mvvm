@@ -10,6 +10,7 @@ import SwiftUI
 public struct SearchScreen: View {
     public var body: some View {
         searchView()
+            .navigationTitle("Search")
     }
 
     public init() {}
