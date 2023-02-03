@@ -70,13 +70,13 @@ let package = Package(
         ),
         .target(
             name: "UI/SignIn",
-            dependencies: ["Domain"],
+            dependencies: ["UI/Core", "Domain"],
             path: "Sources/UI/Sign/SignIn",
             plugins: ["SwiftGen"]
         ),
         .target(
             name: "UI/SignUp",
-            dependencies: ["UI/Web"],
+            dependencies: ["UI/Core"],
             path: "Sources/UI/Sign/SignUp"
         ),
         .target(

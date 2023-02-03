@@ -50,7 +50,16 @@ private extension RootScreen {
     }
 
     func signUpHome() -> some View {
-        SignUpHomeScreen(onLoggedIn: navigateToHome)
+        SignUpHomeScreen(navigate: navigate, content: content)
+    }
+
+    func signIn() -> some View {
+        SignInScreen(navigate: navigate)
+    }
+
+    func signUp() -> some View {
+//        SignUpScreen(content: content) // FIXME: compile error
+        EmptyView()
     }
 
     func tabHome() -> some View {
@@ -65,29 +74,19 @@ private extension RootScreen {
     }
 
     func home() -> some View {
-        HomeScreen { path in
-            switch path {
-            case .signUpHome:
-                navigateToSignUpHome()
-            default:
-                navigator.navigate(to: path)
-            }
-        }
+        HomeScreen(navigate: navigate)
     }
 
     func setting() -> some View {
-        SettingScreen { path in
-            switch path {
-            case .signUpHome:
-                navigateToSignUpHome()
-            default:
-                navigator.navigate(to: path)
-            }
-        }
+        SettingScreen(navigate: navigate)
     }
 
     func search() -> some View {
         SearchScreen()
+    }
+
+    func web(url: String) -> some View {
+        WebScreen(url)
     }
 
     func navigationHome() -> some View {
@@ -112,12 +111,29 @@ private extension RootScreen {
         navigator.removeAll()
     }
 
+    func navigate(path: Navigation.Path) {
+        switch path {
+        case .signUpHome:
+            navigateToSignUpHome()
+        case .tabHome:
+            navigateToHome()
+        default:
+            navigator.navigate(to: path)
+        }
+    }
+
     @ViewBuilder func content(path: Navigation.Path) -> some View {
         switch path {
         case .search:
             search()
         case .setting:
             setting()
+        case .signIn:
+            signIn()
+        case .signUp:
+            signUp()
+        case .web(let url):
+            web(url: url)
         default:
             fatalError("undefined")
         }

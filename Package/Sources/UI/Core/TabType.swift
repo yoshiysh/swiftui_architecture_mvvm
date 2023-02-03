@@ -2,7 +2,7 @@
 //  TabType.swift
 //  swiftui_architecture_mvvm
 //
-//  Created by Yoshiki Hemmi on 2023/02/03.
+//  Created by yoshi on 2023/02/03.
 //
 
 public enum TabType: CaseIterable {

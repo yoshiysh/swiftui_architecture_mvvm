@@ -6,24 +6,23 @@
 //
 
 import SwiftUI
-import UI_Web
+import UI_Core
 
-public struct SignUpScreen: View {
+public struct SignUpScreen<Content: View>: View {
+    private let content: (Navigation.Path) -> Content
+
     public var body: some View {
-        signUpView()
+//        content(.web(url: "https://github.com/signup"))
+        EmptyView()
     }
 
-    public init() {}
-}
-
-private extension View {
-    func signUpView() -> some View {
-        WebScreen("https://github.com/signup")
+    public init(@ViewBuilder content: @escaping (Navigation.Path) -> Content) {
+        self.content = content
     }
 }
 
 struct SignUpScreen_Previews: PreviewProvider {
     static var previews: some View {
-        SignUpScreen()
+        SignUpScreen { _ in }
     }
 }

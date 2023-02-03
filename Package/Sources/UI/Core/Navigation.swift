@@ -2,14 +2,15 @@
 //  Navigation.swift
 //  swiftui_architecture_mvvm
 //
-//  Created by Yoshiki Hemmi on 2023/02/03.
+//  Created by yoshi on 2023/02/03.
 //
 
 import Combine
 
 public struct Navigation { // swiftlint:disable:this file_types_order
     public enum Path: Hashable {
-        case home, search, setting, signUpHome, splash
+        case home, search, setting, signUpHome, signIn, signUp, splash, tabHome
+        case web(url: String)
     }
     public var path: [Path] = []
 }
@@ -24,7 +25,13 @@ public final class Navigator: ObservableObject {
         pop: Bool = false,
         removeAll: Bool = false
     ) {
-        navigation.path.append(path)
+        if pop {
+            navigateWithPop(to: path)
+        } else if removeAll {
+            navigationWithRemoveAll(to: path)
+        } else {
+            navigation.path.append(path)
+        }
     }
 
     public func navigateToRoot() {

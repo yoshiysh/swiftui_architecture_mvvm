@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import UI_Core
 
 public struct SignInScreen: View { // swiftlint:disable:this file_types_order
     @StateObject private var viewModel: SignInViewModel = .init()
     @FocusState private var focusState: SignInViewUIState.FocusState?
 
-    private let onLoggedIn: () -> Void
+    private let navigate: (Navigation.Path) -> Void
 
     public var body: some View {
         NavigationView {
@@ -29,7 +30,7 @@ public struct SignInScreen: View { // swiftlint:disable:this file_types_order
             .navigationTitle(L10n.Navigation.title)
         }
         .onChange(of: viewModel.uiState.state) { state in
-            if state == .suceess { onLoggedIn() }
+            if state == .suceess { navigate(.tabHome) }
         }
         .onChange(of: viewModel.uiState.focusState) { state in
             focusState = state
@@ -42,8 +43,8 @@ public struct SignInScreen: View { // swiftlint:disable:this file_types_order
         }
     }
 
-    public init(onLoggedIn: @escaping () -> Void) {
-        self.onLoggedIn = onLoggedIn
+    public init(navigate: @escaping (Navigation.Path) -> Void) {
+        self.navigate = navigate
     }
 }
 
@@ -148,6 +149,6 @@ private struct LoginButton: View {
 
 struct LoginScreen_Previews: PreviewProvider {
     static var previews: some View {
-        SignInScreen {}
+        SignInScreen { _ in }
     }
 }

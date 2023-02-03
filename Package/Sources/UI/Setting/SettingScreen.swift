@@ -11,7 +11,7 @@ import UI_Core
 public struct SettingScreen: View {
     private let navigate: (Navigation.Path) -> Void
 
-    @MainActor public var body: some View {
+    public var body: some View {
         settingView {
             navigate(.signUpHome)
         } onClickSearch: {

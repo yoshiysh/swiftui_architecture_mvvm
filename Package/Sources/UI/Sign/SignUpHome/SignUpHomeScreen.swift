@@ -7,12 +7,11 @@
 
 import SwiftUI
 import UI_Core
-import UI_SignIn
-import UI_SignUp
 
-public struct SignUpHomeScreen: View {
+public struct SignUpHomeScreen<Content: View>: View {
     @StateObject private var viewModel: SignUpHomeViewModel = .init()
-    private let onLoggedIn: () -> Void
+    private let navigate: (Navigation.Path) -> Void
+    private let content: (Navigation.Path) -> Content
 
     public var body: some View {
         signUpOrInView {
@@ -20,23 +19,36 @@ public struct SignUpHomeScreen: View {
         } onClickSignUp: {
             viewModel.uiState.update(state: .signUp)
         }
-        .signUpHomeSheet(item: $viewModel.uiState.activeSheet) {
-            viewModel.uiState.update(state: .loggedIn)
+        .sheet(item: $viewModel.uiState.activeSheet) { sheet in
+            switch sheet {
+            case .signIn:
+                content(.signIn)
+            case .signUp:
+                content(.signUp)
+            }
         }
+        //        .signUpHomeSheet(
+        //            item: $viewModel.uiState.activeSheet,
+        //            content: content
+        //        )
         .onChange(of: viewModel.uiState.state) { state in
             if state == .loggedIn {
                 viewModel.uiState.activeSheet = nil
-                onLoggedIn()
+                navigate(.tabHome)
             }
         }
     }
 
-    public init(onLoggedIn: @escaping (() -> Void)) {
-        self.onLoggedIn = onLoggedIn
+    public init(
+        navigate: @escaping (Navigation.Path) -> Void,
+        @ViewBuilder content: @escaping (Navigation.Path) -> Content
+    ) {
+        self.navigate = navigate
+        self.content = content
     }
 }
 
-private extension View {
+private extension SignUpHomeScreen {
     func signUpOrInView (
         onClickSignIn: @escaping () -> Void,
         onClickSignUp: @escaping () -> Void
@@ -85,14 +97,14 @@ private extension View {
 
     func signUpHomeSheet(
         item: Binding<SignUpHomeUIState.ActiveSheet?>,
-        onLoggedIn: @escaping () -> Void
+        @ViewBuilder content: @escaping (Navigation.Path) -> Content
     ) -> some View {
         sheet(item: item) { sheet in
             switch sheet {
             case .signIn:
-                SignInScreen(onLoggedIn: onLoggedIn)
+                content(.signIn)
             case .signUp:
-                SignUpScreen()
+                content(.signUp)
             }
         }
     }
@@ -100,6 +112,6 @@ private extension View {
 
 struct SignUpHomeScreen_Previews: PreviewProvider {
     static var previews: some View {
-        SignUpHomeScreen {}
+        SignUpHomeScreen { _ in } content: { _ in }
     }
 }
