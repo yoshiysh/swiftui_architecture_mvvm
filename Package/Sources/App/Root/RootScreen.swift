@@ -43,73 +43,6 @@ private extension RootScreen {
         }
     }
 
-    func splash() -> some View {
-        SplashScreen()
-    }
-
-    func signUpHome() -> some View {
-        SignUpHomeScreen(navigate: navigate, content: content)
-    }
-
-    func tabHome() -> some View {
-        TabHomeScreen { current in
-            viewModel.uiState.currentTab = current
-        } content: { tab in
-            switch tab {
-            case .home:
-                navigationHome()
-            case .search:
-                navigationSearch()
-            }
-        }
-    }
-
-    func home() -> some View {
-        HomeScreen(navigate: navigate)
-    }
-
-    func setting() -> some View {
-        SettingScreen(navigate: navigate)
-    }
-
-    func search() -> some View {
-        SearchScreen(navigate: navigate)
-    }
-
-    func web(url: String) -> some View {
-        WebScreen(url)
-    }
-
-    func navigationHome() -> some View {
-        NavigationStack(
-            path: .init(
-                get: { navigator.nav[.home]?.path ?? [] },
-                set: { navigator.nav[.home]?.update(path: $0) }
-            )
-        ) {
-            home()
-                .appNavigationDestination(content: content)
-        }
-    }
-
-    func navigationSearch() -> some View {
-        NavigationStack(
-            path: .init(
-                get: { navigator.nav[.search]?.path ?? [] },
-                set: { navigator.nav[.search]?.update(path: $0) }
-            )
-        ) {
-            search()
-                .appNavigationDestination(content: content)
-        }
-    }
-
-    func navigationSignUpHome() -> some View {
-        NavigationStack {
-            signUpHome()
-        }
-    }
-
     func navigateToHome() {
         viewModel.update(state: .loggedIn)
     }
@@ -147,6 +80,81 @@ private extension RootScreen {
             web(url: url)
         default:
             fatalError("undefined")
+        }
+    }
+}
+
+// MARK: Initializer
+
+private extension RootScreen {
+    func splash() -> some View {
+        SplashScreen()
+    }
+
+    func signUpHome() -> some View {
+        SignUpHomeScreen(navigate: navigate, content: content)
+    }
+
+    func tabHome() -> some View {
+        TabHomeScreen { current in
+            viewModel.uiState.currentTab = current
+        } content: { tab in
+            switch tab {
+            case .home:
+                navigationHome()
+            case .search:
+                navigationSearch()
+            }
+        }
+    }
+
+    func home() -> some View {
+        HomeScreen(navigate: navigate)
+    }
+
+    func setting() -> some View {
+        SettingScreen(navigate: navigate)
+    }
+
+    func search() -> some View {
+        SearchScreen(navigate: navigate)
+    }
+
+    func web(url: String) -> some View {
+        WebScreen(url)
+    }
+}
+
+// MARK: Navigation Top
+
+private extension RootScreen {
+    func navigationHome() -> some View {
+        NavigationStack(
+            path: .init(
+                get: { navigator.nav[.home]?.path ?? [] },
+                set: { navigator.nav[.home]?.update(path: $0) }
+            )
+        ) {
+            home()
+                .appNavigationDestination(content: content)
+        }
+    }
+
+    func navigationSearch() -> some View {
+        NavigationStack(
+            path: .init(
+                get: { navigator.nav[.search]?.path ?? [] },
+                set: { navigator.nav[.search]?.update(path: $0) }
+            )
+        ) {
+            search()
+                .appNavigationDestination(content: content)
+        }
+    }
+
+    func navigationSignUpHome() -> some View {
+        NavigationStack {
+            signUpHome()
         }
     }
 }
