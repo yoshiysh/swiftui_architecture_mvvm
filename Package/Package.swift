@@ -58,6 +58,7 @@ let package = Package(
         ),
         .target(
             name: "UI/Search",
+            dependencies: ["UI/Core"],
             path: "Sources/UI/Search"
         ),
         .target(

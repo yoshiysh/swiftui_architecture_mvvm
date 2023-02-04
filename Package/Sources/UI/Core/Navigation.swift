@@ -12,16 +12,14 @@ public struct Navigation { // swiftlint:disable:this file_types_order
         case home, search, setting, signUpHome, splash, tabHome
         case web(url: String)
     }
-    public var path: [Path] = []
-}
+    public private(set) var path: [Path] = []
 
-public final class Navigator: ObservableObject {
-    @Published public var navigation: Navigation = .init()
+    public mutating func update(path: [Path]) {
+        self.path = path
+    }
 
-    public init() {}
-
-    public func navigate(
-        to path: Navigation.Path,
+    public mutating func navigate(
+        to path: Path,
         pop: Bool = false,
         removeAll: Bool = false
     ) {
@@ -30,39 +28,45 @@ public final class Navigator: ObservableObject {
         } else if removeAll {
             navigationWithRemoveAll(to: path)
         } else {
-            navigation.path.append(path)
+            self.path.append(path)
         }
     }
 
-    public func navigateToRoot() {
-        navigation.path.removeAll()
+    public mutating func pop() {
+        path.removeLast()
     }
 
-    public func pop() -> Navigation.Path? {
-        navigation.path.popLast()
+    public mutating func removeAll() {
+        path.removeAll()
     }
 
-    public func removeAll() {
-        navigation.path.removeAll()
+    public mutating func removeAll(path: Path) {
+        self.path.removeAll { path == $0 }
     }
 
-    public func removeAll(path: Navigation.Path) {
-        navigation.path.removeAll { path == $0 }
-    }
-
-    func navigateWithPop(to path: Navigation.Path) {
-        var new = navigation.path
+    mutating func navigateWithPop(to path: Path) {
+        var new = self.path
         if new.isEmpty {
             return
         }
         new.removeLast()
         new.append(path)
-        navigation.path = new
+        update(path: new)
     }
 
-    func navigationWithRemoveAll(to path: Navigation.Path) {
+    mutating func navigationWithRemoveAll(to path: Path) {
         var new: [Navigation.Path] = []
         new.append(path)
-        navigation.path = new
+        update(path: new)
+    }
+}
+
+public final class Navigator: ObservableObject {
+    @Published public var nav: [TabType: Navigation] = [:]
+
+    public init() {
+        TabType.allCases.forEach { type in
+            nav[type] = .init()
+        }
     }
 }

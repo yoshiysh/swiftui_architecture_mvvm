@@ -17,8 +17,7 @@ import UI_Web
 
 public struct RootScreen: View {
     @StateObject private var viewModel: RootViewModel = .init()
-    @StateObject private var navHome: Navigator = .init()
-    @StateObject private var navSearch: Navigator = .init()
+    @StateObject private var navigator: Navigator = .init()
 
     public var body: some View {
         rootView()
@@ -82,14 +81,24 @@ private extension RootScreen {
     }
 
     func navigationHome() -> some View {
-        NavigationStack(path: $navHome.navigation.path) {
+        NavigationStack(
+            path: .init(
+                get: { navigator.nav[.home]?.path ?? [] },
+                set: { navigator.nav[.home]?.update(path: $0) }
+            )
+        ) {
             home()
                 .appNavigationDestination(content: content)
         }
     }
 
     func navigationSearch() -> some View {
-        NavigationStack(path: $navSearch.navigation.path) {
+        NavigationStack(
+            path: .init(
+                get: { navigator.nav[.search]?.path ?? [] },
+                set: { navigator.nav[.search]?.update(path: $0) }
+            )
+        ) {
             search()
                 .appNavigationDestination(content: content)
         }
@@ -107,12 +116,13 @@ private extension RootScreen {
 
     func navigateToSignUpHome() {
         viewModel.update(state: .loggedOut)
-        reset()
+        resetNavigation()
     }
 
-    func reset() {
-        navHome.removeAll()
-        navSearch.removeAll()
+    func resetNavigation() {
+        TabType.allCases.forEach { type in
+            navigator.nav[type]?.removeAll()
+        }
         viewModel.uiState.currentTab = .home
     }
 
@@ -123,12 +133,7 @@ private extension RootScreen {
         case .tabHome:
             navigateToHome()
         default:
-            switch viewModel.uiState.currentTab {
-            case .home:
-                navHome.navigate(to: path)
-            case .search:
-                navSearch.navigate(to: path)
-            }
+            navigator.nav[viewModel.uiState.currentTab]?.navigate(to: path)
         }
     }
 

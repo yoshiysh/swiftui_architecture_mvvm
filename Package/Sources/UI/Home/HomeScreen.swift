@@ -41,6 +41,9 @@ public struct HomeScreen: View {
                 Image(systemName: "xmark.circle")
             }
         }
+        .onDisappear {
+            viewModel.uiState.isShowingAlert = false
+        }
         .refreshable {
             await viewModel.refresh()
         }
