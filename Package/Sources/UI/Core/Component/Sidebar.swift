@@ -14,6 +14,7 @@ public struct Sidebar: View {
     private let targetView: AnyView
     private let foregroundColor: Color
     private let backgroundColor: Color
+    private let isTargetSlide: Bool
     private var content: AnyView
 
     private let sideBarWidth = UIScreen.main.bounds.size.width * 0.7
@@ -21,7 +22,13 @@ public struct Sidebar: View {
 
     public var body: some View {
         ZStack {
-            targetView
+            if isTargetSlide {
+                targetView
+                    .offset(x: isPresented ? sideBarWidth : 0)
+                    .animation(.default, value: isPresented)
+            } else {
+                targetView
+            }
 
             ZStack {
                 GeometryReader { _ in
@@ -44,12 +51,14 @@ public struct Sidebar: View {
         isPresented: Binding<Bool>,
         foregroundColor: Color,
         backgroundColor: Color,
+        isTargetSlide: Bool,
         @ViewBuilder content: @escaping () -> Content
     ) {
         self.targetView = AnyView(targetView)
         _isPresented = isPresented
         self.foregroundColor = foregroundColor
         self.backgroundColor = backgroundColor
+        self.isTargetSlide = isTargetSlide
         self.content = AnyView(content())
     }
 }
@@ -98,6 +107,7 @@ public extension View {
         isPresented: Binding<Bool>,
         foregroundColor: Color = .white,
         backgroundColor: Color = .cyan,
+        isTargetSlide: Bool = false,
         @ViewBuilder content: @escaping () -> Content
     ) -> some View {
         Sidebar(
@@ -105,6 +115,7 @@ public extension View {
             isPresented: isPresented,
             foregroundColor: foregroundColor,
             backgroundColor: backgroundColor,
+            isTargetSlide: isTargetSlide,
             content: content
         )
     }

@@ -43,9 +43,6 @@ private extension RootScreen {
                 tabHome()
             }
         }
-        .sidebar(isPresented: $viewModel.uiState.isPresentedSidebar) {
-            sideMenu()
-        }
     }
 
     func navigateToSidebar() {
@@ -114,6 +111,12 @@ private extension RootScreen {
             case .search:
                 navigationSearch()
             }
+        }
+        .sidebar(
+            isPresented: $viewModel.uiState.isPresentedSidebar,
+            isTargetSlide: true
+        ) {
+            sideMenu()
         }
     }
 
