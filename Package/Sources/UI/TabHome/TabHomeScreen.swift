@@ -10,7 +10,6 @@ import UI_Core
 
 public struct TabHomeScreen<Content: View>: View {
     @State private var selection: TabType = .home
-    private let current: (TabType) -> Void
     private let content: (TabType) -> Content
 
     public var body: some View {
@@ -25,22 +24,27 @@ public struct TabHomeScreen<Content: View>: View {
                     .tag(type)
             }
         }
-        .onChange(of: selection) { type in
-            current(type)
-        }
     }
 
     public init(
-        current: @escaping (TabType) -> Void,
+        selection: State<TabType>,
         @ViewBuilder content: @escaping (TabType) -> Content
     ) {
-        self.current = current
+        _selection = selection
         self.content = content
     }
 }
 
-struct TabHome_Previews: PreviewProvider {
+struct TabHomeScreen_Previews: PreviewProvider {
+    private struct TabHomeScreenPreview: View {
+        @State var selection: TabType = .home
+
+        var body: some View {
+            TabHomeScreen(selection: _selection) { _ in }
+        }
+    }
+
     static var previews: some View {
-        TabHomeScreen { _ in } content: { _ in }
+        TabHomeScreenPreview()
     }
 }

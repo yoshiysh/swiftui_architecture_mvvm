@@ -13,5 +13,4 @@ struct RootUIState {
     }
     var state: State = .initialized
     var isPresentedSidebar = false
-    var currentTab: TabType = .home
 }

@@ -22,8 +22,4 @@ final class RootViewModel: ObservableObject {
     func update(state: RootUIState.State) {
         uiState.state = state
     }
-
-    func update(currentTab: TabType) {
-        uiState.currentTab = currentTab
-    }
 }

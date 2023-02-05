@@ -19,7 +19,7 @@ import UI_Web
 public struct RootScreen: View {
     @StateObject private var viewModel: RootViewModel = .init()
     @StateObject private var navigator: Navigator = .init()
-    @State var isPresented = true
+    @State private var selectTab: TabType = .home
 
     public var body: some View {
         rootView()
@@ -65,7 +65,7 @@ private extension RootScreen {
         TabType.allCases.forEach { type in
             navigator.nav[type]?.removeAll()
         }
-        viewModel.uiState.currentTab = .home
+        selectTab = .home
     }
 
     func navigate(path: Navigation.Path) {
@@ -77,7 +77,7 @@ private extension RootScreen {
         case .tabHome:
             navigateToHome()
         default:
-            navigator.nav[viewModel.uiState.currentTab]?.navigate(to: path)
+            navigator.nav[selectTab]?.navigate(to: path)
         }
     }
 
@@ -107,9 +107,7 @@ private extension RootScreen {
     }
 
     func tabHome() -> some View {
-        TabHomeScreen { current in
-            viewModel.uiState.currentTab = current
-        } content: { tab in
+        TabHomeScreen(selection: _selectTab) { tab in
             switch tab {
             case .home:
                 navigationHome()
@@ -138,7 +136,12 @@ private extension RootScreen {
     func sideMenu() -> some View {
         SideMenuScreen { path in
             viewModel.uiState.isPresentedSidebar = false
-            navigate(path: path)
+            switch path {
+            case .search:
+                selectTab = .search
+            default:
+                navigate(path: path)
+            }
         }
     }
 }
