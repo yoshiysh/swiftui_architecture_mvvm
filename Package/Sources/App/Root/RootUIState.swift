@@ -12,5 +12,6 @@ struct RootUIState {
         case initialized, loggedOut, loggedIn
     }
     var state: State = .initialized
+    var isPresentedSidebar = false
     var currentTab: TabType = .home
 }

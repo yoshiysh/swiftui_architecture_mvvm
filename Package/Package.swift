@@ -36,6 +36,7 @@ let package = Package(
                 "UI/Home",
                 "UI/Search",
                 "UI/Setting",
+                "UI/SideMenu",
                 "UI/Sign",
                 "UI/Splash",
                 "UI/TabHome",
@@ -66,6 +67,11 @@ let package = Package(
             dependencies: ["UI/Core"],
             path: "Sources/UI/Setting",
             plugins: ["SwiftGen"]
+        ),
+        .target(
+            name: "UI/SideMenu",
+            dependencies: ["DI"],
+            path: "Sources/UI/SideMenu"
         ),
         .target(
             name: "UI/Sign",

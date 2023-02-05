@@ -10,6 +10,7 @@ import UI_Core
 import UI_Home
 import UI_Search
 import UI_Setting
+import UI_SideMenu
 import UI_Sign
 import UI_Splash
 import UI_TabHome
@@ -18,6 +19,7 @@ import UI_Web
 public struct RootScreen: View {
     @StateObject private var viewModel: RootViewModel = .init()
     @StateObject private var navigator: Navigator = .init()
+    @State var isPresented = true
 
     public var body: some View {
         rootView()
@@ -41,6 +43,13 @@ private extension RootScreen {
                 tabHome()
             }
         }
+        .sidebar(isPresented: $viewModel.uiState.isPresentedSidebar) {
+            sideMenu()
+        }
+    }
+
+    func navigateToSidebar() {
+        viewModel.uiState.isPresentedSidebar = true
     }
 
     func navigateToHome() {
@@ -61,6 +70,8 @@ private extension RootScreen {
 
     func navigate(path: Navigation.Path) {
         switch path {
+        case .sidebar:
+            navigateToSidebar()
         case .signUpHome:
             navigateToSignUpHome()
         case .tabHome:
@@ -122,6 +133,13 @@ private extension RootScreen {
 
     func web(url: String) -> some View {
         WebScreen(url)
+    }
+
+    func sideMenu() -> some View {
+        SideMenuScreen { path in
+            viewModel.uiState.isPresentedSidebar = false
+            navigate(path: path)
+        }
     }
 }
 

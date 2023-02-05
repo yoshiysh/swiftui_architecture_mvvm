@@ -9,6 +9,10 @@ import Domain
 import SwiftUI
 import UI_Core
 
+enum ToolbarActionType {
+    case setting, debug
+}
+
 public struct HomeScreen: View {
     @StateObject private var viewModel: HomeViewModel = .init()
     private let navigate: (Navigation.Path) -> Void
@@ -23,12 +27,13 @@ public struct HomeScreen: View {
         } onTapItem: {
             debugPrint("item tapped")
         }
-        .homeToolbar {
-            debugPrint("menu tapped")
-        } onClickDebug: {
-            viewModel.showSnackbar()
-        } onClickSetting: {
-            navigate(.setting)
+        .homeToolbar { type in
+            switch type {
+            case .setting:
+                navigate(.setting)
+            case .debug:
+                viewModel.showSnackbar()
+            }
         }
         .navigationTitle("Repository")
         .snackbar(
@@ -58,28 +63,19 @@ public struct HomeScreen: View {
 }
 
 private extension View {
-    func homeToolbar(
-        onClickMenu: @escaping () -> Void,
-        onClickDebug: @escaping () -> Void,
-        onClickSetting: @escaping () -> Void
-    ) -> some View {
+    func homeToolbar(action: @escaping (ToolbarActionType) -> Void) -> some View {
         toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button {
-                    onClickMenu()
+                    action(.debug)
                 } label: {
-                    Image(systemName: "line.3.horizontal")
+                    Image(systemName: "exclamationmark.circle")
                 }
             }
 
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                 Button {
-                    onClickDebug()
-                } label: {
-                    Image(systemName: "exclamationmark.circle")
-                }
-                Button {
-                    onClickSetting()
+                    action(.setting)
                 } label: {
                     Image(systemName: "gearshape.fill")
                 }

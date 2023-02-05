@@ -11,6 +11,7 @@ public struct Navigation { // swiftlint:disable:this file_types_order
     public enum Path: Hashable {
         case home, search, setting, signUpHome, splash, tabHome
         case web(url: String)
+        case sidebar
     }
     public private(set) var path: [Path] = []
 
