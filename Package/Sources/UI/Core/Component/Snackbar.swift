@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public struct Snackbar: View { // swiftlint:disable:this file_types_order
+public struct Snackbar: View {
     public enum Length {
         case short, long
 
@@ -22,15 +22,14 @@ public struct Snackbar: View { // swiftlint:disable:this file_types_order
     }
 
     @Binding private var isPresented: Bool
+    @State private var opacity = 0.0
+    private let targetView: AnyView
     private let message: String
     private let foregroundColor: Color
     private let backgroundColor: Color
     private let length: Length
-    @State private var opacity = 0.0
     private var icon: AnyView
-    private let onDismiss: (() -> Void)
-
-    private let targetView: AnyView
+    private let onDismiss: () -> Void
 
     public var body: some View {
         GeometryReader { proxy in
@@ -38,7 +37,7 @@ public struct Snackbar: View { // swiftlint:disable:this file_types_order
                 targetView
 
                 if isPresented {
-                    SnackContent(
+                    snackContent(
                         proxy: proxy,
                         message: message,
                         foregroundColor: foregroundColor,
@@ -82,15 +81,15 @@ public struct Snackbar: View { // swiftlint:disable:this file_types_order
     }
 }
 
-private struct SnackContent: View {
-    let proxy: GeometryProxy
-    let message: String
-    let foregroundColor: Color
-    let backgroundColor: Color
-    let opacity: Double
-    let icon: AnyView?
-
-    var body: some View {
+private extension View {
+    func snackContent( // swiftlint:disable:this function_parameter_count
+        proxy: GeometryProxy,
+        message: String,
+        foregroundColor: Color,
+        backgroundColor: Color,
+        opacity: Double,
+        icon: AnyView?
+    ) -> some View {
         HStack {
             Text(message)
             Spacer()
@@ -109,8 +108,8 @@ private struct SnackContent: View {
     }
 }
 
-extension View {
-    public func snackbar<Icon: View>(
+public extension View {
+    func snackbar<Icon: View>(
         isPresented: Binding<Bool>,
         message: String,
         foregroundColor: Color = .white,
@@ -131,7 +130,7 @@ extension View {
         )
     }
 
-    public func snackbar(
+    func snackbar(
         isPresented: Binding<Bool>,
         message: String,
         foregroundColor: Color = .white,
