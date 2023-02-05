@@ -62,8 +62,6 @@ private extension Sidebar {
                 menuChevron()
 
                 content
-                    .padding(.vertical, 96)
-                    .padding(.horizontal, 32)
             }
             .frame(width: sideBarWidth)
             .offset(x: isPresented ? 0 : -sideBarWidth)

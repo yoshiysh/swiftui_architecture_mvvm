@@ -12,16 +12,22 @@ public struct SideMenuScreen: View {
     private let navigate: (Navigation.Path) -> Void
 
     public var body: some View {
-        VStack(spacing: 32) {
-            ForEach(0..<SideMenuType.allCases.count, id: \.self) { index in
-                let type = SideMenuType.allCases[index]
-                Label(type.text, systemImage: type.imageName)
-                    .foregroundColor(.white)
-                    .onTapGesture {
-                        navigate(type.path)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
+        ScrollView {
+            VStack(spacing: 24) {
+                Divider()
+                ForEach(0..<SideMenuType.allCases.count, id: \.self) { index in
+                    let type = SideMenuType.allCases[index]
+                    Label(type.text, systemImage: type.imageName)
+                        .foregroundColor(.white)
+                        .onTapGesture {
+                            navigate(type.path)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Divider()
+                }
             }
+            .padding(.top, 96)
+            .padding(.horizontal, 24)
         }
     }
 
