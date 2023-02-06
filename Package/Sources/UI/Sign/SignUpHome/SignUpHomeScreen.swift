@@ -75,7 +75,7 @@ private extension View {
         Button {
             action()
         } label: {
-            Text(L10n.SignUpHome.Button.signIn)
+            Text(L10n.signIn)
                 .fontWeight(.bold)
                 .foregroundColor(.accentColor)
                 .frame(maxWidth: .infinity)
@@ -95,7 +95,7 @@ private extension View {
         Button {
             action()
         } label: {
-            Text(L10n.SignUpHome.Button.signUp)
+            Text(L10n.signUp)
                 .fontWeight(.bold)
                 .frame(maxWidth: .infinity)
                 .padding()

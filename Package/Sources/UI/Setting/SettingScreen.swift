@@ -51,7 +51,7 @@ private extension View {
         Button {
             action()
         } label: {
-            Text(L10n.Button.search)
+            Text(L10n.navigateToSearch)
                 .fontWeight(.bold)
                 .frame(maxWidth: .infinity)
                 .padding()
@@ -63,7 +63,7 @@ private extension View {
         Button {
             action()
         } label: {
-            Text(L10n.Button.signOut)
+            Text(L10n.signOut)
                 .fontWeight(.bold)
                 .frame(maxWidth: .infinity)
                 .padding()

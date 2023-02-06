@@ -50,7 +50,8 @@ let package = Package(
         .target(
             name: "UI/Core",
             dependencies: ["Domain"],
-            path: "Sources/UI/Core"
+            path: "Sources/UI/Core",
+            plugins: ["SwiftGen"]
         ),
         .target(
             name: "UI/Home",
@@ -65,8 +66,7 @@ let package = Package(
         .target(
             name: "UI/Setting",
             dependencies: ["UI/Core"],
-            path: "Sources/UI/Setting",
-            plugins: ["SwiftGen"]
+            path: "Sources/UI/Setting"
         ),
         .target(
             name: "UI/SideMenu",
@@ -76,8 +76,7 @@ let package = Package(
         .target(
             name: "UI/Sign",
             dependencies: ["DI", "UI/Core"],
-            path: "Sources/UI/Sign",
-            plugins: ["SwiftGen"]
+            path: "Sources/UI/Sign"
         ),
         .target(
             name: "UI/Splash",

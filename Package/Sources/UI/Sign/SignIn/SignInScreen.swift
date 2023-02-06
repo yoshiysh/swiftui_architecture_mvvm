@@ -33,7 +33,7 @@ struct SignInScreen: View {
                 Task { await viewModel.signIn() }
             }
         }
-        .navigationTitle(L10n.SignIn.Navigation.title)
+        .navigationTitle(L10n.signIn)
         .onChange(of: viewModel.uiState.state) { state in
             if state == .suceess { navigate(.tabHome) }
         }
@@ -85,11 +85,11 @@ private extension SignInScreen {
     ) -> some View {
         VStack {
             VStack(alignment: .leading) {
-                Text(L10n.SignIn.MailAddress.title)
+                Text(L10n.mailAddress)
                     .font(.footnote)
                     .foregroundColor(.accentColor)
 
-                TextField(L10n.SignIn.MailAddress.placeholder, text: text)
+                TextField(L10n.mailAddress, text: text)
                     .frame(height: 36)
                     .focused($focusState, equals: .email)
                     .submitLabel(.next)
@@ -106,11 +106,11 @@ private extension SignInScreen {
     ) -> some View {
         VStack {
             VStack(alignment: .leading) {
-                Text(L10n.SignIn.Password.title)
+                Text(L10n.password)
                     .font(.footnote)
                     .foregroundColor(.accentColor)
 
-                SecureField(L10n.SignIn.Password.placeholder, text: text)
+                SecureField(L10n.passwordValidation, text: text)
                     .frame(height: 36)
                     .focused($focusState, equals: .password)
                     .submitLabel(.done)
@@ -128,7 +128,7 @@ private extension View {
         action: @escaping () -> Void
     ) -> some View {
         Button(action: action) {
-            Text(L10n.SignIn.Button.signIn)
+            Text(L10n.signIn)
                 .fontWeight(.bold)
                 .frame(maxWidth: .infinity)
                 .padding()

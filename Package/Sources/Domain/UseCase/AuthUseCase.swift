@@ -26,7 +26,7 @@ public final class AuthUseCase: AuthUseCaseProtcol {
         if !validate(email: email, password: password) {
             throw AuthErrorType.invalid
         }
-        
+
         await repository.login(email: email, password: password)
     }
 }

@@ -1,0 +1,15 @@
+/* 
+  Localizable.strings
+  swiftui_architecture_mvvm
+ 
+  Created by yoshi on 2023/01/30.
+ 
+*/
+
+"sign_in" = "SIGN IN";
+"sign_up" = "SIGN UP";
+"sign_out" = "SIGN OUT";
+"mail_address" = "MAIL ADDRESS";
+"password" = "PASSWORD";
+"password_validation" = "6~12 WORDS";
+"sign_in_on_mail_address" = "SIGN IN";
