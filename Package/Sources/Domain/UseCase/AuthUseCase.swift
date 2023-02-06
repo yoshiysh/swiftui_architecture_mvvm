@@ -12,7 +12,11 @@ public protocol AuthUseCaseProtcol {
 }
 
 public final class AuthUseCase: AuthUseCaseProtcol {
-    public init() {}
+    private let repository: AuthRepositoryProtocol
+
+    public init(repository: some AuthRepositoryProtocol) {
+        self.repository = repository
+    }
 
     public func validate(email: String, password: String) -> Bool {
         !email.isEmpty && !password.isEmpty
@@ -22,5 +26,7 @@ public final class AuthUseCase: AuthUseCaseProtcol {
         if !validate(email: email, password: password) {
             throw AuthErrorType.invalid
         }
+        
+        await repository.login(email: email, password: password)
     }
 }

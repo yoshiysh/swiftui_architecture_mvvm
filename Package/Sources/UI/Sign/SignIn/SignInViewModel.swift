@@ -6,16 +6,21 @@
 //
 
 import Combine
+import DI
 import Domain
 import Foundation
 
 @MainActor
 final class SignInViewModel: ObservableObject {
     @Published var uiState: SignInViewUIState = .init()
-    private let useCase: AuthUseCaseProtcol
 
-    init(_ useCase: AuthUseCaseProtcol = AuthUseCase()) {
-        self.useCase = useCase
+    @Inject(.authRepository)
+    private var repository: AuthRepositoryProtocol
+    private var _useCase: AuthUseCaseProtcol?
+    private var useCase: AuthUseCaseProtcol { _useCase! } // swiftlint:disable:this force_unwrapping
+
+    init() {
+        _useCase = AuthUseCase(repository: self.repository)
     }
 
     func initializeFocusState() async {

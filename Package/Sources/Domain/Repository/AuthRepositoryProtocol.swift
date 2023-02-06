@@ -8,5 +8,5 @@
 import Combine
 
 public protocol AuthRepositoryProtocol {
-    func login(email: String, password: String) -> AnyPublisher<Void, Error>
+    func login(email: String, password: String) async
 }

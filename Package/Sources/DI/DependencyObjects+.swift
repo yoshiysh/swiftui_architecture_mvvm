@@ -9,6 +9,10 @@ import Data_Repository
 import Domain
 
 public extension DependencyObjects {
+    static let authRepository = DependencyObject<AuthRepositoryProtocol> {
+        AuthDefaultRepository()
+    }
+
     static let githubRepository = DependencyObject<GithubRepositoryProtcol> {
         GithubDefaultRepository()
     }
