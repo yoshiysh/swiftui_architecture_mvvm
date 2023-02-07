@@ -100,15 +100,15 @@ private extension RootScreen {
 
 private extension RootScreen {
     func splash() -> some View {
-        SplashScreen()
+        splashScreen()
     }
 
     func signUpHome() -> some View {
-        SignUpHomeScreen(navigate: navigate, content: content)
+        signUpHomeScreen(navigate: navigate, content: content)
     }
 
     func tabHome() -> some View {
-        TabHomeScreen(selection: _selectedTab) { tab in
+        tabHomeScreen(selection: _selectedTab) { tab in
             onTappedTabTrigger[tab]?.invoke()
         } content: { tab in
             switch tab {
@@ -127,26 +127,26 @@ private extension RootScreen {
     }
 
     func home() -> some View {
-        HomeScreen(
+        homeScreen(
             onTappedTabTrigger: onTappedTabTrigger[selectedTab] ?? .init(),
             navigate: navigate
         )
     }
 
     func setting() -> some View {
-        SettingScreen(navigate: navigate)
+        settingScreen(navigate: navigate)
     }
 
     func search() -> some View {
-        SearchScreen(navigate: navigate)
+        searchScreen(navigate: navigate)
     }
 
     func web(url: String) -> some View {
-        WebScreen(url)
+        webScreen(url)
     }
 
     func sideMenu() -> some View {
-        SideMenuScreen { path in
+        sideMenuScreen { path in
             viewModel.uiState.isPresentedSidebar = false
             switch path {
             case .search:

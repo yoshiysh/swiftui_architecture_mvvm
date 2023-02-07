@@ -8,12 +8,24 @@
 import SwiftUI
 import UI_Core
 
-public struct TabHomeScreen<Content: View>: View {
+public func tabHomeScreen<Content: View>(
+    selection: State<TabType>,
+    onTappedTab: @escaping (TabType) -> Void,
+    @ViewBuilder content: @escaping (TabType) -> Content
+) -> some View {
+    TabHomeScreen(
+        selection: selection,
+        onTappedTab: onTappedTab,
+        content: content
+    )
+}
+
+struct TabHomeScreen<Content: View>: View {
     @State private var selection: TabType = .home
     private let onTappedTab: (TabType) -> Void
     private let content: (TabType) -> Content
 
-    public var body: some View {
+    var body: some View {
         TabView(selection: $selection.willSet { onTappedTab($0) }) {
             ForEach(0..<TabType.allCases.count, id: \.self) { index in
                 let type = TabType.allCases[index]
@@ -27,7 +39,7 @@ public struct TabHomeScreen<Content: View>: View {
         }
     }
 
-    public init(
+    init(
         selection: State<TabType>,
         onTappedTab: @escaping (TabType) -> Void,
         @ViewBuilder content: @escaping (TabType) -> Content

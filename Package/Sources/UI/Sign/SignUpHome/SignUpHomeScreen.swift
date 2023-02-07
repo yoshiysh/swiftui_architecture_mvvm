@@ -8,12 +8,19 @@
 import SwiftUI
 import UI_Core
 
-public struct SignUpHomeScreen<Content: View>: View {
+public func signUpHomeScreen<Content: View>(
+    navigate: @escaping (Navigation.Path) -> Void,
+    @ViewBuilder content: @escaping (Navigation.Path) -> Content
+) -> some View {
+    SignUpHomeScreen(navigate: navigate, content: content)
+}
+
+struct SignUpHomeScreen<Content: View>: View {
     @StateObject private var viewModel: SignUpHomeViewModel = .init()
     private let navigate: (Navigation.Path) -> Void
     private let content: (Navigation.Path) -> Content
 
-    public var body: some View {
+    var body: some View {
         signUpHomeView {
             viewModel.uiState.update(state: .signIn)
         } onClickSignUp: {
@@ -35,7 +42,7 @@ public struct SignUpHomeScreen<Content: View>: View {
         }
     }
 
-    public init(
+    init(
         navigate: @escaping (Navigation.Path) -> Void,
         @ViewBuilder content: @escaping (Navigation.Path) -> Content
     ) {

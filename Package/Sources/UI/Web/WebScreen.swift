@@ -7,19 +7,22 @@
 
 import SwiftUI
 
-public struct WebScreen: View { // swiftlint:disable:this file_types_order
+public func webScreen(_ url: String) -> some View {
+    WebScreen(url)
+}
 
+struct WebScreen: View { // swiftlint:disable:this file_types_order
     @ObservedObject private var viewModel: WebViewModel
     @ObservedObject private var uiState: WebViewUIStateModel = .init()
 
-    public var body: some View {
+    var body: some View {
         NavigationView {
             WebContentView(viewModel: viewModel, uiState: uiState)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 
-    public init(_ url: String) {
+    init(_ url: String) {
         viewModel = .init(url: url)
         viewModel.setUIState(uiState)
     }

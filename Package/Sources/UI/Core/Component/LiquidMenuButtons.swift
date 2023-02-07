@@ -106,7 +106,7 @@ private extension LiquidMenuButtons {
                 .allowsHitTesting(false)
 
             menuButton(icon: .menu)
-                .blendMode(.softLight)
+                .blendMode(.hardLight)
                 .rotationEffect(Angle(degrees: isCollapsed ? 90 : 45))
 
             symbolButtons()
@@ -152,7 +152,7 @@ private extension LiquidMenuButtons {
             let icon = Icon.allCases[index]
             symbolButton(icon: icon)
                 .offset(offsets[icon] ?? .zero)
-                .blendMode(.softLight)
+                .blendMode(.hardLight)
                 .opacity(isCollapsed ? 1 : 0)
         }
     }
@@ -160,6 +160,7 @@ private extension LiquidMenuButtons {
     func symbolButton(icon: Icon) -> some View {
         Image(systemName: icon.imageName)
             .resizable()
+            .foregroundColor(.white)
             .frame(width: icon.iconSize, height: icon.iconSize)
             .contentShape(Rectangle())
             .onTapGesture {
@@ -183,6 +184,7 @@ private extension LiquidMenuButtons {
     func menuButton(icon: Icon) -> some View {
         Image(systemName: icon.imageName)
             .resizable()
+            .foregroundColor(.white)
             .padding(4)
             .frame(width: icon.iconSize, height: icon.iconSize)
             .contentShape(Rectangle())

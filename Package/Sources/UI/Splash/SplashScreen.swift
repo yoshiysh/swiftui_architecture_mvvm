@@ -7,14 +7,16 @@
 
 import SwiftUI
 
-public struct SplashScreen: View {
-    public var body: some View {
+public func splashScreen() -> some View {
+    SplashScreen()
+}
+
+struct SplashScreen: View {
+    var body: some View {
         Text("Hello, SplashScreen")
             .foregroundColor(.primary)
             .statusBarHidden()
     }
-
-    public init() {}
 }
 
 struct SplashScreen_Previews: PreviewProvider {

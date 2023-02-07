@@ -9,17 +9,24 @@ import Domain
 import SwiftUI
 import UI_Core
 
+public func homeScreen(
+    onTappedTabTrigger: Trigger,
+    navigate: @escaping (Navigation.Path) -> Void
+) -> some View {
+    HomeScreen( onTappedTabTrigger: onTappedTabTrigger, navigate: navigate)
+}
+
 enum ToolbarActionType {
     case setting, debug
 }
 
-public struct HomeScreen: View {
+struct HomeScreen: View {
     @StateObject private var viewModel: HomeViewModel = .init()
 
     private let onTappedTabTrigger: Trigger
     private let navigate: (Navigation.Path) -> Void
 
-    public var body: some View {
+    var body: some View {
         homeView(
             items: viewModel.uiState.items,
             isInitial: viewModel.uiState.isInitial,
@@ -69,7 +76,7 @@ public struct HomeScreen: View {
         }
     }
 
-    public init(
+    init(
         onTappedTabTrigger: Trigger,
         navigate: @escaping (Navigation.Path) -> Void
     ) {

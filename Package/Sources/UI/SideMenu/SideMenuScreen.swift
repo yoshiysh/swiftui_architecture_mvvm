@@ -8,10 +8,14 @@
 import SwiftUI
 import UI_Core
 
-public struct SideMenuScreen: View {
+public func sideMenuScreen(navigate: @escaping (Navigation.Path) -> Void) -> some View {
+    SideMenuScreen(navigate: navigate)
+}
+
+struct SideMenuScreen: View {
     private let navigate: (Navigation.Path) -> Void
 
-    public var body: some View {
+    var body: some View {
         ScrollView {
             VStack(spacing: 24) {
                 Divider()
@@ -31,7 +35,7 @@ public struct SideMenuScreen: View {
         }
     }
 
-    public init(navigate: @escaping (Navigation.Path) -> Void) {
+    init(navigate: @escaping (Navigation.Path) -> Void) {
         self.navigate = navigate
     }
 }
