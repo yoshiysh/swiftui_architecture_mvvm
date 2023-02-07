@@ -10,10 +10,11 @@ import UI_Core
 
 public struct TabHomeScreen<Content: View>: View {
     @State private var selection: TabType = .home
+    private let onTappedTab: (TabType) -> Void
     private let content: (TabType) -> Content
 
     public var body: some View {
-        TabView(selection: $selection) {
+        TabView(selection: $selection.willSet { onTappedTab($0) }) {
             ForEach(0..<TabType.allCases.count, id: \.self) { index in
                 let type = TabType.allCases[index]
                 content(type)
@@ -28,9 +29,11 @@ public struct TabHomeScreen<Content: View>: View {
 
     public init(
         selection: State<TabType>,
+        onTappedTab: @escaping (TabType) -> Void,
         @ViewBuilder content: @escaping (TabType) -> Content
     ) {
         _selection = selection
+        self.onTappedTab = onTappedTab
         self.content = content
     }
 }
@@ -40,7 +43,7 @@ struct TabHomeScreen_Previews: PreviewProvider {
         @State var selection: TabType = .home
 
         var body: some View {
-            TabHomeScreen(selection: _selection) { _ in }
+            TabHomeScreen(selection: _selection) { _ in } content: { _ in }
         }
     }
 

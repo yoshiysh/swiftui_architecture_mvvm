@@ -15,13 +15,16 @@ enum ToolbarActionType {
 
 public struct HomeScreen: View {
     @StateObject private var viewModel: HomeViewModel = .init()
+
+    private let onTappedTabTrigger: Trigger
     private let navigate: (Navigation.Path) -> Void
 
     public var body: some View {
         homeView(
             items: viewModel.uiState.items,
             isInitial: viewModel.uiState.isInitial,
-            hasNextPage: viewModel.uiState.hasNextPage
+            hasNextPage: viewModel.uiState.hasNextPage,
+            onTappedTabTrigger: onTappedTabTrigger
         ) {
             Task { await viewModel.next() }
         } onTapItem: {
@@ -57,7 +60,11 @@ public struct HomeScreen: View {
         }
     }
 
-    public init(navigate: @escaping (Navigation.Path) -> Void) {
+    public init(
+        onTappedTabTrigger: Trigger,
+        navigate: @escaping (Navigation.Path) -> Void
+    ) {
+        self.onTappedTabTrigger = onTappedTabTrigger
         self.navigate = navigate
     }
 }
@@ -83,10 +90,11 @@ private extension View {
         }
     }
 
-    func homeView(
+    func homeView( // swiftlint:disable:this function_parameter_count
         items: [RepositoryEntity],
         isInitial: Bool,
         hasNextPage: Bool,
+        onTappedTabTrigger: Trigger,
         onAppearLoadingItem: @escaping () -> Void,
         onTapItem: @escaping () -> Void
     ) -> some View {
@@ -99,6 +107,7 @@ private extension View {
                 homeContentsView(
                     items: items,
                     hasNextPage: hasNextPage,
+                    onTappedTabTrigger: onTappedTabTrigger,
                     onAppearLoadingItem: onAppearLoadingItem,
                     onTapItem: onTapItem
                 )
@@ -109,26 +118,32 @@ private extension View {
     func homeContentsView(
         items: [RepositoryEntity],
         hasNextPage: Bool,
+        onTappedTabTrigger: Trigger,
         onAppearLoadingItem: @escaping () -> Void,
         onTapItem: @escaping () -> Void
     ) -> some View {
-        ScrollView(.vertical) {
-            LazyVStack {
-                ForEach(items, id: \.id) { item in
-                    RepositoryCardView(
-                        item: item,
-                        onTapGesture: onTapItem
-                    )
-                    .frame(maxWidth: .infinity)
-                }
+        ScrollViewReader { proxy in
+            ScrollView {
+                EmptyView().id(0)
 
-                if hasNextPage {
-                    LoadingView()
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .task { onAppearLoadingItem() }
+                LazyVStack {
+                    ForEach(items, id: \.id) { item in
+                        RepositoryCardView(
+                            item: item,
+                            onTapGesture: onTapItem
+                        )
+                        .frame(maxWidth: .infinity)
+                    }
+
+                    if hasNextPage {
+                        LoadingView()
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .task { onAppearLoadingItem() }
+                    }
                 }
+                .padding()
             }
-            .padding()
+            .scrollToTop(id: 0, trigger: onTappedTabTrigger, proxy: proxy)
         }
     }
 }
@@ -136,7 +151,13 @@ private extension View {
 struct HomeScreen_Previews: PreviewProvider {
     private struct HomeContentsPreview: View {
         var body: some View {
-            homeContentsView(items: [RepositoryEntity.preview], hasNextPage: false) {} onTapItem: {}
+            homeContentsView(
+                items: [RepositoryEntity.preview],
+                hasNextPage: false,
+                onTappedTabTrigger: .init()
+            ) {
+            } onTapItem: {
+            }
         }
     }
 

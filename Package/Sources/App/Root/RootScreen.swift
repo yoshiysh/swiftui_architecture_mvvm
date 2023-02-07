@@ -19,7 +19,11 @@ import UI_Web
 public struct RootScreen: View {
     @StateObject private var viewModel: RootViewModel = .init()
     @StateObject private var navigator: Navigator = .init()
-    @State private var selectTab: TabType = .home
+
+    @State private var selectedTab: TabType = .home
+    @State private var onTappedTabTrigger: [TabType: Trigger] = .init(
+        uniqueKeysWithValues: TabType.allCases.map { ($0, .init()) }
+    )
 
     public var body: some View {
         rootView()
@@ -62,7 +66,7 @@ private extension RootScreen {
         TabType.allCases.forEach { type in
             navigator.nav[type]?.removeAll()
         }
-        selectTab = .home
+        selectedTab = .home
     }
 
     func navigate(path: Navigation.Path) {
@@ -74,7 +78,7 @@ private extension RootScreen {
         case .tabHome:
             navigateToHome()
         default:
-            navigator.nav[selectTab]?.navigate(to: path)
+            navigator.nav[selectedTab]?.navigate(to: path)
         }
     }
 
@@ -104,7 +108,9 @@ private extension RootScreen {
     }
 
     func tabHome() -> some View {
-        TabHomeScreen(selection: _selectTab) { tab in
+        TabHomeScreen(selection: _selectedTab) { tab in
+            onTappedTabTrigger[tab]?.invoke()
+        } content: { tab in
             switch tab {
             case .home:
                 navigationHome()
@@ -121,7 +127,10 @@ private extension RootScreen {
     }
 
     func home() -> some View {
-        HomeScreen(navigate: navigate)
+        HomeScreen(
+            onTappedTabTrigger: onTappedTabTrigger[selectedTab] ?? .init(),
+            navigate: navigate
+        )
     }
 
     func setting() -> some View {
@@ -141,7 +150,7 @@ private extension RootScreen {
             viewModel.uiState.isPresentedSidebar = false
             switch path {
             case .search:
-                selectTab = .search
+                selectedTab = .search
             default:
                 navigate(path: path)
             }

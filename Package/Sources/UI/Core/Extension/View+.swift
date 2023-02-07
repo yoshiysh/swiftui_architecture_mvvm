@@ -16,3 +16,15 @@ public extension View {
         }
     }
 }
+
+// MARK: ScrollViewProxy
+
+public extension View {
+    func scrollToTop<T: Hashable>(id: T, trigger: Trigger, proxy: ScrollViewProxy) -> some View {
+        onChange(of: trigger) { _ in
+            withAnimation {
+                proxy.scrollTo(id, anchor: .top)
+            }
+        }
+    }
+}
