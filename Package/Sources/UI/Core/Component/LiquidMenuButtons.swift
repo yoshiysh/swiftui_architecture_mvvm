@@ -164,14 +164,18 @@ private extension LiquidMenuButtons {
             .contentShape(Rectangle())
             .onTapGesture {
                 action(icon)
-                withAnimation {
-                    isCollapsed.toggle()
-                }
-                withAnimation(
-                    .interactiveSpring(response: 0.35, dampingFraction: 0.8, blendDuration: 0.1)
-                        .speed(0.5)
-                ) {
-                    updateOffsets()
+
+                Task {
+                    try? await Task.sleep(nanoseconds: 50 * USEC_PER_SEC)
+                    withAnimation {
+                        isCollapsed.toggle()
+                    }
+                    withAnimation(
+                        .interactiveSpring(response: 0.35, dampingFraction: 0.8, blendDuration: 0.1)
+                            .speed(0.5)
+                    ) {
+                        updateOffsets()
+                    }
                 }
             }
     }
