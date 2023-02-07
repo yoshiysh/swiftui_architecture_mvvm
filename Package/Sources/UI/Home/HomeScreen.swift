@@ -113,7 +113,7 @@ private extension View {
         onTappedTabTrigger: Trigger,
         onAppearLoadingItem: @escaping () -> Void,
         onTapItem: @escaping () -> Void,
-        onTapMenuButton: @escaping (LiquidMenuButtons.Icon) -> Void
+        onTapMenuButton: @escaping (MenuIcon) -> Void
     ) -> some View {
         ZStack {
             Group {

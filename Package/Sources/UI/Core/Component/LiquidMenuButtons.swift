@@ -8,45 +8,12 @@
 import SwiftUI
 
 public struct LiquidMenuButtons: View {
-    public enum Icon: CaseIterable {
-        case menu, house, searcch, setting
-
-        var imageName: String {
-            switch self {
-            case .menu:
-                return "xmark"
-            case .house:
-                return "house"
-            case .searcch:
-                return "magnifyingglass"
-            case .setting:
-                return "gear"
-            }
-        }
-
-        var diameter: CGFloat {
-            switch self {
-            case .menu:
-                return 72
-            default:
-                return 64
-            }
-        }
-
-        var iconSize: CGFloat {
-            switch self {
-            case .menu:
-                return 28
-            default:
-                return 24
-            }
-        }
-    }
-
-    @State private var offsets: [Icon: CGSize] = [:]
+    @State private var offsets: [MenuIcon: CGSize] = [:]
     @State private var isCollapsed = false
+
+    private let forgroundColor: Color
     private let backgroundColor: Color
-    private let action: (Icon) -> Void
+    private let action: (MenuIcon) -> Void
 
     public var body: some View {
         GeometryReader { proxy in
@@ -76,13 +43,15 @@ public struct LiquidMenuButtons: View {
     }
 
     public init(
+        forgroundColor: Color = .white,
         backgroundColor: Color = .blue,
-        action: @escaping (Icon) -> Void
+        action: @escaping (MenuIcon) -> Void
     ) {
+        self.forgroundColor = forgroundColor
         self.backgroundColor = backgroundColor
         self.action = action
 
-        Icon.allCases.forEach { symbol in
+        MenuIcon.allCases.forEach { symbol in
             offsets[symbol] = .zero
         }
     }
@@ -91,8 +60,8 @@ public struct LiquidMenuButtons: View {
 private extension LiquidMenuButtons {
     var maxDiameter: CGFloat {
         var size: CGFloat = 0
-        if let icon = Icon.allCases.first {
-            size = Icon.allCases.reduce(icon.diameter) { max($0, $1.diameter) }
+        if let icon = MenuIcon.allCases.first {
+            size = MenuIcon.allCases.reduce(icon.diameter) { max($0, $1.diameter) }
         }
         return size
     }
@@ -105,7 +74,7 @@ private extension LiquidMenuButtons {
             gradientSymbols()
                 .allowsHitTesting(false)
 
-            menuButton(icon: .menu)
+            symbolButton(icon: .menu)
                 .blendMode(.hardLight)
                 .rotationEffect(Angle(degrees: isCollapsed ? 90 : 45))
 
@@ -125,15 +94,15 @@ private extension LiquidMenuButtons {
                     context.addFilter(.blur(radius: 8))
 
                     context.drawLayer { ctx in
-                        for index in 0..<Icon.allCases.count {
+                        for index in 0..<MenuIcon.allCases.count {
                             if let resolvedView = context.resolveSymbol(id: index) {
                                 ctx.draw(resolvedView, at: CGPoint(x: size.width / 2, y: size.height / 2))
                             }
                         }
                     }
                 } symbols: {
-                    ForEach(0..<Icon.allCases.count, id: \.self) { index in
-                        let icon = Icon.allCases[index]
+                    ForEach(0..<MenuIcon.allCases.count, id: \.self) { index in
+                        let icon = MenuIcon.allCases[index]
                         symbol(icon: icon, offset: offsets[icon] ?? .zero)
                             .tag(index)
                     }
@@ -141,15 +110,15 @@ private extension LiquidMenuButtons {
             }
     }
 
-    func symbol(icon: Icon, offset: CGSize = .zero) -> some View {
+    func symbol(icon: MenuIcon, offset: CGSize = .zero) -> some View {
         Circle()
             .frame(width: icon.diameter, height: icon.diameter)
             .offset(offset)
     }
 
     func symbolButtons() -> some View {
-        ForEach(1..<Icon.allCases.count, id: \.self) { index in
-            let icon = Icon.allCases[index]
+        ForEach(1..<MenuIcon.allCases.count, id: \.self) { index in
+            let icon = MenuIcon.allCases[index]
             symbolButton(icon: icon)
                 .offset(offsets[icon] ?? .zero)
                 .blendMode(.hardLight)
@@ -157,38 +126,14 @@ private extension LiquidMenuButtons {
         }
     }
 
-    func symbolButton(icon: Icon) -> some View {
+    func symbolButton(icon: MenuIcon) -> some View {
         Image(systemName: icon.imageName)
             .resizable()
-            .foregroundColor(.white)
+            .foregroundColor(forgroundColor)
             .frame(width: icon.iconSize, height: icon.iconSize)
             .contentShape(Rectangle())
             .onTapGesture {
                 action(icon)
-
-                Task {
-                    try? await Task.sleep(nanoseconds: 50 * USEC_PER_SEC)
-                    withAnimation {
-                        isCollapsed.toggle()
-                    }
-                    withAnimation(
-                        .interactiveSpring(response: 0.35, dampingFraction: 0.8, blendDuration: 0.1)
-                            .speed(0.5)
-                    ) {
-                        updateOffsets()
-                    }
-                }
-            }
-    }
-
-    func menuButton(icon: Icon) -> some View {
-        Image(systemName: icon.imageName)
-            .resizable()
-            .foregroundColor(.white)
-            .padding(4)
-            .frame(width: icon.iconSize, height: icon.iconSize)
-            .contentShape(Rectangle())
-            .onTapGesture {
                 withAnimation {
                     isCollapsed.toggle()
                 }
@@ -202,21 +147,21 @@ private extension LiquidMenuButtons {
     }
 
     func updateOffsets() {
-        for index in 1..<Icon.allCases.count {
-            let icon = Icon.allCases[index]
+        for index in 1..<MenuIcon.allCases.count {
+            let icon = MenuIcon.allCases[index]
             offsets[icon] = isCollapsed ? CGSize(width: 0, height: calcOffset(icon: icon)) : .zero
         }
     }
 
-    func calcOffset(icon: Icon) -> Int {
-        guard let current: Int = Icon.allCases.firstIndex(of: icon), current != 0 else {
+    func calcOffset(icon: MenuIcon) -> Int {
+        guard let current: Int = MenuIcon.allCases.firstIndex(of: icon), current != 0 else {
             return 0
         }
 
         let defaultPosition = Int(maxDiameter) + 8
         var height: Int = 0
         for index in 1..<current {
-            let ic = Icon.allCases[index]
+            let ic = MenuIcon.allCases[index]
             if index == current {
                 height += Int(ic.diameter) / 2
             } else {
