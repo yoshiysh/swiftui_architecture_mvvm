@@ -14,14 +14,10 @@ import Foundation
 final class SignInViewModel: ObservableObject {
     @Published var uiState: SignInViewUIState = .init()
 
-    @Inject(.authRepository)
-    private var repository: AuthRepositoryProtocol
-    private var _useCase: AuthUseCaseProtcol?
-    private var useCase: AuthUseCaseProtcol { _useCase! } // swiftlint:disable:this force_unwrapping
+    @Inject(.authUseCase)
+    private var useCase: AuthUseCase
 
-    init() {
-        _useCase = AuthUseCase(repository: self.repository)
-    }
+    init() {}
 
     func initializeFocusState() async {
         try? await Task.sleep(nanoseconds: 2 * USEC_PER_SEC)

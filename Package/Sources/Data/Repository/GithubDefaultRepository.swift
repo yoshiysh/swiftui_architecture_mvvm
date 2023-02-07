@@ -13,7 +13,7 @@ public final class GithubDefaultRepository {
     public init() {}
 }
 
-extension GithubDefaultRepository: GithubRepositoryProtcol {
+extension GithubDefaultRepository: GithubRepository {
 
     // MARK: api w/ async
 

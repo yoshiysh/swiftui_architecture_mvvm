@@ -14,7 +14,7 @@ import UI_Core
 @MainActor
 final class TabHomeViewModel: ObservableObject {
     @Inject(.githubRepository)
-    private var repository: GithubRepositoryProtcol
+    private var repository: GithubRepository
 
     private var cancellables = Set<AnyCancellable>()
     private var query = QueryDto(keyword: "ios", language: "swift")

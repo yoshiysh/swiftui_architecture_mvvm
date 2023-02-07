@@ -13,7 +13,7 @@ import UI_Core
 @MainActor
 final class HomeViewModel: ObservableObject {
     @Inject(.githubRepository)
-    private var repository: GithubRepositoryProtcol
+    private var repository: GithubRepository
 
     @Published var uiState: HomeUIState
     private let defaultQuery = QueryDto(language: "swift")

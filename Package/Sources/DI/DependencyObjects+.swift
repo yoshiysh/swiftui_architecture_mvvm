@@ -8,12 +8,22 @@
 import Data_Repository
 import Domain
 
+// MARK: Repository
+
 public extension DependencyObjects {
-    static let authRepository = DependencyObject<AuthRepositoryProtocol> {
+    static let authRepository = DependencyObject<AuthRepository> {
         AuthDefaultRepository()
     }
 
-    static let githubRepository = DependencyObject<GithubRepositoryProtcol> {
+    static let githubRepository = DependencyObject<GithubRepository> {
         GithubDefaultRepository()
+    }
+}
+
+// MARK: UseCase
+
+public extension DependencyObjects {
+    static let authUseCase = DependencyObject<AuthUseCase> {
+        AuthDefaultUseCase(repository: authRepository.object)
     }
 }

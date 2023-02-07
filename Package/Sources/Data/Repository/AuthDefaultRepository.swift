@@ -13,7 +13,7 @@ public final class AuthDefaultRepository {
     public init() {}
 }
 
-extension AuthDefaultRepository: AuthRepositoryProtocol {
+extension AuthDefaultRepository: AuthRepository {
     public func login(email: String, password: String) async {
         try? await Task.sleep(nanoseconds: 1_000 * USEC_PER_SEC)
     }
