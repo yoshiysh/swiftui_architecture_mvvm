@@ -29,6 +29,15 @@ public struct HomeScreen: View {
             Task { await viewModel.next() }
         } onTapItem: {
             debugPrint("item tapped")
+        } onTapMenuButton: { icon in
+            switch icon {
+            case .searcch:
+                navigate(.search)
+            case .setting:
+                navigate(.setting)
+            default:
+                break
+            }
         }
         .homeToolbar { type in
             switch type {
@@ -96,21 +105,28 @@ private extension View {
         hasNextPage: Bool,
         onTappedTabTrigger: Trigger,
         onAppearLoadingItem: @escaping () -> Void,
-        onTapItem: @escaping () -> Void
+        onTapItem: @escaping () -> Void,
+        onTapMenuButton: @escaping (LiquidMenuButtons.Icon) -> Void
     ) -> some View {
-        Group {
-            if isInitial {
-                VStack {}
-            } else if items.isEmpty {
-                ContentsEmptyView()
-            } else {
-                homeContentsView(
-                    items: items,
-                    hasNextPage: hasNextPage,
-                    onTappedTabTrigger: onTappedTabTrigger,
-                    onAppearLoadingItem: onAppearLoadingItem,
-                    onTapItem: onTapItem
-                )
+        ZStack {
+            Group {
+                if isInitial {
+                    VStack {}
+                } else if items.isEmpty {
+                    ContentsEmptyView()
+                } else {
+                    homeContentsView(
+                        items: items,
+                        hasNextPage: hasNextPage,
+                        onTappedTabTrigger: onTappedTabTrigger,
+                        onAppearLoadingItem: onAppearLoadingItem,
+                        onTapItem: onTapItem
+                    )
+                }
+            }
+
+            LiquidMenuButtons { type in
+                onTapMenuButton(type)
             }
         }
     }

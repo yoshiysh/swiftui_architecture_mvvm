@@ -106,7 +106,7 @@ public extension View {
     func sidebar<Content: View>(
         isPresented: Binding<Bool>,
         foregroundColor: Color = .white,
-        backgroundColor: Color = .cyan,
+        backgroundColor: Color = .blue,
         isTargetSlide: Bool = false,
         @ViewBuilder content: @escaping () -> Content
     ) -> some View {
