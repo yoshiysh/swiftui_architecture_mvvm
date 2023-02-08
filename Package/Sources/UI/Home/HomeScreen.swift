@@ -55,6 +55,7 @@ struct HomeScreen: View {
             }
         }
         .navigationTitle("Repository")
+        .navigationBarTitleDisplayMode(.inline)
         .snackbar(
             isPresented: $viewModel.uiState.isShowingAlert,
             message: viewModel.uiState.alertMessage

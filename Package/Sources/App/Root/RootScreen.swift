@@ -24,6 +24,7 @@ public struct RootScreen: View {
     @State private var onTappedTabTrigger: [TabType: Trigger] = .init(
         uniqueKeysWithValues: TabType.allCases.map { ($0, .init()) }
     )
+    @State private var selectedPagerTab: TabLayoutType = .swift
 
     public var body: some View {
         rootView()
@@ -126,6 +127,14 @@ private extension RootScreen {
         }
     }
 
+    func tabLayoutHome() -> some View {
+        TabLayout(selection: _selectedPagerTab) { tab in
+            selectedPagerTab = tab
+        } content: { _ in
+            home()
+        }
+    }
+
     func home() -> some View {
         homeScreen(
             onTappedTabTrigger: onTappedTabTrigger[selectedTab] ?? .init(),
@@ -168,7 +177,7 @@ private extension RootScreen {
                 set: { navigator.nav[.home]?.update(path: $0) }
             )
         ) {
-            home()
+            tabLayoutHome()
                 .appNavigationDestination(content: content)
         }
     }
