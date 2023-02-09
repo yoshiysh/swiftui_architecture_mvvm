@@ -10,10 +10,11 @@ import SwiftUI
 import UI_Core
 
 public func homeScreen(
+    language: String,
     onTappedTabTrigger: Trigger,
     navigate: @escaping (Navigation.Path) -> Void
 ) -> some View {
-    HomeScreen( onTappedTabTrigger: onTappedTabTrigger, navigate: navigate)
+    HomeScreen(language: language, onTappedTabTrigger: onTappedTabTrigger, navigate: navigate)
 }
 
 enum ToolbarActionType {
@@ -21,7 +22,7 @@ enum ToolbarActionType {
 }
 
 struct HomeScreen: View {
-    @StateObject private var viewModel: HomeViewModel = .init()
+    @StateObject private var viewModel: HomeViewModel
 
     private let onTappedTabTrigger: Trigger
     private let navigate: (Navigation.Path) -> Void
@@ -78,9 +79,11 @@ struct HomeScreen: View {
     }
 
     init(
+        language: String,
         onTappedTabTrigger: Trigger,
         navigate: @escaping (Navigation.Path) -> Void
     ) {
+        _viewModel = StateObject(wrappedValue: .init(language: language))
         self.onTappedTabTrigger = onTappedTabTrigger
         self.navigate = navigate
     }

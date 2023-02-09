@@ -16,9 +16,10 @@ final class HomeViewModel: ObservableObject {
     private var repository: GithubRepository
 
     @Published var uiState: HomeUIState
-    private let defaultQuery = QueryDto(language: "swift")
+    private let defaultQuery: QueryDto
 
-    init() {
+    init(language: String) {
+        defaultQuery = QueryDto(language: language)
         uiState = .init(query: defaultQuery)
     }
 

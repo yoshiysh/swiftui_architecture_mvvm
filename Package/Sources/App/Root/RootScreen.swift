@@ -130,13 +130,14 @@ private extension RootScreen {
     func tabLayoutHome() -> some View {
         TabLayout(selection: _selectedPagerTab) { tab in
             selectedPagerTab = tab
-        } content: { _ in
-            home()
+        } content: { type in
+            home(language: type.text)
         }
     }
 
-    func home() -> some View {
+    func home(language: String) -> some View {
         homeScreen(
+            language: language,
             onTappedTabTrigger: onTappedTabTrigger[selectedTab] ?? .init(),
             navigate: navigate
         )
