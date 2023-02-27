@@ -8,7 +8,7 @@
 import SwiftUI
 import UI_Core
 
-public func settingScreen(navigate: @escaping (Navigation.Path) -> Void) -> some View {
+public func settingScreen(navigate: @escaping (AppNavigation.Path) -> Void) -> some View {
     SettingScreen(navigate: navigate)
 }
 
@@ -17,7 +17,7 @@ struct SettingScreen: View {
         case search, signOut
     }
 
-    private let navigate: (Navigation.Path) -> Void
+    private let navigate: (AppNavigation.Path) -> Void
 
     var body: some View {
         settingView { type in
@@ -31,7 +31,7 @@ struct SettingScreen: View {
         .navigationTitle("Setting")
     }
 
-    init(navigate: @escaping (Navigation.Path) -> Void) {
+    init(navigate: @escaping (AppNavigation.Path) -> Void) {
         self.navigate = navigate
     }
 }
@@ -78,6 +78,8 @@ private extension View {
 
 struct SettingScreen_Previews: PreviewProvider {
     static var previews: some View {
-        SettingScreen { _ in }
+        NavigationStack {
+            settingScreen { _ in }
+        }
     }
 }

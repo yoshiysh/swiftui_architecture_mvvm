@@ -9,16 +9,16 @@ import SwiftUI
 import UI_Core
 
 public func signUpHomeScreen<Content: View>(
-    navigate: @escaping (Navigation.Path) -> Void,
-    @ViewBuilder content: @escaping (Navigation.Path) -> Content
+    navigate: @escaping (AppNavigation.Path) -> Void,
+    @ViewBuilder content: @escaping (AppNavigation.Path) -> Content
 ) -> some View {
     SignUpHomeScreen(navigate: navigate, content: content)
 }
 
 struct SignUpHomeScreen<Content: View>: View {
     @StateObject private var viewModel: SignUpHomeViewModel = .init()
-    private let navigate: (Navigation.Path) -> Void
-    private let content: (Navigation.Path) -> Content
+    private let navigate: (AppNavigation.Path) -> Void
+    private let content: (AppNavigation.Path) -> Content
 
     var body: some View {
         signUpHomeView {
@@ -43,8 +43,8 @@ struct SignUpHomeScreen<Content: View>: View {
     }
 
     init(
-        navigate: @escaping (Navigation.Path) -> Void,
-        @ViewBuilder content: @escaping (Navigation.Path) -> Content
+        navigate: @escaping (AppNavigation.Path) -> Void,
+        @ViewBuilder content: @escaping (AppNavigation.Path) -> Content
     ) {
         self.navigate = navigate
         self.content = content

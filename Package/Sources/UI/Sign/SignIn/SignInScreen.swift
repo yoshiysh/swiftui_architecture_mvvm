@@ -16,7 +16,7 @@ struct SignInScreen: View {
     @StateObject private var viewModel: SignInViewModel = .init()
     @FocusState private var focusState: SignInViewUIState.FocusState?
 
-    private let navigate: (Navigation.Path) -> Void
+    private let navigate: (AppNavigation.Path) -> Void
 
     var body: some View {
         signInView(
@@ -48,7 +48,7 @@ struct SignInScreen: View {
         }
     }
 
-    init(navigate: @escaping (Navigation.Path) -> Void) {
+    init(navigate: @escaping (AppNavigation.Path) -> Void) {
         self.navigate = navigate
     }
 }

@@ -9,13 +9,13 @@ import SwiftUI
 import UI_Core
 
 struct SignUpScreen<Content: View>: View {
-    private let content: (Navigation.Path) -> Content
+    private let content: (AppNavigation.Path) -> Content
 
     var body: some View {
         content(.web(url: "https://github.com/signup"))
     }
 
-    init(@ViewBuilder content: @escaping (Navigation.Path) -> Content) {
+    init(@ViewBuilder content: @escaping (AppNavigation.Path) -> Content) {
         self.content = content
     }
 }

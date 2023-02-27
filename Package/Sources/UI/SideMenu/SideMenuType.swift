@@ -28,7 +28,7 @@ public enum SideMenuType: CaseIterable {
         }
     }
 
-    public var path: Navigation.Path {
+    public var path: AppNavigation.Path {
         switch self {
         case .search:
             return .search

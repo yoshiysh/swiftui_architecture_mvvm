@@ -70,7 +70,7 @@ private extension RootScreen {
         selectedTab = .home
     }
 
-    func navigate(path: Navigation.Path) {
+    func navigate(path: AppNavigation.Path) {
         switch path {
         case .sidebar:
             navigateToSidebar()
@@ -83,7 +83,7 @@ private extension RootScreen {
         }
     }
 
-    @ViewBuilder func content(path: Navigation.Path) -> some View {
+    @ViewBuilder func content(path: AppNavigation.Path) -> some View {
         switch path {
         case .search:
             search()

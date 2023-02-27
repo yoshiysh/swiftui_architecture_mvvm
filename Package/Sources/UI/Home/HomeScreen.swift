@@ -12,7 +12,7 @@ import UI_Core
 public func homeScreen(
     language: String,
     onTappedTabTrigger: Trigger,
-    navigate: @escaping (Navigation.Path) -> Void
+    navigate: @escaping (AppNavigation.Path) -> Void
 ) -> some View {
     HomeScreen(language: language, onTappedTabTrigger: onTappedTabTrigger, navigate: navigate)
 }
@@ -25,7 +25,7 @@ struct HomeScreen: View {
     @StateObject private var viewModel: HomeViewModel
 
     private let onTappedTabTrigger: Trigger
-    private let navigate: (Navigation.Path) -> Void
+    private let navigate: (AppNavigation.Path) -> Void
 
     var body: some View {
         homeView(
@@ -81,7 +81,7 @@ struct HomeScreen: View {
     init(
         language: String,
         onTappedTabTrigger: Trigger,
-        navigate: @escaping (Navigation.Path) -> Void
+        navigate: @escaping (AppNavigation.Path) -> Void
     ) {
         _viewModel = StateObject(wrappedValue: .init(language: language))
         self.onTappedTabTrigger = onTappedTabTrigger

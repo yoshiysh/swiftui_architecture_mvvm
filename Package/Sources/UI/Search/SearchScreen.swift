@@ -8,7 +8,7 @@
 import SwiftUI
 import UI_Core
 
-public func searchScreen(navigate: @escaping (Navigation.Path) -> Void) -> some View {
+public func searchScreen(navigate: @escaping (AppNavigation.Path) -> Void) -> some View {
     SearchScreen(navigate: navigate)
 }
 
@@ -17,7 +17,7 @@ struct SearchScreen: View {
         case search, web, signOut
     }
 
-    private let navigate: (Navigation.Path) -> Void
+    private let navigate: (AppNavigation.Path) -> Void
 
     var body: some View {
         searchView { type in
@@ -33,7 +33,7 @@ struct SearchScreen: View {
         .navigationTitle("Search")
     }
 
-    init(navigate: @escaping (Navigation.Path) -> Void) {
+    init(navigate: @escaping (AppNavigation.Path) -> Void) {
         self.navigate = navigate
     }
 }
