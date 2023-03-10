@@ -16,9 +16,13 @@ import UI_Splash
 import UI_TabHome
 import UI_Web
 
-public struct RootScreen: View {
+public func rootScreen() -> some View {
+    RootScreen()
+}
+
+struct RootScreen: View {
     @StateObject private var viewModel: RootViewModel = .init()
-    @StateObject private var navigator: Navigator = .init()
+    @StateObject private var navHost: Navigator = .init()
 
     @State private var selectedTab: TabType = .home
     @State private var onTappedTabTrigger: [TabType: Trigger] = .init(
@@ -26,14 +30,12 @@ public struct RootScreen: View {
     )
     @State private var selectedPagerTab: TabLayoutType = .swift
 
-    public var body: some View {
+    var body: some View {
         rootView()
             .task {
                 await viewModel.getUser()
             }
     }
-
-    public init() {}
 }
 
 private extension RootScreen {
@@ -65,7 +67,7 @@ private extension RootScreen {
 
     func resetNavigation() {
         TabType.allCases.forEach { type in
-            navigator.nav[type]?.removeAll()
+            navHost.nav[type]?.removeAll()
         }
         selectedTab = .home
     }
@@ -79,7 +81,7 @@ private extension RootScreen {
         case .tabHome:
             navigateToHome()
         default:
-            navigator.nav[selectedTab]?.navigate(to: path)
+            navHost.nav[selectedTab]?.navigate(to: path)
         }
     }
 
@@ -174,8 +176,8 @@ private extension RootScreen {
     func navigationHome() -> some View {
         NavigationStack(
             path: .init(
-                get: { navigator.nav[.home]?.path ?? [] },
-                set: { navigator.nav[.home]?.update(path: $0) }
+                get: { navHost.nav[.home]?.path ?? [] },
+                set: { navHost.nav[.home]?.update(path: $0) }
             )
         ) {
             tabLayoutHome()
@@ -186,8 +188,8 @@ private extension RootScreen {
     func navigationSearch() -> some View {
         NavigationStack(
             path: .init(
-                get: { navigator.nav[.search]?.path ?? [] },
-                set: { navigator.nav[.search]?.update(path: $0) }
+                get: { navHost.nav[.search]?.path ?? [] },
+                set: { navHost.nav[.search]?.update(path: $0) }
             )
         ) {
             search()
