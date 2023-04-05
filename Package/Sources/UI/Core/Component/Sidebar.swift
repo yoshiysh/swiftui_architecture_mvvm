@@ -17,14 +17,11 @@ public struct Sidebar: View {
     private let isTargetSlide: Bool
     private var content: AnyView
 
-    private let sideBarWidth = UIScreen.main.bounds.size.width * 0.7
-    private let chevronYpos = UIScreen.main.bounds.size.height * 0.8
-
     public var body: some View {
         ZStack {
             if isTargetSlide {
                 targetView
-                    .offset(x: isPresented ? sideBarWidth : 0)
+                    .offset(x: isPresented ? sideBarWidth() : 0)
                     .animation(.default, value: isPresented)
             } else {
                 targetView
@@ -64,6 +61,7 @@ public struct Sidebar: View {
 }
 
 private extension Sidebar {
+    @MainActor
     func container() -> some View {
         HStack(alignment: .top) {
             ZStack(alignment: .top) {
@@ -72,14 +70,15 @@ private extension Sidebar {
 
                 content
             }
-            .frame(width: sideBarWidth)
-            .offset(x: isPresented ? 0 : -sideBarWidth)
+            .frame(width: sideBarWidth())
+            .offset(x: isPresented ? 0 : -sideBarWidth())
             .animation(.default, value: isPresented)
 
             Spacer()
         }
     }
 
+    @MainActor
     func menuChevron() -> some View {
         ZStack {
             RoundedRectangle(cornerRadius: 18)
@@ -97,12 +96,23 @@ private extension Sidebar {
                 .offset(x: isPresented ? -4 : 8)
                 .foregroundColor(.blue)
         }
-        .offset(x: sideBarWidth / 2, y: chevronYpos)
+        .offset(x: sideBarWidth() / 2, y: chevronYpos())
         .animation(.default, value: isPresented)
+    }
+
+    @MainActor
+    private func sideBarWidth() -> CGFloat {
+        UIScreen.main.bounds.size.width * 0.7
+    }
+
+    @MainActor
+    private func chevronYpos() -> CGFloat {
+        UIScreen.main.bounds.size.height * 0.8
     }
 }
 
 public extension View {
+    @MainActor
     func sidebar<Content: View>(
         isPresented: Binding<Bool>,
         foregroundColor: Color = .white,

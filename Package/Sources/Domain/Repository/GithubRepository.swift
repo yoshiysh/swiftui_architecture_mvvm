@@ -7,7 +7,7 @@
 
 import Combine
 
-public protocol GithubRepository {
+public protocol GithubRepository: Sendable {
     func fetchUserAsync(userName: String) async throws -> UserEntity
 
     func searchRepositoryAsync(forQuery query: QueryDto) async throws -> SearchResponseEntity

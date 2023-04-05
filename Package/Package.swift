@@ -1,7 +1,22 @@
-// swift-tools-version: 5.7
+// swift-tools-version: 5.8
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
+
+let debugOtherSwiftFlags = [
+    "-Xfrontend", "-warn-long-expression-type-checking=500",
+    "-Xfrontend", "-warn-long-function-bodies=500",
+    "-strict-concurrency=complete",
+    "-enable-actor-data-race-checks",
+]
+
+let debugSwiftSettings: [PackageDescription.SwiftSetting] = [ // Swift5.8
+    .unsafeFlags(debugOtherSwiftFlags, .when(configuration: .debug)),
+    .enableUpcomingFeature("ConciseMagicFile", .when(configuration: .debug)), // SE-0274
+    .enableUpcomingFeature("ForwardTrailingClosures", .when(configuration: .debug)), // SE-0286
+    .enableUpcomingFeature("ExistentialAny", .when(configuration: .debug)), // SE-0335
+    .enableUpcomingFeature("BaseSlashRegexLiterals", .when(configuration: .debug)), // SE-0354
+]
 
 let package = Package(
     name: "Package",
@@ -51,71 +66,87 @@ let package = Package(
             name: "UI/Core",
             dependencies: ["Domain"],
             path: "Sources/UI/Core",
+            swiftSettings: debugSwiftSettings,
             plugins: ["SwiftGen"]
         ),
         .target(
             name: "UI/Home",
             dependencies: ["DI", "UI/Core", "Domain"],
-            path: "Sources/UI/Home"
+            path: "Sources/UI/Home",
+            swiftSettings: debugSwiftSettings
         ),
         .target(
             name: "UI/Search",
             dependencies: ["UI/Core"],
-            path: "Sources/UI/Search"
+            path: "Sources/UI/Search",
+            swiftSettings: debugSwiftSettings
         ),
         .target(
             name: "UI/Setting",
             dependencies: ["UI/Core"],
-            path: "Sources/UI/Setting"
+            path: "Sources/UI/Setting",
+            swiftSettings: debugSwiftSettings
         ),
         .target(
             name: "UI/SideMenu",
             dependencies: ["DI"],
-            path: "Sources/UI/SideMenu"
+            path: "Sources/UI/SideMenu",
+            swiftSettings: debugSwiftSettings
         ),
         .target(
             name: "UI/Sign",
             dependencies: ["DI", "UI/Core"],
-            path: "Sources/UI/Sign"
+            path: "Sources/UI/Sign",
+            swiftSettings: debugSwiftSettings
         ),
         .target(
             name: "UI/Splash",
-            path: "Sources/UI/Splash"
+            path: "Sources/UI/Splash",
+            swiftSettings: debugSwiftSettings
         ),
         .target(
             name: "UI/TabHome",
             dependencies: ["DI"],
-            path: "Sources/UI/TabHome"
+            path: "Sources/UI/TabHome",
+            swiftSettings: debugSwiftSettings
         ),
         .target(
             name: "UI/Web",
-            path: "Sources/UI/Web"
+            path: "Sources/UI/Web",
+            swiftSettings: debugSwiftSettings
         ),
         
         // === Domain -----
         
-        .target(name: "Domain"),
+        .target(
+            name: "Domain",
+            swiftSettings: debugSwiftSettings
+        ),
         
         // === Data -----
         
         .target(
             name: "Data/Core",
             dependencies: ["Domain"],
-            path: "Sources/Data/Core"
+            path: "Sources/Data/Core",
+            swiftSettings: debugSwiftSettings
         ),
         .target(
             name: "Data/Local",
-            path: "Sources/Data/Local"
+            path: "Sources/Data/Local",
+            swiftSettings: debugSwiftSettings
         ),
         .target(
             name: "Data/Rempte",
             dependencies: ["Data/Core"],
-            path: "Sources/Data/Remote"
+            path: "Sources/Data/Remote",
+            swiftSettings: debugSwiftSettings
         ),
         .target(
             name: "Data/Repository",
             dependencies: ["Domain", "Data/Rempte"],
-            path: "Sources/Data/Repository"
+            path: "Sources/Data/Repository",
+            swiftSettings: debugSwiftSettings
         ),
 
         

@@ -9,6 +9,7 @@ import Domain
 import SwiftUI
 import UI_Core
 
+@MainActor
 public func homeScreen(
     language: String,
     onTappedTabTrigger: Trigger,
@@ -115,7 +116,7 @@ private extension View {
         isInitial: Bool,
         hasNextPage: Bool,
         onTappedTabTrigger: Trigger,
-        onAppearLoadingItem: @escaping () -> Void,
+        onAppearLoadingItem: @Sendable @escaping () -> Void,
         onTapItem: @escaping () -> Void,
         onTapMenuButton: @escaping (MenuIcon) -> Void
     ) -> some View {
@@ -146,7 +147,7 @@ private extension View {
         items: [RepositoryEntity],
         hasNextPage: Bool,
         onTappedTabTrigger: Trigger,
-        onAppearLoadingItem: @escaping () -> Void,
+        onAppearLoadingItem: @Sendable @escaping () -> Void,
         onTapItem: @escaping () -> Void
     ) -> some View {
         ScrollViewReader { proxy in

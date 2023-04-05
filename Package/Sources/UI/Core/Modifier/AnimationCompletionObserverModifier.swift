@@ -9,7 +9,7 @@ import SwiftUI
 
 /// ref.) https://www.avanderlee.com/swiftui/withanimation-completion-callback/
 /// An animatable modifier that is used for observing animations for a given animatable value.
-public struct AnimationCompletionObserverModifier<Value>: AnimatableModifier where Value: VectorArithmetic {
+public struct AnimationCompletionObserverModifier<Value>: AnimatableModifier, @unchecked Sendable where Value: VectorArithmetic {
     /// While animating, SwiftUI changes the old input value to the new target value using this property. This value is set to the old value until the animation completes.
     public var animatableData: Value {
         didSet {

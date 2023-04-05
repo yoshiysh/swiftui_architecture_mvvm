@@ -5,14 +5,14 @@
 //  Created by yoshi on 2022/09/14.
 //
 
-public protocol AuthUseCase { // swiftlint:disable:this file_types_order
+public protocol AuthUseCase: Sendable { // swiftlint:disable:this file_types_order
     func validate(email: String, password: String) -> Bool
 
     func signIn(email: String, password: String) async throws
 }
 
 public final class AuthDefaultUseCase: AuthUseCase {
-    private let repository: AuthRepository
+    private let repository: any AuthRepository
 
     public init(repository: some AuthRepository) {
         self.repository = repository

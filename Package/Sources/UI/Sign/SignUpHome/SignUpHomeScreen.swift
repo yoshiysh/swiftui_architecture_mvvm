@@ -8,6 +8,7 @@
 import SwiftUI
 import UI_Core
 
+@MainActor
 public func signUpHomeScreen<Content: View>(
     navigate: @escaping (AppNavigation.Path) -> Void,
     @ViewBuilder content: @escaping (AppNavigation.Path) -> Content
@@ -114,7 +115,10 @@ private extension View {
         item: Binding<SignUpHomeUIState.ActiveSheet?>,
         @ViewBuilder content: @escaping (SignUpHomeUIState.ActiveSheet) -> some View
     ) -> some View {
-        sheet(item: item) { sheet in
+        sheet(
+            item: item,
+            onDismiss: nil
+        ) { sheet in
             content(sheet)
         }
     }

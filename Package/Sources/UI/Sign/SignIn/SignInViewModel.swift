@@ -15,7 +15,7 @@ final class SignInViewModel: ObservableObject {
     @Published var uiState: SignInViewUIState = .init()
 
     @Inject(.authUseCase)
-    private var useCase: AuthUseCase
+    private var useCase: any AuthUseCase
 
     init() {}
 

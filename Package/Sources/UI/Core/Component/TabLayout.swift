@@ -14,7 +14,7 @@ public struct TabLayout<Content: View>: View {
     private let content: (TabLayoutType) -> Content
 
     public var body: some View {
-        VStack {
+        VStack { // swiftlint:disable:this closure_body_length
             Spacer()
 
             Section(
@@ -74,11 +74,13 @@ private extension TabLayout {
         count == 1
     }
 
+    @MainActor
     private var tabWidth: CGFloat {
         let screenWidth = UIScreen.main.bounds.size.width
         return max(120, screenWidth / CGFloat(count))
     }
 
+    @MainActor
     func navBarButton(
         type: TabLayoutType,
         action: @escaping (TabLayoutType) -> Void

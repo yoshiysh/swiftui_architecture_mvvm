@@ -11,11 +11,11 @@ import Domain
 // MARK: Repository
 
 public extension DependencyObjects {
-    static let authRepository = DependencyObject<AuthRepository> {
+    static let authRepository = DependencyObject<any AuthRepository> {
         AuthDefaultRepository()
     }
 
-    static let githubRepository = DependencyObject<GithubRepository> {
+    static let githubRepository = DependencyObject<any GithubRepository> {
         GithubDefaultRepository()
     }
 }
@@ -23,7 +23,7 @@ public extension DependencyObjects {
 // MARK: UseCase
 
 public extension DependencyObjects {
-    static let authUseCase = DependencyObject<AuthUseCase> {
+    static let authUseCase = DependencyObject<any AuthUseCase> {
         AuthDefaultUseCase(repository: authRepository.object)
     }
 }

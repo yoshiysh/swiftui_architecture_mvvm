@@ -7,6 +7,6 @@
 
 import Combine
 
-public protocol AuthRepository {
+public protocol AuthRepository: Sendable {
     func login(email: String, password: String) async
 }

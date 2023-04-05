@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 public func webScreen(_ url: String) -> some View {
     WebScreen(url)
 }
