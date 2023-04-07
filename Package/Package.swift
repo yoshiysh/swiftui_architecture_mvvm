@@ -31,6 +31,7 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
+        .package(url: "https://github.com/uber/needle.git", .upToNextMajor(from: "0.22.0")),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -40,7 +41,11 @@ let package = Package(
         
         .target(
             name: "DI",
-            dependencies: ["Domain", "Data/Repository"]
+            dependencies: [
+                "Domain",
+                "Data/Repository",
+                .product(name: "NeedleFoundation", package: "needle")
+            ]
         ),
         
         // === Application -----
@@ -48,6 +53,7 @@ let package = Package(
         .target(
             name: "App",
             dependencies: [
+                "DI",
                 "UI/Home",
                 "UI/Search",
                 "UI/Setting",
@@ -55,9 +61,10 @@ let package = Package(
                 "UI/Sign",
                 "UI/Splash",
                 "UI/TabHome",
-                "UI/Web"
-            ],
-            plugins: ["SwiftLint"]
+                "UI/Web",
+                .product(name: "NeedleFoundation", package: "needle")
+            ]
+//            plugins: ["SwiftLint"]
         ),
         
         // === UI -----
@@ -144,7 +151,11 @@ let package = Package(
         ),
         .target(
             name: "Data/Repository",
-            dependencies: ["Domain", "Data/Rempte"],
+            dependencies: [
+                "Domain",
+                "Data/Rempte",
+                .product(name: "NeedleFoundation", package: "needle")
+            ],
             path: "Sources/Data/Repository",
             swiftSettings: debugSwiftSettings
         ),

@@ -232,6 +232,7 @@ included:
 
 excluded:
   - Package/Package.swift
+  - Package/Sources/App/Needle.swift
   - Package/Tests
   - Package/Sources/Resources/Generated
   - Tools

@@ -6,8 +6,9 @@
 //
 
 import Combine
+import NeedleFoundation
 
-public protocol GithubRepository {
+public protocol GithubRepository: Dependency {
     func fetchUserAsync(userName: String) async throws -> UserEntity
 
     func searchRepositoryAsync(forQuery query: QueryDto) async throws -> SearchResponseEntity

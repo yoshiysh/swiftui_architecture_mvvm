@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D1DAFDA29E0065800FC2101 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D1DAFD929E0065800FC2101 /* AppDelegate.swift */; };
 		4DB4328528D2DCE000A2F053 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4DB4328328D2DCE000A2F053 /* Assets.xcassets */; };
 		4DB4328728D2DD1200A2F053 /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DB4328428D2DCE000A2F053 /* Main.swift */; };
 		929DF64428EE561700A162F0 /* App in Frameworks */ = {isa = PBXBuildFile; productRef = 929DF64328EE561700A162F0 /* App */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4D1DAFD929E0065800FC2101 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4D621A1828ED7D760036CCB4 /* Production-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Production-Info.plist"; sourceTree = "<group>"; };
 		4DB4328328D2DCE000A2F053 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4DB4328428D2DCE000A2F053 /* Main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
@@ -41,6 +43,7 @@
 		4DB4328128D2DCE000A2F053 /* SwiftUIArchitectureMVVM */ = {
 			isa = PBXGroup;
 			children = (
+				4D1DAFD929E0065800FC2101 /* AppDelegate.swift */,
 				4DB4328428D2DCE000A2F053 /* Main.swift */,
 				4DB4328228D2DCE000A2F053 /* Resouces */,
 			);
@@ -80,6 +83,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4DDA0FB228D089D90021D6F3 /* Build configuration list for PBXNativeTarget "Production" */;
 			buildPhases = (
+				4D66A35B29DFFDE700935305 /* Run Script Needle */,
 				4DDA0F9A28D089D80021D6F3 /* Sources */,
 				4DDA0F9B28D089D80021D6F3 /* Frameworks */,
 				4DDA0F9C28D089D80021D6F3 /* Resources */,
@@ -141,11 +145,33 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		4D66A35B29DFFDE700935305 /* Run Script Needle */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script Needle";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "SDKROOT=$(xcrun --sdk macosx --show-sdk-path)\nPACKAGE_ROOT=$SRCROOT/../Package\n\nif [ $(uname -m) = \"arm64\" ]; then\n  export PATH=\"/opt/homebrew/bin:/opt/homebrew/sbin:${PATH+:$PATH}\";\nfi\n\nif which needle; then\n    SOURCEKIT_LOGGING=0 && needle generate $PACKAGE_ROOT/Sources/App/Needle.swift $PACKAGE_ROOT/Sources/App\nelse\n  echo \"warning: Needle not installed, download from https://github.com/uber/needle using Homebrew\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		4DDA0F9A28D089D80021D6F3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D1DAFDA29E0065800FC2101 /* AppDelegate.swift in Sources */,
 				4DB4328728D2DD1200A2F053 /* Main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -96,3 +96,6 @@ iOSInjectionProject/
 # SwiftGen
 /Package/Sources/Resources/Generated/*
 !/Package/Sources/Resources/Generated/.gitkeep
+
+# Needle
+Needle.swift
