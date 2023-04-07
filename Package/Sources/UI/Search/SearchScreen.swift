@@ -8,6 +8,7 @@
 import SwiftUI
 import UI_Core
 
+@MainActor
 public func searchScreen(navigate: @escaping (AppNavigation.Path) -> Void) -> some View {
     SearchScreen(navigate: navigate)
 }

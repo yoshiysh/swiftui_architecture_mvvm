@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct QueryDto {
+public struct QueryDto: Sendable {
     public var keyword: String?
     public var language: String?
     public var sortType: SortType?

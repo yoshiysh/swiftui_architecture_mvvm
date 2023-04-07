@@ -8,6 +8,7 @@
 import SwiftUI
 import UI_Core
 
+@MainActor
 public func tabHomeScreen<Content: View>(
     selection: State<TabType>,
     onTappedTab: @escaping (TabType) -> Void,

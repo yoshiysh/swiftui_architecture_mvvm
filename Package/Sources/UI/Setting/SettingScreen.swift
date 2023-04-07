@@ -8,6 +8,7 @@
 import SwiftUI
 import UI_Core
 
+@MainActor
 public func settingScreen(navigate: @escaping (AppNavigation.Path) -> Void) -> some View {
     SettingScreen(navigate: navigate)
 }

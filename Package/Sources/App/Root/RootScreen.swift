@@ -16,6 +16,7 @@ import UI_Splash
 import UI_TabHome
 import UI_Web
 
+@MainActor
 public func rootScreen() -> some View {
     RootScreen()
 }

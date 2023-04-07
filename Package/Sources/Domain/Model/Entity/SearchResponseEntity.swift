@@ -5,7 +5,7 @@
 //  Created by yoshi on 2022/09/27.
 //
 
-public struct SearchResponseEntity: Equatable {
+public struct SearchResponseEntity: Equatable, Sendable {
     public let totalCount: Int
     public let items: [RepositoryEntity]
 }

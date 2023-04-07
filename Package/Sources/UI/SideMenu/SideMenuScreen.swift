@@ -8,6 +8,7 @@
 import SwiftUI
 import UI_Core
 
+@MainActor
 public func sideMenuScreen(navigate: @escaping (AppNavigation.Path) -> Void) -> some View {
     SideMenuScreen(navigate: navigate)
 }

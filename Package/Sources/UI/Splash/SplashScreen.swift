@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 public func splashScreen() -> some View {
     SplashScreen()
 }

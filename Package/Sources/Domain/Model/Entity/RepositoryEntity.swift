@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct RepositoryEntity: Equatable, Identifiable {
+public struct RepositoryEntity: Equatable, Identifiable, Sendable {
     public let id: Int
     public let name: String
     public let fullName: String

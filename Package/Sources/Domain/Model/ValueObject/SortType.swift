@@ -5,7 +5,7 @@
 //  Created by yoshi on 2022/09/30.
 //
 
-public enum SortType: String {
+public enum SortType: String, Sendable {
     case stars = "stars"
     case forks = "forks"
     case helpWantedIssues = "help-wanted-issues"

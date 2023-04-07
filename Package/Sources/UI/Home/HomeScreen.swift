@@ -22,7 +22,7 @@ enum ToolbarActionType {
     case setting, debug
 }
 
-struct HomeScreen: View {
+struct HomeScreen: View, Sendable {
     @StateObject private var viewModel: HomeViewModel
 
     private let onTappedTabTrigger: Trigger
@@ -35,7 +35,7 @@ struct HomeScreen: View {
             hasNextPage: viewModel.uiState.hasNextPage,
             onTappedTabTrigger: onTappedTabTrigger
         ) {
-            Task { await viewModel.next() }
+            await viewModel.next()
         } onTapItem: {
             debugPrint("item tapped")
         } onTapMenuButton: { icon in
@@ -116,7 +116,7 @@ private extension View {
         isInitial: Bool,
         hasNextPage: Bool,
         onTappedTabTrigger: Trigger,
-        onAppearLoadingItem: @Sendable @escaping () -> Void,
+        onAppearLoadingItem: @escaping @Sendable () async -> Void,
         onTapItem: @escaping () -> Void,
         onTapMenuButton: @escaping (MenuIcon) -> Void
     ) -> some View {
@@ -147,7 +147,7 @@ private extension View {
         items: [RepositoryEntity],
         hasNextPage: Bool,
         onTappedTabTrigger: Trigger,
-        onAppearLoadingItem: @Sendable @escaping () -> Void,
+        onAppearLoadingItem: @escaping @Sendable () async -> Void,
         onTapItem: @escaping () -> Void
     ) -> some View {
         ScrollViewReader { proxy in
@@ -166,7 +166,7 @@ private extension View {
                     if hasNextPage {
                         LoadingView()
                             .frame(maxWidth: .infinity, alignment: .center)
-                            .task { onAppearLoadingItem() }
+                            .task { await onAppearLoadingItem() }
                     }
                 }
                 .padding()

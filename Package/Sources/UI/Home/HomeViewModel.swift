@@ -11,7 +11,7 @@ import Domain
 import UI_Core
 
 @MainActor
-final class HomeViewModel: ObservableObject {
+final class HomeViewModel: ObservableObject, Sendable {
     @Inject(.githubRepository)
     private var repository: any GithubRepository
 
